@@ -1,43 +1,17 @@
 class Solution {
   /**
-   * @param {character[]} tasks
-   * @param {number} n
+   * @param {number[]} nums
    * @return {number}
    */
-  leastInterval(tasks, n) {
-    const count = new Array(26).fill(0);
+  rob(nums) {
+    const dp = new Array(nums.length).fill(0);
+    dp[0] = nums[0];
+    dp[1] = Math.max(nums[0], nums[1]);
 
-    for (const task of tasks) {
-      count[task.charCodeAt(0) - 'A'.charCodeAt(0)]++;
+    for (let i = 2; i < nums.length; i++) {
+      dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
     }
 
-    const maxHeap = new MaxPriorityQueue();
-
-    for (let i = 0; i < 26; i++) {
-      if (count[i] > 0) {
-        maxHeap.push(count[i]);
-      }
-    }
-
-    const queue = new Queue();
-    let time = 0;
-
-    while (maxHeap.size() > 0 || queue.size() > 0) {
-      time++;
-
-      if (maxHeap.size() > 0) {
-        const count = maxHeap.pop();
-
-        if (count - 1 > 0) {
-          queue.push([count - 1, time + n]);
-        }
-      }
-
-      if (queue.size() > 0 && queue.front()[1] === time) {
-        maxHeap.push(queue.pop()[0]);
-      }
-    }
-
-    return time;
+    return dp[nums.length - 1];
   }
 }
