@@ -1,17 +1,21 @@
 class Solution {
   /**
-   * @param {number[]} nums
+   * @param {number[]} coins
+   * @param {number} amount
    * @return {number}
    */
-  rob(nums) {
-    const dp = new Array(nums.length).fill(0);
-    dp[0] = nums[0];
-    dp[1] = Math.max(nums[0], nums[1]);
+  coinChange(coins, amount) {
+    const dp = new Array(amount + 1).fill(Infinity);
+    dp[0] = 0;
 
-    for (let i = 2; i < nums.length; i++) {
-      dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+    for (let i = 1; i <= amount; i++) {
+      for (const coin of coins) {
+        if (coin <= i) {
+          dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        }
+      }
     }
 
-    return dp[nums.length - 1];
+    return dp[amount] === Infinity ? -1 : dp[amount];
   }
 }
