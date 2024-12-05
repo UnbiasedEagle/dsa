@@ -1,29 +1,35 @@
 class Solution {
   /**
-   * @param {number[]} nums
+   * @param {character[][]} grid
    * @return {number}
    */
-  rob(nums) {
-    if (nums.length === 1) {
-      return nums[0];
+  dfs(grid, i, j) {
+    if (
+      i < 0 ||
+      j < 0 ||
+      i >= grid.length ||
+      j >= grid[i].length ||
+      grid[i][j] !== '1'
+    ) {
+      return;
     }
+    grid[i][j] = '0';
+    this.dfs(grid, i + 1, j);
+    this.dfs(grid, i - 1, j);
+    this.dfs(grid, i, j + 1);
+    this.dfs(grid, i, j - 1);
+  }
 
-    const robRange = (nums, start, end) => {
-      let prev2 = 0,
-        prev1 = 0;
-
-      for (let i = start; i <= end; i++) {
-        const current = Math.max(prev2 + nums[i], prev1);
-        prev2 = prev1;
-        prev1 = current;
+  numIslands(grid) {
+    let count = 0;
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] === '1') {
+          count++;
+          this.dfs(grid, i, j);
+        }
       }
-
-      return prev1;
-    };
-
-    return Math.max(
-      robRange(nums, 0, nums.length - 2),
-      robRange(nums, 1, nums.length - 1)
-    );
+    }
+    return count;
   }
 }
