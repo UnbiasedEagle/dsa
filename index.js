@@ -1,23 +1,16 @@
 class Solution {
   /**
-   * @param {number} n
-   * @return {number[]}
+   * @param {number} n - a positive integer
+   * @return {number} - a positive integer
    */
-  countBits(n) {
-    const ans = [];
+  reverseBits(n) {
+    let result = 0;
 
-    for (let i = 0; i <= n; i++) {
-      let j = i;
-      let count = 0;
-
-      while (j) {
-        count++;
-        j = j & (j - 1);
-      }
-
-      ans.push(count);
+    for (let i = 0; i < 32; i++) {
+      result = (result << 1) + (n & 1);
+      n >>= 1;
     }
 
-    return ans;
+    return result >>> 0;
   }
 }
