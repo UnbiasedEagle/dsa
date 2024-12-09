@@ -1,16 +1,14 @@
 class Solution {
   /**
-   * @param {number} n - a positive integer
-   * @return {number} - a positive integer
+   * @param {number[]} nums
+   * @return {number}
    */
-  reverseBits(n) {
-    let result = 0;
-
-    for (let i = 0; i < 32; i++) {
-      result = (result << 1) + (n & 1);
-      n >>= 1;
+  missingNumber(nums) {
+    let n = nums.length;
+    let result = nums.reduce((acc, num) => acc ^ num, 0);
+    for (let i = 0; i <= n; i++) {
+      result ^= i;
     }
-
-    return result >>> 0;
+    return result;
   }
 }
