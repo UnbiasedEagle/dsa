@@ -1,14 +1,24 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {number}
+   * @param {number} n
+   * @return {boolean}
    */
-  missingNumber(nums) {
-    let n = nums.length;
-    let result = nums.reduce((acc, num) => acc ^ num, 0);
-    for (let i = 0; i <= n; i++) {
-      result ^= i;
+  getNext(n) {
+    let totalSum = 0;
+    while (n > 0) {
+      const d = n % 10;
+      n = Math.floor(n / 10);
+      totalSum += d * d;
     }
-    return result;
+    return totalSum;
+  }
+
+  isHappy(n) {
+    const seen = new Set();
+    while (n !== 1 && !seen.has(n)) {
+      seen.add(n);
+      n = this.getNext(n);
+    }
+    return n === 1;
   }
 }
