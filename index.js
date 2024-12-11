@@ -1,24 +1,31 @@
 class Solution {
   /**
-   * @param {number} n
-   * @return {boolean}
+   * @param {number[]} digits
+   * @return {number[]}
    */
-  getNext(n) {
-    let totalSum = 0;
-    while (n > 0) {
-      const d = n % 10;
-      n = Math.floor(n / 10);
-      totalSum += d * d;
-    }
-    return totalSum;
-  }
+  plusOne(digits) {
+    digits.reverse();
+    let carry = 1;
+    let i = 0;
 
-  isHappy(n) {
-    const seen = new Set();
-    while (n !== 1 && !seen.has(n)) {
-      seen.add(n);
-      n = this.getNext(n);
+    while (carry > 0 || i < digits.length) {
+      let sum = carry;
+      if (i < digits.length) {
+        sum += digits[i];
+      }
+      carry = Math.floor(sum / 10);
+
+      if (i < digits.length) {
+        digits[i] = sum % 10;
+      } else {
+        digits.push(sum % 10);
+      }
+
+      i++;
     }
-    return n === 1;
+
+    digits.reverse();
+
+    return digits;
   }
 }
