@@ -1,23 +1,14 @@
-vector<int> getPositiveCumulativeSum(vector<int> &arr) {
-	// add your logic here
-    vector<int>ans;
+int getIdenticalTwinsCount(vector<int> &arr) {
+    unordered_map<int, int>map;
+    int result=0;
 
-    int sum = arr[0];
-
-    if(sum>0){
-        ans.push_back(sum);
+    for(int i = 0;i<arr.size();i++){
+        result+=map[arr[i]];
+        map[arr[i]]++;
     }
 
-    for(int i=1;i<arr.size();i++){
-        sum += arr[i];
-
-        if(sum>0){
-            ans.push_back(sum);
-        }
-    }
-
-    return ans;
+    return result;
 }
 
-// Time Complexity: O(N)
-// Space Complexity: O(N)
+// Time Complexity: O(n)
+// Space Complexity: O(n)
