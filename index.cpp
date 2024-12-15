@@ -1,14 +1,30 @@
-void insertionSort(vector<int> &arr) {
-    // add your logic here
-    for(int i = 1;i<arr.size();i++){
-        int j = i-1;
+vector<int> mergeSortedArrays(vector<int> &A, vector<int> B) {
+    vector<int>result;
 
-        while(j>=0 && arr[j]>arr[j+1]){
-            swap(arr[j],arr[j+1]);
-            j--;
+    int i = 0;
+    int j = 0;
+
+    while(i < A.size() || j < B.size()){
+        if(i >= A.size()){
+            result.push_back(B[j]);
+            j++;
+        }
+        else if(j >= B.size()){
+            result.push_back(A[i]);
+            i++;
+        }
+        else if(A[i] < B[j]){
+            result.push_back(A[i]);
+            i++;
+        }
+        else{
+            result.push_back(B[j]);
+            j++;
         }
     }
+
+    return result;
 }
 
-// Time Complexity: O(n^2)
-// Space Complexity: O(1)
+// Time Complexity: O(m+n)
+// Space Complexity: O(m+n)
