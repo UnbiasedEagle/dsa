@@ -1,29 +1,14 @@
-bool isEven(int num) {
-    int digits=0;
+void insertionSort(vector<int> &arr) {
+    // add your logic here
+    for(int i = 1;i<arr.size();i++){
+        int j = i-1;
 
-    if(num==0){
-        return false;
-    }
-
-    while(num>0){
-        digits++;
-        num/=10;
-    }
-
-    return digits%2==0;
-}
-
-vector<int> getEvenDigitNumbers(vector<int> &arr) {
-    vector<int> result;
-
-    for(int i=0;i<arr.size();i++){
-        if(isEven(arr[i])){
-            result.push_back(arr[i]);
+        while(j>=0 && arr[j]>arr[j+1]){
+            swap(arr[j],arr[j+1]);
+            j--;
         }
     }
-
-    return result;
 }
 
-// Time Complexity: O(n)
-// Space Complexity: O(n)
+// Time Complexity: O(n^2)
+// Space Complexity: O(1)
