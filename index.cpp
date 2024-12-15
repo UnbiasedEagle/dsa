@@ -1,30 +1,34 @@
-vector<int> mergeSortedArrays(vector<int> &A, vector<int> B) {
+void merge(vector<int> &arr, int endIndex) {
+    // add your logic here
     vector<int>result;
 
     int i = 0;
-    int j = 0;
+    int j = endIndex + 1;
 
-    while(i < A.size() || j < B.size()){
-        if(i >= A.size()){
-            result.push_back(B[j]);
-            j++;
-        }
-        else if(j >= B.size()){
-            result.push_back(A[i]);
+    while(i <= endIndex && j < arr.size()) {
+        if(arr[i] < arr[j]) {
+            result.push_back(arr[i]);
             i++;
-        }
-        else if(A[i] < B[j]){
-            result.push_back(A[i]);
-            i++;
-        }
-        else{
-            result.push_back(B[j]);
+        } else {
+            result.push_back(arr[j]);
             j++;
         }
     }
 
-    return result;
+    while(i <= endIndex) {
+        result.push_back(arr[i]);
+        i++;
+    }
+
+    while(j < arr.size()) {
+        result.push_back(arr[j]);
+        j++;
+    }
+
+    for(int i = 0; i < arr.size(); i++) {
+        arr[i] = result[i];
+    }
 }
 
-// Time Complexity: O(m+n)
-// Space Complexity: O(m+n)
+// Time Complexity: O(n)
+// Space Complexity: O(n)
