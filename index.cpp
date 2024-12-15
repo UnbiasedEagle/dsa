@@ -1,44 +1,32 @@
-void merge(vector<int> &arr, int l, int m, int r) {
-    vector<int>temp;
-    int i=l;
-    int j=m+1;
-    while(i<=m && j<=r){
-        if(arr[i]<=arr[j]){
-            temp.push_back(arr[i]);
+int partition(vector<int> &arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            swap(arr[i], arr[j]);
             i++;
         }
-        else{
-            temp.push_back(arr[j]);
-            j++;
-        }
     }
-    while(i<=m){
-        temp.push_back(arr[i]);
-        i++;
-    }
-    while(j<=r){
-        temp.push_back(arr[j]);
-        j++;
-    }
-    for(int i=l;i<=r;i++){
-        arr[i]=temp[i-l];
-    }
+    swap(arr[i], arr[high]);
+    return i;
 }
 
-void helper(vector<int> &arr, int l, int r) {
-    if(l>=r){
+void helper(vector<int> &arr, int low, int high) {
+    if(low>=high){
         return;
     }
-    int m = l + (r-l)/2;
-    helper(arr, l, m);
-    helper(arr, m+1, r);
-    merge(arr, l, m, r);
+
+    int pivot = partition(arr, low, high);
+    helper(arr, low, pivot-1);
+    helper(arr, pivot+1, high);
 }
 
-void mergeSort(vector<int> &arr) {
+
+void quickSort(vector<int> &arr) {
     // add your logic here
     helper(arr, 0, arr.size()-1);
 }
 
-// Time Complexity: O(nlogn)
-// Space Complexity: O(n)
+// Average Time Complexity: O(NlogN)
+// Worst Time Complexity: O(N^2)
+// Space Complexity: O(logN)
