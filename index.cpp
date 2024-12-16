@@ -1,12 +1,18 @@
-vector<int> getSquareSortedArray(vector<int> &arr) {
-    // add your logic here
-    for(int i=0;i<arr.size();i++){
-        arr[i]=arr[i]*arr[i];
-    }
+int getMaxConsecutiveOnes(vector<int> &A) {
+    int maxCount=0;
+    int count=0;
 
-    sort(arr.begin(),arr.end());
-    return arr;
+    for(int i=0;i<A.size();i++){
+        if(A[i]==1){
+            count++;
+            maxCount=max(maxCount,count);
+        }
+        else{
+            count=0;
+        }
+    }
+    return maxCount;
 }
 
-// Time Complexity: O(NlogN)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
