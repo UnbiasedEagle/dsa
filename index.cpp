@@ -1,18 +1,21 @@
-int getMaxConsecutiveOnes(vector<int> &A) {
-    int maxCount=0;
-    int count=0;
+bool isArithmeticSequence(vector<int> &arr) {
+    // add your logic here
+    if(arr.size() == 1){
+        return true;
+    }
 
-    for(int i=0;i<A.size();i++){
-        if(A[i]==1){
-            count++;
-            maxCount=max(maxCount,count);
-        }
-        else{
-            count=0;
+    sort(arr.begin(), arr.end());
+
+    int diff = arr[1] - arr[0];
+
+    for(int i = 2; i < arr.size(); i++){
+        if(arr[i] - arr[i-1] != diff){
+            return false;
         }
     }
-    return maxCount;
+
+    return true;
 }
 
-// Time Complexity: O(n)
+// Time Complexity: O(nlogn)
 // Space Complexity: O(1)
