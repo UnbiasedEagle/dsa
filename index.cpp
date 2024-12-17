@@ -1,14 +1,14 @@
-int largestContiguousSum(vector <int> &arr){
-    int maxSum = arr[0];
-    int currSum = arr[0];
-
-    for(int i = 1; i < arr.size(); i++){
-        currSum = max(arr[i], currSum + arr[i]);
-        maxSum = max(maxSum, currSum);
+vector<int> pascalTriangleRow(int rowNo) {
+    rowNo--;
+    vector<int> row;
+    row.push_back(1);
+    int C = 1; // Binomial coefficient
+    for (int i = 1; i <= rowNo; i++) {
+        C = C * (rowNo-i+1)/i;
+        row.push_back(C);
     }
-
-    return maxSum;
+    return row;
 }
 
 // Time Complexity: O(n)
-// Space Complexity: O(1)
+// Space Complexity: O(n)
