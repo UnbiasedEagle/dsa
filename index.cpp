@@ -1,16 +1,16 @@
-vector<vector<int> > rotateMatrix(vector<vector<int> > &matrix){
-    int row = matrix.size();
-    int col = matrix[0].size();
-
-    vector<vector<int> > result(col, vector<int>(row));
-
-    for(int i = 0;i<col;i++){
-        for(int j = row-1;j>=0;j--){
-            result[i][row-1-j] = matrix[j][i];
+vector<int> primesUptoN(int n) {
+    vector<bool> isPrime(n + 1, true);
+    vector<int> primes;
+    for (int i = 2; i <= n; i++) {
+        if (isPrime[i]) {
+            primes.push_back(i);
+            for (int j = i * i; j <= n; j += i) {
+                isPrime[j] = false;
+            }
         }
     }
-    return result;
+    return primes;   
 }
 
-// Time Complexity: O(R*C)
-// Space Complexity: O(R*C)
+// Time Complexity: O(n log(log(n)))
+// Space Complexity: O(n)
