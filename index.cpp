@@ -1,46 +1,16 @@
-void setRowColumnZeroes(vector<vector<int> > &matrix) {
-    // add your logic here
+vector<vector<int> > rotateMatrix(vector<vector<int> > &matrix){
     int row = matrix.size();
     int col = matrix[0].size();
 
-    bool firstRowZero = false;
-    bool firstColZero = false;
+    vector<vector<int> > result(col, vector<int>(row));
 
-    for(int i = 0; i < row; i++){
-        if(matrix[i][0] == 0){
-            firstColZero = true;
+    for(int i = 0;i<col;i++){
+        for(int j = row-1;j>=0;j--){
+            result[i][row-1-j] = matrix[j][i];
         }
     }
-
-    for(int i = 0; i < col; i++){
-        if(matrix[0][i] == 0){
-            firstRowZero = true;
-        }
-    }
-
-    for(int i = row-1; i > 0; i--){
-        for(int j = col-1; j > 0; j--){
-            if(matrix[i][j] == 0){
-                matrix[i][0] = 0;
-                matrix[0][j] = 0;
-            }
-        }
-    }
-
-    for(int i = row-1; i >= 0; i--){
-        for(int j = col-1; j >= 0; j--){
-           if(i!=0 && j!=0){
-               if(matrix[i][0] == 0 || matrix[0][j] == 0){
-                   matrix[i][j] = 0;
-               }
-           }else if(i==0 && firstRowZero){
-               matrix[i][j] = 0;
-           }else if(j==0 && firstColZero){
-               matrix[i][j] = 0;
-           }
-        }
-    }
+    return result;
 }
 
-// Time Complexity: O(m*n)
-// Space Complexity: O(1)
+// Time Complexity: O(R*C)
+// Space Complexity: O(R*C)
