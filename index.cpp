@@ -1,16 +1,17 @@
-vector<int> primesUptoN(int n) {
-    vector<bool> isPrime(n + 1, true);
-    vector<int> primes;
-    for (int i = 2; i <= n; i++) {
-        if (isPrime[i]) {
-            primes.push_back(i);
-            for (int j = i * i; j <= n; j += i) {
-                isPrime[j] = false;
-            }
+vector<vector<int> > mergeIntervals(vector<vector<int> > &intervals) {
+    // add your logic here
+    sort(intervals.begin(),intervals.end());
+    vector<vector<int> > merged;
+    for(int i=0;i<intervals.size();i++){
+        if(merged.size()==0 || merged.back()[1]<intervals[i][0]){
+            merged.push_back(intervals[i]);
+        }
+        else{
+            merged.back()[1]=max(merged.back()[1],intervals[i][1]);
         }
     }
-    return primes;   
+    return merged;
 }
 
-// Time Complexity: O(n log(log(n)))
-// Space Complexity: O(n)
+// Time Complexity: O(nlogn)
+// Auxilary Space Complexity: O(1)
