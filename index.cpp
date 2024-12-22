@@ -1,25 +1,43 @@
-int getNextGreaterElement(vector<int> &arr, int key) {
+#include <vector>
+using namespace std;
+
+int getInsertPosition(vector<int> &arr, int key)
+{
     // add your logic here
-    int low = 0;
-    int high = arr.size() - 1;
-    int idx = -1;
+    if (key >= arr[arr.size() - 1])
+    {
+        return arr.size();
+    }
+    if (key <= arr[0])
+    {
+        return 0;
+    }
 
-    while(low <= high) {
-        int mid = (low + high) / 2;
+    int start = 0;
+    int end = arr.size() - 1;
+    int idx = 0;
 
-        if(arr[mid]<=key){
-            low = mid + 1;
-        }else{
+    while (start <= end)
+    {
+        int mid = start + (end - start) / 2;
+
+        if (arr[mid] == key)
+        {
+            return mid;
+        }
+
+        if (arr[mid] > key)
+        {
             idx = mid;
-            high = mid - 1;
+            end = mid - 1;
+        }
+        else
+        {
+            start = mid + 1;
         }
     }
 
-    if(idx==-1){
-        return key;
-    }
-
-    return arr[idx];
+    return idx;
 }
 
 // Time Complexity: O(logN)
