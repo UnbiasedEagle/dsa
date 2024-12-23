@@ -1,29 +1,26 @@
 #include <vector>
 using namespace std;
 
-bool hasTwoSumZero(vector<int> &A)
+vector<int> kSubarraySum(vector<int> &A, int k)
 {
     // add your logic here
-    int start = 0;
-    int end = A.size() - 1;
+    vector<int> result(A.size() - k + 1);
 
-    while (start < end)
+    int sum = 0;
+    for (int i = 0; i < k; i++)
     {
-        if (A[start] + A[end] == 0)
-        {
-            return true;
-        }
-        else if (A[start] + A[end] < 0)
-        {
-            start++;
-        }
-        else
-        {
-            end--;
-        }
+        sum += A[i];
     }
 
-    return false;
+    result.push_back(sum);
+
+    for (int i = k; i < A.size(); i++)
+    {
+        sum = sum - A[i - k] + A[i];
+        result.push_back(sum);
+    }
+
+    return result;
 }
 
 // Time Complexity: O(n)
