@@ -1,20 +1,30 @@
 #include <vector>
 using namespace std;
 
-int removeOccurences(vector<int> &A, int k)
+bool hasTwoSumZero(vector<int> &A)
 {
-    int idx = 0;
+    // add your logic here
+    int start = 0;
+    int end = A.size() - 1;
 
-    for (int i = 0; i < A.size(); i++)
+    while (start < end)
     {
-        if (A[i] != k)
+        if (A[start] + A[end] == 0)
         {
-            A[idx++] = A[i];
+            return true;
+        }
+        else if (A[start] + A[end] < 0)
+        {
+            start++;
+        }
+        else
+        {
+            end--;
         }
     }
 
-    return idx;
+    return false;
 }
 
-// Time Complexity: O(N)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
