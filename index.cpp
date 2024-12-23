@@ -1,44 +1,20 @@
 #include <vector>
 using namespace std;
 
-int getInsertPosition(vector<int> &arr, int key)
+int removeOccurences(vector<int> &A, int k)
 {
-    // add your logic here
-    if (key >= arr[arr.size() - 1])
-    {
-        return arr.size();
-    }
-    if (key <= arr[0])
-    {
-        return 0;
-    }
-
-    int start = 0;
-    int end = arr.size() - 1;
     int idx = 0;
 
-    while (start <= end)
+    for (int i = 0; i < A.size(); i++)
     {
-        int mid = start + (end - start) / 2;
-
-        if (arr[mid] == key)
+        if (A[i] != k)
         {
-            return mid;
-        }
-
-        if (arr[mid] > key)
-        {
-            idx = mid;
-            end = mid - 1;
-        }
-        else
-        {
-            start = mid + 1;
+            A[idx++] = A[i];
         }
     }
 
     return idx;
 }
 
-// Time Complexity: O(logN)
+// Time Complexity: O(N)
 // Space Complexity: O(1)
