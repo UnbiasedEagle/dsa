@@ -1,27 +1,21 @@
 #include <vector>
 using namespace std;
 
-vector<int> kSubarraySum(vector<int> &A, int k)
+int removeDuplicates(vector<int> &A)
 {
-    // add your logic here
-    vector<int> result(A.size() - k + 1);
+    // add logic here
+    int size = 1;
 
-    int sum = 0;
-    for (int i = 0; i < k; i++)
+    for (int i = 1; i < A.size(); i++)
     {
-        sum += A[i];
+        if (A[i] != A[i - 1])
+        {
+            size++;
+        }
     }
 
-    result.push_back(sum);
-
-    for (int i = k; i < A.size(); i++)
-    {
-        sum = sum - A[i - k] + A[i];
-        result.push_back(sum);
-    }
-
-    return result;
+    return size;
 }
 
-// Time Complexity: O(n)
+// Time Complexity: O(N)
 // Space Complexity: O(1)
