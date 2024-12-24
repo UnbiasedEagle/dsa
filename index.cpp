@@ -1,21 +1,27 @@
-#include <vector>
-using namespace std;
+/* This is the ListNode class definition
 
-int removeDuplicates(vector<int> &A)
-{
-    // add logic here
-    int size = 1;
+class ListNode {
+public:
+    int data;
+    ListNode* next;
 
-    for (int i = 1; i < A.size(); i++)
-    {
-        if (A[i] != A[i - 1])
-        {
-            size++;
-        }
+    ListNode(int data) {
+        this->data = data;
+        this->next = NULL;
     }
+};
+*/
 
-    return size;
+void printLinkedList(ListNode *head)
+{
+    ListNode *temp = head;
+
+    while (temp != NULL)
+    {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
 }
 
-// Time Complexity: O(N)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
