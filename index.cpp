@@ -12,19 +12,13 @@ public:
 };
 */
 
-vector<int> linkedListToArray(ListNode *head)
+void printLinkedListReverse(ListNode *head)
 {
     // add your logic here
-    vector<int> result;
-    ListNode *temp = head;
-
-    while (temp != NULL)
-    {
-        result.push_back(temp->data);
-        temp = temp->next;
-    }
-
-    return result;
+    if (head == NULL)
+        return;
+    printLinkedListReverse(head->next);
+    cout << head->data << " ";
 }
 
 // Time Complexity: O(n)
