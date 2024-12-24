@@ -28,4 +28,4 @@ vector<int> linkedListToArray(ListNode *head)
 }
 
 // Time Complexity: O(n)
-// Space Complexity: O(n)
+// Auxiliary Space Complexity: O(1)
