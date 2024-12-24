@@ -12,16 +12,20 @@ public:
 };
 */
 
-void printLinkedList(ListNode *head)
+vector<int> linkedListToArray(ListNode *head)
 {
+    // add your logic here
+    vector<int> result;
     ListNode *temp = head;
 
     while (temp != NULL)
     {
-        cout << temp->data << " ";
+        result.push_back(temp->data);
         temp = temp->next;
     }
+
+    return result;
 }
 
 // Time Complexity: O(n)
-// Space Complexity: O(1)
+// Space Complexity: O(n)
