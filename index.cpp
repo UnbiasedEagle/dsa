@@ -12,14 +12,18 @@ public:
 };
 */
 
-void printLinkedListReverse(ListNode *head)
+ListNode *kthElement(ListNode *head, int k)
 {
     // add your logic here
-    if (head == NULL)
-        return;
-    printLinkedListReverse(head->next);
-    cout << head->data << " ";
+    ListNode *temp = head;
+    while (k > 1)
+    {
+        temp = temp->next;
+        k--;
+    }
+
+    return temp;
 }
 
-// Time Complexity: O(n)
-// Auxiliary Space Complexity: O(1)
+// Time Complexity: O(N)
+// Space Complexity: O(1)
