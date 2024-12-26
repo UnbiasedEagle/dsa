@@ -1,50 +1,39 @@
 #include <vector>
-#include <queue>
 using namespace std;
 
-int partition(vector<int> &list, int left, int right)
+vector<vector<int>> threeSum(vector<int> &A)
 {
-    int pivot = list[right];
-    int i = left;
-    for (int j = left; j < right; j++)
+    // add your logic here
+    vector<vector<int>> res;
+    sort(A.begin(), A.end());
+
+    for (int i = 0; i < A.size(); i++)
     {
-        if (list[j] < pivot)
+        if (i > 0 && A[i] == A[i - 1])
+            continue;
+        int l = i + 1, r = A.size() - 1;
+        while (l < r)
         {
-            swap(list[i], list[j]);
-            i++;
+            int sum = A[i] + A[l] + A[r];
+            if (sum == 0)
+            {
+                res.push_back({A[i], A[l], A[r]});
+                while (l < r && A[l] == A[l + 1])
+                    l++;
+                while (l < r && A[r] == A[r - 1])
+                    r--;
+                l++;
+                r--;
+            }
+            else if (sum < 0)
+                l++;
+            else
+                r--;
         }
     }
-    swap(list[i], list[right]);
-    return i;
+
+    return res;
 }
 
-int quickSelect(vector<int> &list, int left, int right, int k)
-{
-    if (left == right)
-    {
-        return list[left];
-    }
-
-    int pivotIndex = partition(list, left, right);
-
-    if (k == pivotIndex)
-    {
-        return list[k];
-    }
-    else if (k < pivotIndex)
-    {
-        return quickSelect(list, left, pivotIndex - 1, k);
-    }
-    else
-    {
-        return quickSelect(list, pivotIndex + 1, right, k);
-    }
-}
-
-int getKthLargestElement(vector<int> &list, int k)
-{
-    return quickSelect(list, 0, list.size() - 1, list.size() - k);
-}
-
-// Time Complexity: O(n)
-// Auxilary Space Complexity: O(log n)
+// Time Complexity: O(N^2)
+// Space Complexity: O(1)
