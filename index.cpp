@@ -1,34 +1,31 @@
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-vector<int> intersection(vector<int> &A, vector<int> &B)
+void countingSort(vector<int> &arr)
 {
-    // add your logic here
-    int i = 0;
-    int j = 0;
+    if (arr.empty())
+        return;
 
-    vector<int> ans;
+    const int RANGE = 2001;
 
-    while (i < A.size() && j < B.size())
+    vector<int> count(RANGE, 0);
+
+    for (int num : arr)
     {
-        if (A[i] == B[j])
-        {
-            ans.push_back(A[i]);
-            i++;
-            j++;
-        }
-        else if (A[i] < B[j])
-        {
-            i++;
-        }
-        else
-        {
-            j++;
-        }
+        count[num + 1000]++;
     }
 
-    return ans;
+    int index = 0;
+    for (int i = 0; i < RANGE; i++)
+    {
+        while (count[i] > 0)
+        {
+            arr[index++] = i - 1000;
+            count[i]--;
+        }
+    }
 }
 
-// Time Complexity: O(N + M)
-// Space Complexity: O(1)
+// Time Complexity: O(n + k)
+// Space Complexity: O(k)
