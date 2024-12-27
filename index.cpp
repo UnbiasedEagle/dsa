@@ -1,31 +1,46 @@
 #include <vector>
-#include <algorithm>
 using namespace std;
 
-void countingSort(vector<int> &arr)
+int binarySearch(vector<int> &arr, int low, int high)
 {
-    if (arr.empty())
-        return;
-
-    const int RANGE = 2001;
-
-    vector<int> count(RANGE, 0);
-
-    for (int num : arr)
+    while (low <= high)
     {
-        count[num + 1000]++;
-    }
+        int mid = low + (high - low) / 2;
 
-    int index = 0;
-    for (int i = 0; i < RANGE; i++)
-    {
-        while (count[i] > 0)
+        if (low == high)
+            return arr[low];
+
+        if (mid % 2 == 0)
         {
-            arr[index++] = i - 1000;
-            count[i]--;
+            if (arr[mid] == arr[mid + 1])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+        else
+        {
+            if (arr[mid] == arr[mid - 1])
+            {
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
+            }
         }
     }
+
+    return 0;
 }
 
-// Time Complexity: O(n + k)
-// Space Complexity: O(k)
+int findNonRepeatingElement(vector<int> &arr)
+{
+    return binarySearch(arr, 0, arr.size() - 1);
+}
+
+// Time Complexity: O(log n)
+// Space Complexity: O(1)
