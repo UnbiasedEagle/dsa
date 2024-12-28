@@ -1,39 +1,40 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-class ListNode
+class Node
 {
 public:
+    Node *left;
+    Node *right;
     int data;
-    ListNode *next;
 
-    ListNode(int data)
+    Node(int data)
     {
+        this->left = NULL;
+        this->right = NULL;
         this->data = data;
-        this->next = NULL;
     }
 };
 
-ListNode *addAtkthElement(ListNode *head, int k, ListNode *newElement)
+void helper(Node *root, vector<int> &res)
 {
-    if (k == 1)
+    if (root == NULL)
     {
-        newElement->next = head;
-        return newElement;
+        return;
     }
 
-    ListNode *temp = head;
-    while (k > 2)
-    {
-        temp = temp->next;
-        k--;
-    }
-
-    newElement->next = temp->next;
-    temp->next = newElement;
-
-    return head;
+    helper(root->left, res);
+    res.push_back(root->data);
+    helper(root->right, res);
 }
 
-// Time Complexity: O(n)
-// Space Complexity: O(1)
+vector<int> getInorderTraversal(Node *root)
+{
+    vector<int> res;
+    helper(root, res);
+    return res;
+}
+
+// Time Complexity: O(N)
+// Auxiliary Space Complexity: O(1)
