@@ -1,46 +1,39 @@
-#include <vector>
+#include <iostream>
 using namespace std;
 
-int binarySearch(vector<int> &arr, int low, int high)
+class ListNode
 {
-    while (low <= high)
+public:
+    int data;
+    ListNode *next;
+
+    ListNode(int data)
     {
-        int mid = low + (high - low) / 2;
+        this->data = data;
+        this->next = NULL;
+    }
+};
 
-        if (low == high)
-            return arr[low];
-
-        if (mid % 2 == 0)
-        {
-            if (arr[mid] == arr[mid + 1])
-            {
-                low = mid + 1;
-            }
-            else
-            {
-                high = mid;
-            }
-        }
-        else
-        {
-            if (arr[mid] == arr[mid - 1])
-            {
-                low = mid + 1;
-            }
-            else
-            {
-                high = mid;
-            }
-        }
+ListNode *addAtkthElement(ListNode *head, int k, ListNode *newElement)
+{
+    if (k == 1)
+    {
+        newElement->next = head;
+        return newElement;
     }
 
-    return 0;
+    ListNode *temp = head;
+    while (k > 2)
+    {
+        temp = temp->next;
+        k--;
+    }
+
+    newElement->next = temp->next;
+    temp->next = newElement;
+
+    return head;
 }
 
-int findNonRepeatingElement(vector<int> &arr)
-{
-    return binarySearch(arr, 0, arr.size() - 1);
-}
-
-// Time Complexity: O(log n)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
