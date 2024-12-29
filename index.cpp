@@ -1,40 +1,40 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-class Node
+class ListNode
 {
 public:
-    Node *left;
-    Node *right;
     int data;
+    ListNode *next;
 
-    Node(int data)
+    ListNode(int data)
     {
-        this->left = NULL;
-        this->right = NULL;
         this->data = data;
+        this->next = NULL;
     }
 };
 
-void helper(Node *root, vector<int> &res)
+ListNode *removekthElement(ListNode *head, int k)
 {
-    if (root == NULL)
+    // add your logic here
+
+    if (k == 1)
     {
-        return;
+        return head->next;
     }
 
-    helper(root->left, res);
-    res.push_back(root->data);
-    helper(root->right, res);
+    ListNode *temp = head;
+
+    while (k > 2)
+    {
+        temp = temp->next;
+        k--;
+    }
+
+    temp->next = temp->next->next;
+
+    return head;
 }
 
-vector<int> getInorderTraversal(Node *root)
-{
-    vector<int> res;
-    helper(root, res);
-    return res;
-}
-
-// Time Complexity: O(N)
-// Auxiliary Space Complexity: O(1)
+// Time complexity: O(n)
+// Space complexity: O(1)
