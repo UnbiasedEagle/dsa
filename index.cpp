@@ -14,27 +14,21 @@ public:
     }
 };
 
-ListNode *removekthElement(ListNode *head, int k)
+ListNode *reverseLinkedList(ListNode *head)
 {
-    // add your logic here
+    ListNode *prev = NULL;
+    ListNode *curr = head;
 
-    if (k == 1)
+    while (curr != NULL)
     {
-        return head->next;
+        ListNode *next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
     }
 
-    ListNode *temp = head;
-
-    while (k > 2)
-    {
-        temp = temp->next;
-        k--;
-    }
-
-    temp->next = temp->next->next;
-
-    return head;
+    return prev;
 }
 
-// Time complexity: O(n)
-// Space complexity: O(1)
+// Time Complexity: O(N)
+// Space Complexity: O(1)
