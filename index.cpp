@@ -14,21 +14,19 @@ public:
     }
 };
 
-ListNode *reverseLinkedList(ListNode *head)
+int getMiddleElementOfLinkedList(ListNode *list)
 {
-    ListNode *prev = NULL;
-    ListNode *curr = head;
+    ListNode *slow = list;
+    ListNode *fast = list;
 
-    while (curr != NULL)
+    while (fast != NULL && fast->next != NULL)
     {
-        ListNode *next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
+        slow = slow->next;
+        fast = fast->next->next;
     }
 
-    return prev;
+    return slow->data;
 }
 
-// Time Complexity: O(N)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
