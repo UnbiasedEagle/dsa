@@ -1,32 +1,31 @@
-#include <iostream>
+#include <vector>
 using namespace std;
 
-class ListNode
+void sortTheArray(vector<int> &A)
 {
-public:
-    int data;
-    ListNode *next;
+    int i = 0;
+    int j = A.size() - 1;
+    int k = 0;
 
-    ListNode(int data)
+    while (i <= j)
     {
-        this->data = data;
-        this->next = NULL;
+        if (A[i] == 1)
+        {
+            i++;
+        }
+        else if (A[i] == 0)
+        {
+            swap(A[i], A[k]);
+            i++;
+            k++;
+        }
+        else
+        {
+            swap(A[i], A[j]);
+            j--;
+        }
     }
-};
-
-int getMiddleElementOfLinkedList(ListNode *list)
-{
-    ListNode *slow = list;
-    ListNode *fast = list;
-
-    while (fast != NULL && fast->next != NULL)
-    {
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-
-    return slow->data;
 }
 
-// Time Complexity: O(n)
+// Time Complexity: O(N)
 // Space Complexity: O(1)
