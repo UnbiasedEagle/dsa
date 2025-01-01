@@ -1,21 +1,31 @@
-#include <vector>
+#include <iostream>
 using namespace std;
 
-int maxKSubarraySum(vector<int> &A, int k)
+class ListNode
 {
-    int n = A.size();
-    int sum = 0;
-    for (int i = 0; i < k; i++)
+public:
+    int data;
+    ListNode *next;
+
+    ListNode(int data)
     {
-        sum += A[i];
+        this->data = data;
+        this->next = NULL;
     }
-    int maxSum = sum;
-    for (int i = k; i < n; i++)
+};
+
+ListNode *appendLists(ListNode *list1, ListNode *list2)
+{
+    ListNode *temp = list1;
+
+    while (temp->next != NULL)
     {
-        sum += A[i] - A[i - k];
-        maxSum = max(maxSum, sum);
+        temp = temp->next;
     }
-    return maxSum;
+
+    temp->next = list2;
+
+    return list1;
 }
 
 // Time Complexity: O(n)
