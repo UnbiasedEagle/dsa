@@ -1,31 +1,22 @@
 #include <vector>
 using namespace std;
 
-void sortTheArray(vector<int> &A)
+int maxKSubarraySum(vector<int> &A, int k)
 {
-    int i = 0;
-    int j = A.size() - 1;
-    int k = 0;
-
-    while (i <= j)
+    int n = A.size();
+    int sum = 0;
+    for (int i = 0; i < k; i++)
     {
-        if (A[i] == 1)
-        {
-            i++;
-        }
-        else if (A[i] == 0)
-        {
-            swap(A[i], A[k]);
-            i++;
-            k++;
-        }
-        else
-        {
-            swap(A[i], A[j]);
-            j--;
-        }
+        sum += A[i];
     }
+    int maxSum = sum;
+    for (int i = k; i < n; i++)
+    {
+        sum += A[i] - A[i - k];
+        maxSum = max(maxSum, sum);
+    }
+    return maxSum;
 }
 
-// Time Complexity: O(N)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
