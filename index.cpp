@@ -1,46 +1,67 @@
 #include <vector>
 using namespace std;
 
-int getElementIndex(vector<int> &array, int target)
+int mergeAndCount(vector<int> &array, int start, int mid, int end)
 {
-    int s = 0;
-    int e = array.size() - 1;
+    int size1 = mid - start + 1;
 
-    while (s <= e)
+    vector<int> temp(end - start + 1);
+    int idx = 0;
+    int i = start;
+    int j = mid + 1;
+    int result = 0;
+
+    while (i <= mid && j <= end)
     {
-        int mid = s + (e - s) / 2;
-
-        if (array[mid] == target)
+        if (array[i] <= array[j])
         {
-            return mid;
-        }
-
-        if (array[mid] >= array[s])
-        {
-            if (target >= array[s] && target < array[mid])
-            {
-                e = mid - 1;
-            }
-            else
-            {
-                s = mid + 1;
-            }
+            temp[idx++] = array[i++];
         }
         else
         {
-            if (target > array[mid] && target <= array[e])
-            {
-                s = mid + 1;
-            }
-            else
-            {
-                e = mid - 1;
-            }
+            temp[idx++] = array[j++];
+            result += size1 - (i - start);
         }
     }
 
-    return -1;
+    while (i <= mid)
+    {
+        temp[idx++] = array[i++];
+    }
+
+    while (j <= end)
+    {
+        temp[idx++] = array[j++];
+    }
+
+    for (int i = 0; i < temp.size(); i++)
+    {
+        array[start + i] = temp[i];
+    }
+
+    return result;
 }
 
-// Time Complexity: O(log(n))
-// Space Complexity: O(1)
+int helper(vector<int> &array, int start, int end)
+{
+    if (start >= end)
+    {
+        return 0;
+    }
+
+    int result = 0;
+    int mid = start + (end - start) / 2;
+    result += helper(array, start, mid);
+    result += helper(array, mid + 1, end);
+    result += mergeAndCount(array, start, mid, end);
+
+    return result;
+}
+
+int getInversionCount(vector<int> &array)
+{
+    return helper(array, 0, array.size() - 1);
+}
+
+// Time Complexity: O(nlogn)
+// Space Complexity: O(n)
