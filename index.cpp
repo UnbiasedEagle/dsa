@@ -1,32 +1,46 @@
-#include <iostream>
+#include <vector>
 using namespace std;
 
-class ListNode
+int getElementIndex(vector<int> &array, int target)
 {
-public:
-    int data;
-    ListNode *next;
+    int s = 0;
+    int e = array.size() - 1;
 
-    ListNode(int data)
+    while (s <= e)
     {
-        this->data = data;
-        this->next = NULL;
+        int mid = s + (e - s) / 2;
+
+        if (array[mid] == target)
+        {
+            return mid;
+        }
+
+        if (array[mid] >= array[s])
+        {
+            if (target >= array[s] && target < array[mid])
+            {
+                e = mid - 1;
+            }
+            else
+            {
+                s = mid + 1;
+            }
+        }
+        else
+        {
+            if (target > array[mid] && target <= array[e])
+            {
+                s = mid + 1;
+            }
+            else
+            {
+                e = mid - 1;
+            }
+        }
     }
-};
 
-ListNode *appendLists(ListNode *list1, ListNode *list2)
-{
-    ListNode *temp = list1;
-
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-
-    temp->next = list2;
-
-    return list1;
+    return -1;
 }
 
-// Time Complexity: O(n)
+// Time Complexity: O(log(n))
 // Space Complexity: O(1)
