@@ -1,29 +1,28 @@
-bool isPerfectSquare(int num)
+int searchRoot(int num)
 {
-    int s = 1;
-    int end = num;
-
-    while (s <= end)
+    int left = 0;
+    int right = num;
+    int result = 0;
+    while (left <= right)
     {
-        long long mid = s + (end - s) / 2;
+        long long mid = left + (right - left) / 2;
         long long square = mid * mid;
-
         if (square == num)
         {
-            return true;
+            return mid;
         }
-        else if (square < num)
+        else if (mid * mid < num)
         {
-            s = mid + 1;
+            result = mid;
+            left = mid + 1;
         }
         else
         {
-            end = mid - 1;
+            right = mid - 1;
         }
     }
-
-    return false;
+    return result;
 }
 
-// Time complexity: O(log n)
-// Space complexity: O(1)
+// Time Complexity: O(logN)
+// Space Complexity: O(1)
