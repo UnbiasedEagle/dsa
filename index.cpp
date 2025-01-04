@@ -1,32 +1,29 @@
-#include <vector>
-using namespace std;
-
-void nextGreaterPermutation(vector<int> &arr)
+bool isPerfectSquare(int num)
 {
-    if (arr.size() <= 1)
-        return;
+    int s = 1;
+    int end = num;
 
-    int i = arr.size() - 2;
-
-    while (i >= 0 && arr[i] >= arr[i + 1])
+    while (s <= end)
     {
-        i--;
-    }
+        long long mid = s + (end - s) / 2;
+        long long square = mid * mid;
 
-    if (i >= 0)
-    {
-        int j = arr.size() - 1;
-
-        while (j > i && arr[j] <= arr[i])
+        if (square == num)
         {
-            j--;
+            return true;
         }
-
-        swap(arr[i], arr[j]);
+        else if (square < num)
+        {
+            s = mid + 1;
+        }
+        else
+        {
+            end = mid - 1;
+        }
     }
 
-    reverse(arr.begin() + i + 1, arr.end());
+    return false;
 }
 
-// Time Complexity: O(n)
-// Space Complexity: O(1)
+// Time complexity: O(log n)
+// Space complexity: O(1)
