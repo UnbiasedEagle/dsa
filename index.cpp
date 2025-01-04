@@ -1,28 +1,30 @@
-int searchRoot(int num)
+#include <vector>
+using namespace std;
+
+bool searchMatrix(vector<vector<int>> &matrix, int key)
 {
-    int left = 0;
-    int right = num;
-    int result = 0;
-    while (left <= right)
+    int i = 0;
+    int j = matrix[0].size() - 1;
+
+    while (i < matrix.size() && j >= 0)
     {
-        long long mid = left + (right - left) / 2;
-        long long square = mid * mid;
-        if (square == num)
+        if (matrix[i][j] == key)
         {
-            return mid;
+            return true;
         }
-        else if (mid * mid < num)
+
+        if (key > matrix[i][j])
         {
-            result = mid;
-            left = mid + 1;
+            i++;
         }
         else
         {
-            right = mid - 1;
+            j--;
         }
     }
-    return result;
+
+    return false;
 }
 
-// Time Complexity: O(logN)
+// Time Complexity: O(N + M)
 // Space Complexity: O(1)
