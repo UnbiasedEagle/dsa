@@ -1,30 +1,36 @@
 #include <vector>
 using namespace std;
 
-bool searchMatrix(vector<vector<int>> &matrix, int key)
+int calculateMedianOfMatrix(vector<vector<int>> &matrix)
 {
-    int i = 0;
-    int j = matrix[0].size() - 1;
-
-    while (i < matrix.size() && j >= 0)
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int min = INT_MAX, max = INT_MIN;
+    for (int i = 0; i < n; i++)
     {
-        if (matrix[i][j] == key)
-        {
-            return true;
-        }
-
-        if (key > matrix[i][j])
-        {
-            i++;
-        }
-        else
-        {
-            j--;
-        }
+        if (matrix[i][0] < min)
+            min = matrix[i][0];
+        if (matrix[i][m - 1] > max)
+            max = matrix[i][m - 1];
     }
 
-    return false;
-}
+    int desired = (n * m + 1) / 2;
 
-// Time Complexity: O(N + M)
-// Space Complexity: O(1)
+    while (min < max)
+    {
+        int mid = min + (max - min) / 2;
+        int place = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            place += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+        }
+
+        if (place < desired)
+            min = mid + 1;
+        else
+            max = mid;
+    }
+
+    return min;
+}
