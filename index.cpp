@@ -1,36 +1,44 @@
 #include <vector>
 using namespace std;
 
-int calculateMedianOfMatrix(vector<vector<int>> &matrix)
+int kDiffPairs(vector<int> &A, int k)
 {
-    int n = matrix.size();
-    int m = matrix[0].size();
-    int min = INT_MAX, max = INT_MIN;
-    for (int i = 0; i < n; i++)
+    int i = 0;
+    int j = 1;
+    int count = 0;
+
+    while (j < A.size())
     {
-        if (matrix[i][0] < min)
-            min = matrix[i][0];
-        if (matrix[i][m - 1] > max)
-            max = matrix[i][m - 1];
-    }
+        int diff = A[j] - A[i];
 
-    int desired = (n * m + 1) / 2;
-
-    while (min < max)
-    {
-        int mid = min + (max - min) / 2;
-        int place = 0;
-
-        for (int i = 0; i < n; i++)
+        if (diff == k)
         {
-            place += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+            count++;
+            i++;
+            j++;
+
+            while (j < A.size() && A[j] == A[j - 1])
+            {
+                j++;
+            }
+        }
+        else if (diff < k)
+        {
+            j++;
+        }
+        else
+        {
+            i++;
         }
 
-        if (place < desired)
-            min = mid + 1;
-        else
-            max = mid;
+        if (i == j)
+        {
+            j++;
+        }
     }
 
-    return min;
+    return count;
 }
+
+// Time Complexity: O(n)
+// Space Complexity: O(1)
