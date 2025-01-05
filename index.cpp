@@ -1,44 +1,46 @@
-#include <vector>
-using namespace std;
-
-int kDiffPairs(vector<int> &A, int k)
+// Implement the Stack class
+class Stack
 {
-    int i = 0;
-    int j = 1;
-    int count = 0;
+private:
+    int capacity;
+    int *arr;
+    int topIdx;
 
-    while (j < A.size())
+public:
+    Stack(int capacity)
     {
-        int diff = A[j] - A[i];
-
-        if (diff == k)
-        {
-            count++;
-            i++;
-            j++;
-
-            while (j < A.size() && A[j] == A[j - 1])
-            {
-                j++;
-            }
-        }
-        else if (diff < k)
-        {
-            j++;
-        }
-        else
-        {
-            i++;
-        }
-
-        if (i == j)
-        {
-            j++;
-        }
+        capacity = capacity;
+        arr = new int[capacity];
+        topIdx = -1;
     }
 
-    return count;
-}
+    bool isEmpty()
+    {
+        return topIdx == -1;
+    }
 
-// Time Complexity: O(n)
-// Space Complexity: O(1)
+    int size()
+    {
+        return topIdx + 1;
+    }
+
+    int top()
+    {
+        if (isEmpty())
+        {
+            return -1;
+        }
+
+        return arr[topIdx];
+    }
+
+    void push(int element)
+    {
+        arr[++topIdx] = element;
+    }
+
+    void pop()
+    {
+        topIdx--;
+    }
+};
