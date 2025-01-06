@@ -1,46 +1,35 @@
-// Implement the Stack class
-class Stack
+#include <vector>
+using namespace std;
+
+int getKthElement(vector<int> &firstArr, vector<int> &secondArr, int k)
 {
-private:
-    int capacity;
-    int *arr;
-    int topIdx;
+    int i = 0, j = 0;
 
-public:
-    Stack(int capacity)
+    while (true)
     {
-        capacity = capacity;
-        arr = new int[capacity];
-        topIdx = -1;
-    }
+        if (i == firstArr.size())
+            return secondArr[j + k - 1];
+        if (j == secondArr.size())
+            return firstArr[i + k - 1];
+        if (k == 1)
+            return min(firstArr[i], secondArr[j]);
 
-    bool isEmpty()
-    {
-        return topIdx == -1;
-    }
+        int mid = k / 2;
+        int new_i = min(i + mid, (int)firstArr.size()) - 1;
+        int new_j = min(j + mid, (int)secondArr.size()) - 1;
 
-    int size()
-    {
-        return topIdx + 1;
-    }
-
-    int top()
-    {
-        if (isEmpty())
+        if (firstArr[new_i] <= secondArr[new_j])
         {
-            return -1;
+            k -= (new_i - i + 1);
+            i = new_i + 1;
         }
-
-        return arr[topIdx];
+        else
+        {
+            k -= (new_j - j + 1);
+            j = new_j + 1;
+        }
     }
+}
 
-    void push(int element)
-    {
-        arr[++topIdx] = element;
-    }
-
-    void pop()
-    {
-        topIdx--;
-    }
-};
+// Time Complexity: O(log(K))
+// Space Complexity: O(1)
