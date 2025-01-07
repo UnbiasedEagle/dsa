@@ -1,35 +1,45 @@
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+#define int long long
+#define mod 1000000007
+#define inf 1e18
+#define endl "\n"
 
-int getKthElement(vector<int> &firstArr, vector<int> &secondArr, int k)
+class ListNode
 {
-    int i = 0, j = 0;
+public:
+    int data;
+    ListNode *next;
 
-    while (true)
+    ListNode(int data)
     {
-        if (i == firstArr.size())
-            return secondArr[j + k - 1];
-        if (j == secondArr.size())
-            return firstArr[i + k - 1];
-        if (k == 1)
-            return min(firstArr[i], secondArr[j]);
-
-        int mid = k / 2;
-        int new_i = min(i + mid, (int)firstArr.size()) - 1;
-        int new_j = min(j + mid, (int)secondArr.size()) - 1;
-
-        if (firstArr[new_i] <= secondArr[new_j])
-        {
-            k -= (new_i - i + 1);
-            i = new_i + 1;
-        }
-        else
-        {
-            k -= (new_j - j + 1);
-            j = new_j + 1;
-        }
+        this->data = data;
+        this->next = NULL;
     }
+};
+
+int getMiddleElementOfLinkedList(ListNode *list)
+{
+    ListNode *slow = list;
+    ListNode *fast = list;
+
+    while (fast != NULL && fast->next != NULL && fast->next->next != NULL)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow->data;
 }
 
-// Time Complexity: O(log(K))
-// Space Complexity: O(1)
+int32_t main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    return 0;
+}
