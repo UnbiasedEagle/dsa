@@ -5,31 +5,53 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-class ListNode
+void countDigits(int num)
 {
-public:
-    int data;
-    ListNode *next;
+    int count = 0;
 
-    ListNode(int data)
+    while (num)
     {
-        this->data = data;
-        this->next = NULL;
+        num /= 10;
+        count++;
     }
-};
+    cout << count << endl;
+}
 
-int getMiddleElementOfLinkedList(ListNode *list)
+int reverseNumber(int num)
 {
-    ListNode *slow = list;
-    ListNode *fast = list;
-
-    while (fast != NULL && fast->next != NULL && fast->next->next != NULL)
+    int rev = 0;
+    while (num)
     {
-        slow = slow->next;
-        fast = fast->next->next;
+        rev = rev * 10 + num % 10;
+        num /= 10;
     }
+    return rev;
+}
 
-    return slow->data;
+bool isPalindrome(int num)
+{
+    return num == reverseNumber(num);
+}
+
+int gcd(int a, int b)
+{
+    if (b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+void printAllDivisors(int num)
+{
+    for (int i = 1; i * i <= num; i++)
+    {
+        if (num % i == 0)
+        {
+            cout << i << " ";
+            if (i != num / i)
+                cout << num / i << " ";
+        }
+    }
+    cout << endl;
 }
 
 int32_t main()
@@ -41,5 +63,14 @@ int32_t main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 #endif
+
+    countDigits(12345);
+
+    int reverse = reverseNumber(12345);
+    cout << reverse << endl;
+
+    cout << isPalindrome(12321) << endl;
+
+    printAllDivisors(36);
     return 0;
 }
