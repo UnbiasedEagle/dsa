@@ -5,53 +5,12 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void countDigits(int num)
+void print1ToN(int n)
 {
-    int count = 0;
-
-    while (num)
-    {
-        num /= 10;
-        count++;
-    }
-    cout << count << endl;
-}
-
-int reverseNumber(int num)
-{
-    int rev = 0;
-    while (num)
-    {
-        rev = rev * 10 + num % 10;
-        num /= 10;
-    }
-    return rev;
-}
-
-bool isPalindrome(int num)
-{
-    return num == reverseNumber(num);
-}
-
-int gcd(int a, int b)
-{
-    if (b == 0)
-        return a;
-    return gcd(b, a % b);
-}
-
-void printAllDivisors(int num)
-{
-    for (int i = 1; i * i <= num; i++)
-    {
-        if (num % i == 0)
-        {
-            cout << i << " ";
-            if (i != num / i)
-                cout << num / i << " ";
-        }
-    }
-    cout << endl;
+    if (n == 0)
+        return;
+    print1ToN(n - 1);
+    cout << n << " ";
 }
 
 int32_t main()
@@ -64,13 +23,7 @@ int32_t main()
     freopen("output.txt", "w", stdout);
 #endif
 
-    countDigits(12345);
+    print1ToN(5);
 
-    int reverse = reverseNumber(12345);
-    cout << reverse << endl;
-
-    cout << isPalindrome(12321) << endl;
-
-    printAllDivisors(36);
     return 0;
 }
