@@ -4,23 +4,50 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void selectionSort(vector<int> &v)
+void merge(vector<int> &arr, int start, int mid, int end)
 {
-    int n = v.size();
+    vector<int> temp(end - start + 1);
+    int i = start, j = mid + 1, k = 0;
 
-    for (int i = 0; i < n - 1; i++)
+    while (i <= mid && j <= end)
     {
-        int minIndex = i;
-        for (int j = i + 1; j < n; j++)
+        if (arr[i] < arr[j])
         {
-            if (v[j] < v[minIndex])
-            {
-                minIndex = j;
-            }
+            temp[k++] = arr[i++];
         }
-
-        swap(v[i], v[minIndex]);
+        else
+        {
+            temp[k++] = arr[j++];
+        }
     }
+
+    while (i <= mid)
+    {
+        temp[k++] = arr[i++];
+    }
+
+    while (j <= end)
+    {
+        temp[k++] = arr[j++];
+    }
+
+    for (int i = 0; i < temp.size(); i++)
+    {
+        arr[i + start] = temp[i];
+    }
+}
+
+void mergeSort(vector<int> &arr, int start, int end)
+{
+    if (start >= end)
+    {
+        return;
+    }
+
+    int mid = start + (end - start) / 2;
+    mergeSort(arr, start, mid);
+    mergeSort(arr, mid + 1, end);
+    merge(arr, start, mid, end);
 }
 
 int32_t main()
@@ -41,7 +68,19 @@ int32_t main()
     v.push_back(2);
     v.push_back(1);
 
-    selectionSort(v);
+    cout << "Before Sorting: ";
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        cout << v[i] << " ";
+    }
+
+    cout << endl;
+
+    mergeSort(v, 0, v.size() - 1);
+
+    cout << endl
+         << "After Sorting: ";
 
     for (int i = 0; i < v.size(); i++)
     {
