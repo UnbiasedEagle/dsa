@@ -4,50 +4,22 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void merge(vector<int> &arr, int start, int mid, int end)
+void recursiveBubbleSort(vector<int> &v, int n)
 {
-    vector<int> temp(end - start + 1);
-    int i = start, j = mid + 1, k = 0;
-
-    while (i <= mid && j <= end)
-    {
-        if (arr[i] < arr[j])
-        {
-            temp[k++] = arr[i++];
-        }
-        else
-        {
-            temp[k++] = arr[j++];
-        }
-    }
-
-    while (i <= mid)
-    {
-        temp[k++] = arr[i++];
-    }
-
-    while (j <= end)
-    {
-        temp[k++] = arr[j++];
-    }
-
-    for (int i = 0; i < temp.size(); i++)
-    {
-        arr[i + start] = temp[i];
-    }
-}
-
-void mergeSort(vector<int> &arr, int start, int end)
-{
-    if (start >= end)
+    if (n == 1)
     {
         return;
     }
 
-    int mid = start + (end - start) / 2;
-    mergeSort(arr, start, mid);
-    mergeSort(arr, mid + 1, end);
-    merge(arr, start, mid, end);
+    for (int i = 0; i < n - 1; i++)
+    {
+        if (v[i] > v[i + 1])
+        {
+            swap(v[i], v[i + 1]);
+        }
+    }
+
+    recursiveBubbleSort(v, n - 1);
 }
 
 int32_t main()
@@ -77,7 +49,7 @@ int32_t main()
 
     cout << endl;
 
-    mergeSort(v, 0, v.size() - 1);
+    recursiveBubbleSort(v, v.size());
 
     cout << endl
          << "After Sorting: ";
