@@ -4,22 +4,22 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void recursiveBubbleSort(vector<int> &v, int n)
+void recursiveInsertionSort(vector<int> &v, int idx)
 {
-    if (n == 1)
+    if (idx >= v.size())
     {
         return;
     }
 
-    for (int i = 0; i < n - 1; i++)
+    int j = idx - 1;
+
+    while (j >= 0 && v[j] > v[j + 1])
     {
-        if (v[i] > v[i + 1])
-        {
-            swap(v[i], v[i + 1]);
-        }
+        swap(v[j], v[j + 1]);
+        j--;
     }
 
-    recursiveBubbleSort(v, n - 1);
+    recursiveInsertionSort(v, idx + 1);
 }
 
 int32_t main()
@@ -49,7 +49,7 @@ int32_t main()
 
     cout << endl;
 
-    recursiveBubbleSort(v, v.size());
+    recursiveInsertionSort(v, 1);
 
     cout << endl
          << "After Sorting: ";
