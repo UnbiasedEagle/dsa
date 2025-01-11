@@ -4,36 +4,41 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-int partition(vector<int> &v, int start, int end)
+vector<int> getSecondOrderElements(int n, vector<int> a)
 {
-    int pivot = v[end];
-    int idx = start;
+    int largest = INT_MIN;
+    int secondLargest = INT_MIN;
+    int smallest = INT_MAX;
+    int secondSmallest = INT_MAX;
 
-    for (int j = start; j < end; j++)
+    for (int i = 0; i < n; i++)
     {
-        if (v[j] < pivot)
+        if (a[i] > largest)
         {
-            swap(v[idx], v[j]);
-            idx++;
+            secondLargest = largest;
+            largest = a[i];
+        }
+        else if (a[i] > secondLargest && a[i] != largest)
+        {
+            secondLargest = a[i];
+        }
+
+        if (a[i] < smallest)
+        {
+            secondSmallest = smallest;
+            smallest = a[i];
+        }
+        else if (a[i] < secondSmallest && a[i] != smallest)
+        {
+            secondSmallest = a[i];
         }
     }
 
-    swap(v[idx], v[end]);
+    vector<int> result;
+    result.push_back(secondLargest);
+    result.push_back(secondSmallest);
 
-    return idx;
-}
-
-void quickSort(vector<int> &v, int start, int end)
-{
-    if (start >= end)
-    {
-        return;
-    }
-
-    int pivot = partition(v, start, end);
-
-    quickSort(v, start, pivot - 1);
-    quickSort(v, pivot + 1, end);
+    return result;
 }
 
 int32_t main()
@@ -45,33 +50,6 @@ int32_t main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 #endif
-
-    vector<int> v;
-
-    v.push_back(5);
-    v.push_back(4);
-    v.push_back(3);
-    v.push_back(2);
-    v.push_back(1);
-
-    cout << "Before Sorting: ";
-
-    for (int i = 0; i < v.size(); i++)
-    {
-        cout << v[i] << " ";
-    }
-
-    cout << endl;
-
-    quickSort(v, 0, v.size() - 1);
-
-    cout << endl
-         << "After Sorting: ";
-
-    for (int i = 0; i < v.size(); i++)
-    {
-        cout << v[i] << " ";
-    }
 
     return 0;
 }
