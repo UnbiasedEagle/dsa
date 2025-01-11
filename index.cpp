@@ -4,41 +4,18 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-vector<int> getSecondOrderElements(int n, vector<int> a)
+vector<int> rotateArray(vector<int> &arr, int n)
 {
-    int largest = INT_MIN;
-    int secondLargest = INT_MIN;
-    int smallest = INT_MAX;
-    int secondSmallest = INT_MAX;
+    int element = arr[0];
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i < n; i++)
     {
-        if (a[i] > largest)
-        {
-            secondLargest = largest;
-            largest = a[i];
-        }
-        else if (a[i] > secondLargest && a[i] != largest)
-        {
-            secondLargest = a[i];
-        }
-
-        if (a[i] < smallest)
-        {
-            secondSmallest = smallest;
-            smallest = a[i];
-        }
-        else if (a[i] < secondSmallest && a[i] != smallest)
-        {
-            secondSmallest = a[i];
-        }
+        arr[i - 1] = arr[i];
     }
 
-    vector<int> result;
-    result.push_back(secondLargest);
-    result.push_back(secondSmallest);
+    arr[n - 1] = element;
 
-    return result;
+    return arr;
 }
 
 int32_t main()
