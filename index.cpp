@@ -4,22 +4,36 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void recursiveInsertionSort(vector<int> &v, int idx)
+int partition(vector<int> &v, int start, int end)
 {
-    if (idx >= v.size())
+    int pivot = v[end];
+    int idx = start;
+
+    for (int j = start; j < end; j++)
+    {
+        if (v[j] < pivot)
+        {
+            swap(v[idx], v[j]);
+            idx++;
+        }
+    }
+
+    swap(v[idx], v[end]);
+
+    return idx;
+}
+
+void quickSort(vector<int> &v, int start, int end)
+{
+    if (start >= end)
     {
         return;
     }
 
-    int j = idx - 1;
+    int pivot = partition(v, start, end);
 
-    while (j >= 0 && v[j] > v[j + 1])
-    {
-        swap(v[j], v[j + 1]);
-        j--;
-    }
-
-    recursiveInsertionSort(v, idx + 1);
+    quickSort(v, start, pivot - 1);
+    quickSort(v, pivot + 1, end);
 }
 
 int32_t main()
@@ -49,7 +63,7 @@ int32_t main()
 
     cout << endl;
 
-    recursiveInsertionSort(v, 1);
+    quickSort(v, 0, v.size() - 1);
 
     cout << endl
          << "After Sorting: ";
