@@ -4,18 +4,36 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-vector<int> rotateArray(vector<int> &arr, int n)
+int longestSubarray(vector<int> &arr, int k)
 {
-    int element = arr[0];
+    unordered_map<int, int> mp;
+    int sum = 0;
+    mp[0] = -1;
+    int maxLength = 0;
 
-    for (int i = 1; i < n; i++)
+    for (int i = 0; i < arr.size(); i++)
     {
-        arr[i - 1] = arr[i];
+        sum += arr[i];
+
+        int diff = sum - k;
+
+        if (mp.find(diff) != mp.end())
+        {
+            int len = i - mp[diff];
+
+            if (len > 0)
+            {
+                maxLength = max(maxLength, len);
+            }
+        }
+
+        if (mp.find(sum) == mp.end())
+        {
+            mp[sum] = i;
+        }
     }
 
-    arr[n - 1] = element;
-
-    return arr;
+    return maxLength;
 }
 
 int32_t main()
