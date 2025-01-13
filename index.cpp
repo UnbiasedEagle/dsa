@@ -4,36 +4,30 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-int longestSubarray(vector<int> &arr, int k)
+void sort012(int *arr, int n)
 {
-    unordered_map<int, int> mp;
-    int sum = 0;
-    mp[0] = -1;
-    int maxLength = 0;
+    int low = 0;
+    int mid = 0;
+    int high = n - 1;
 
-    for (int i = 0; i < arr.size(); i++)
+    while (mid <= high)
     {
-        sum += arr[i];
-
-        int diff = sum - k;
-
-        if (mp.find(diff) != mp.end())
+        if (arr[mid] == 1)
         {
-            int len = i - mp[diff];
-
-            if (len > 0)
-            {
-                maxLength = max(maxLength, len);
-            }
+            mid++;
         }
-
-        if (mp.find(sum) == mp.end())
+        else if (arr[mid] == 0)
         {
-            mp[sum] = i;
+            swap(arr[low], arr[mid]);
+            low++;
+            mid++;
+        }
+        else
+        {
+            swap(arr[mid], arr[high]);
+            high--;
         }
     }
-
-    return maxLength;
 }
 
 int32_t main()
