@@ -4,30 +4,18 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-void sort012(int *arr, int n)
+long long maxSubarraySum(vector<int> arr, int n)
 {
-    int low = 0;
-    int mid = 0;
-    int high = n - 1;
+    long long maxSum = arr[0];
+    long long currSum = arr[0];
 
-    while (mid <= high)
+    for (int i = 1; i < arr.size(); i++)
     {
-        if (arr[mid] == 1)
-        {
-            mid++;
-        }
-        else if (arr[mid] == 0)
-        {
-            swap(arr[low], arr[mid]);
-            low++;
-            mid++;
-        }
-        else
-        {
-            swap(arr[mid], arr[high]);
-            high--;
-        }
+        currSum = max((long long)arr[i], currSum + arr[i]);
+        maxSum = max(maxSum, currSum);
     }
+
+    return maxSum;
 }
 
 int32_t main()
