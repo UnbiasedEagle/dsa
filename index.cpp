@@ -4,18 +4,24 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-long long maxSubarraySum(vector<int> arr, int n)
+int maximumProfit(vector<int> &prices)
 {
-    long long maxSum = arr[0];
-    long long currSum = arr[0];
+    int maxProfit = 0;
+    int buyPrice = prices[0];
 
-    for (int i = 1; i < arr.size(); i++)
+    for (int i = 1; i < prices.size(); i++)
     {
-        currSum = max((long long)arr[i], currSum + arr[i]);
-        maxSum = max(maxSum, currSum);
+        if (prices[i] < buyPrice)
+        {
+            buyPrice = prices[i];
+        }
+        else
+        {
+            maxProfit = max(maxProfit, prices[i] - buyPrice);
+        }
     }
 
-    return maxSum;
+    return maxProfit;
 }
 
 int32_t main()
