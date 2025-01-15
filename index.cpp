@@ -4,32 +4,43 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-class Solution
+vector<int> nextPermutation(vector<int> &permutation, int n)
 {
-public:
-    vector<int> rearrangeArray(vector<int> &nums)
+    if (n == 1)
     {
-        vector<int> ans(nums.size());
-        int posIndex = 0;
-        int negIndex = 1;
-
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (nums[i] >= 0)
-            {
-                ans[posIndex] = nums[i];
-                posIndex += 2;
-            }
-            else
-            {
-                ans[negIndex] = nums[i];
-                negIndex += 2;
-            }
-        }
-
-        return ans;
+        return permutation;
     }
-};
+
+    int i = n - 2;
+
+    while (i >= 0 && permutation[i] >= permutation[i + 1])
+    {
+        i--;
+    }
+
+    reverse(permutation.begin() + i + 1, permutation.end());
+
+    if (i == -1)
+    {
+        return permutation;
+    }
+
+    int minIndex = -1;
+    int minValue = INT_MAX;
+
+    for (int j = i + 1; j < n; j++)
+    {
+        if (permutation[j] > permutation[i] && permutation[j] < minValue)
+        {
+            minValue = permutation[j];
+            minIndex = j;
+        }
+    }
+
+    swap(permutation[i], permutation[minIndex]);
+
+    return permutation;
+}
 
 int32_t main()
 {
