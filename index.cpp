@@ -4,25 +4,32 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-int maximumProfit(vector<int> &prices)
+class Solution
 {
-    int maxProfit = 0;
-    int buyPrice = prices[0];
-
-    for (int i = 1; i < prices.size(); i++)
+public:
+    vector<int> rearrangeArray(vector<int> &nums)
     {
-        if (prices[i] < buyPrice)
-        {
-            buyPrice = prices[i];
-        }
-        else
-        {
-            maxProfit = max(maxProfit, prices[i] - buyPrice);
-        }
-    }
+        vector<int> ans(nums.size());
+        int posIndex = 0;
+        int negIndex = 1;
 
-    return maxProfit;
-}
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (nums[i] >= 0)
+            {
+                ans[posIndex] = nums[i];
+                posIndex += 2;
+            }
+            else
+            {
+                ans[negIndex] = nums[i];
+                negIndex += 2;
+            }
+        }
+
+        return ans;
+    }
+};
 
 int32_t main()
 {
