@@ -7,31 +7,29 @@ using namespace std;
 class Solution
 {
 public:
-    void rotate(vector<vector<int>> &matrix)
+    int subarraySum(vector<int> &nums, int k)
     {
-        for (int i = 0; i < matrix.size(); i++)
-        {
-            int j = matrix.size() - 1;
+        int n = nums.size();
+        unordered_map<int, int> mp;
+        int sum = 0, count = 0;
 
-            while (j >= i)
+        for (int i = 0; i < n; i++)
+        {
+            sum += nums[i];
+
+            if (sum == k)
             {
-                swap(matrix[i][j], matrix[j][i]);
-                j--;
+                count++;
             }
+
+            if (mp.find(sum - k) != mp.end())
+            {
+                count += mp[sum - k];
+            }
+            mp[sum]++;
         }
 
-        for (int i = 0; i < matrix.size(); i++)
-        {
-            int start = 0;
-            int end = matrix.size() - 1;
-
-            while (start < end)
-            {
-                swap(matrix[i][start], matrix[i][end]);
-                start++;
-                end--;
-            }
-        }
+        return count;
     }
 };
 
