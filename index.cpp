@@ -4,32 +4,61 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-int longestSuccessiveElements(vector<int> &a)
+vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m)
 {
-    unordered_set<int> s;
-    int result = 0;
+    bool isFirstColZero = false;
+    bool isFirstRowZero = false;
 
-    for (int i = 0; i < a.size(); i++)
+    for (int i = 0; i < n; i++)
     {
-        s.insert(a[i]);
-    }
-
-    for (int i = 0; i < a.size(); i++)
-    {
-        if (s.find(a[i] - 1) == s.end())
+        if (matrix[i][0] == 0)
         {
-            int j = a[i];
-            int count = 0;
-            while (s.find(j) != s.end())
-            {
-                j++;
-                count++;
-            }
-            result = max(result, count);
+            isFirstColZero = true;
+            break;
         }
     }
 
-    return result;
+    for (int i = 0; i < m; i++)
+    {
+        if (matrix[0][i] == 0)
+        {
+            isFirstRowZero = true;
+            break;
+        }
+    }
+
+    for (int i = n - 1; i >= 1; i--)
+    {
+        for (int j = m - 1; j >= 1; j--)
+        {
+            if (matrix[i][j] == 0)
+            {
+                matrix[i][0] = 0;
+                matrix[0][j] = 0;
+            }
+        }
+    }
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (j == 0 && isFirstColZero)
+            {
+                matrix[i][j] = 0;
+            }
+            if (i == 0 && isFirstRowZero)
+            {
+                matrix[i][j] = 0;
+            }
+            else if (matrix[i][0] == 0 || matrix[0][j] == 0)
+            {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+
+    return matrix;
 }
 
 int32_t main()
