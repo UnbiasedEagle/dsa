@@ -4,42 +4,32 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-vector<int> nextPermutation(vector<int> &permutation, int n)
+int longestSuccessiveElements(vector<int> &a)
 {
-    if (n == 1)
+    unordered_set<int> s;
+    int result = 0;
+
+    for (int i = 0; i < a.size(); i++)
     {
-        return permutation;
+        s.insert(a[i]);
     }
 
-    int i = n - 2;
-
-    while (i >= 0 && permutation[i] >= permutation[i + 1])
+    for (int i = 0; i < a.size(); i++)
     {
-        i--;
-    }
-
-    reverse(permutation.begin() + i + 1, permutation.end());
-
-    if (i == -1)
-    {
-        return permutation;
-    }
-
-    int minIndex = -1;
-    int minValue = INT_MAX;
-
-    for (int j = i + 1; j < n; j++)
-    {
-        if (permutation[j] > permutation[i] && permutation[j] < minValue)
+        if (s.find(a[i] - 1) == s.end())
         {
-            minValue = permutation[j];
-            minIndex = j;
+            int j = a[i];
+            int count = 0;
+            while (s.find(j) != s.end())
+            {
+                j++;
+                count++;
+            }
+            result = max(result, count);
         }
     }
 
-    swap(permutation[i], permutation[minIndex]);
-
-    return permutation;
+    return result;
 }
 
 int32_t main()
