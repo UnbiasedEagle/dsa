@@ -7,29 +7,42 @@ using namespace std;
 class Solution
 {
 public:
-    int subarraySum(vector<int> &nums, int k)
+    vector<int> spiralOrder(vector<vector<int>> &matrix)
     {
-        int n = nums.size();
-        unordered_map<int, int> mp;
-        int sum = 0, count = 0;
-
-        for (int i = 0; i < n; i++)
+        vector<int> ans;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int top = 0, bottom = m - 1, left = 0, right = n - 1;
+        while (top <= bottom && left <= right)
         {
-            sum += nums[i];
-
-            if (sum == k)
+            for (int i = left; i <= right; i++)
             {
-                count++;
+                ans.push_back(matrix[top][i]);
             }
-
-            if (mp.find(sum - k) != mp.end())
+            top++;
+            for (int i = top; i <= bottom; i++)
             {
-                count += mp[sum - k];
+                ans.push_back(matrix[i][right]);
             }
-            mp[sum]++;
+            right--;
+            if (top <= bottom)
+            {
+                for (int i = right; i >= left; i--)
+                {
+                    ans.push_back(matrix[bottom][i]);
+                }
+                bottom--;
+            }
+            if (left <= right)
+            {
+                for (int i = bottom; i >= top; i--)
+                {
+                    ans.push_back(matrix[i][left]);
+                }
+                left++;
+            }
         }
-
-        return count;
+        return ans;
     }
 };
 
