@@ -4,47 +4,21 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-class Solution
+vector<vector<int>> pascalTriangle(int N)
 {
-public:
-    vector<int> spiralOrder(vector<vector<int>> &matrix)
+    vector<vector<int>> res(N);
+    res[0] = {1};
+    for (int i = 1; i < N; i++)
     {
-        vector<int> ans;
-        int m = matrix.size();
-        int n = matrix[0].size();
-        int top = 0, bottom = m - 1, left = 0, right = n - 1;
-        while (top <= bottom && left <= right)
+        vector<int> temp(i + 1, 1);
+        for (int j = 1; j < i; j++)
         {
-            for (int i = left; i <= right; i++)
-            {
-                ans.push_back(matrix[top][i]);
-            }
-            top++;
-            for (int i = top; i <= bottom; i++)
-            {
-                ans.push_back(matrix[i][right]);
-            }
-            right--;
-            if (top <= bottom)
-            {
-                for (int i = right; i >= left; i--)
-                {
-                    ans.push_back(matrix[bottom][i]);
-                }
-                bottom--;
-            }
-            if (left <= right)
-            {
-                for (int i = bottom; i >= top; i--)
-                {
-                    ans.push_back(matrix[i][left]);
-                }
-                left++;
-            }
+            temp[j] = res[i - 1][j - 1] + res[i - 1][j];
         }
-        return ans;
+        res[i] = temp;
     }
-};
+    return res;
+}
 
 int32_t main()
 {
