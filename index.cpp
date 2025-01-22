@@ -4,20 +4,48 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-vector<vector<int>> pascalTriangle(int N)
+vector<vector<int>> triplet(int n, vector<int> &arr)
 {
-    vector<vector<int>> res(N);
-    res[0] = {1};
-    for (int i = 1; i < N; i++)
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> ans;
+
+    int i = 0;
+
+    while (i < n)
     {
-        vector<int> temp(i + 1, 1);
-        for (int j = 1; j < i; j++)
+        int start = i + 1;
+        int end = n - 1;
+        int req = -arr[i];
+
+        while (start < end)
         {
-            temp[j] = res[i - 1][j - 1] + res[i - 1][j];
+            int sum = arr[start] + arr[end];
+            if (sum == req)
+            {
+                ans.push_back({arr[i], arr[start], arr[end]});
+                start++;
+                end--;
+
+                while (start < end && arr[start] == arr[start - 1])
+                    start++;
+                while (start < end && arr[end] == arr[end + 1])
+                    end--;
+            }
+            else if (sum > req)
+                end--;
+            else
+                start++;
         }
-        res[i] = temp;
+
+        i++;
+
+        while (i < n && arr[i] == arr[i - 1])
+        {
+            i++;
+        }
     }
-    return res;
+
+    return ans;
 }
 
 int32_t main()
@@ -29,6 +57,21 @@ int32_t main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
 #endif
+
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    vector<vector<int>> ans = triplet(n, arr);
+
+    for (auto i : ans)
+    {
+        cout << i[0] << " " << i[1] << " " << i[2] << endl;
+    }
 
     return 0;
 }
