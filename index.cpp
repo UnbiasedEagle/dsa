@@ -4,42 +4,55 @@ using namespace std;
 #define inf 1e18
 #define endl "\n"
 
-vector<vector<int>> triplet(int n, vector<int> &arr)
+vector<vector<int>> fourSum(vector<int> &nums, int target)
 {
-    sort(arr.begin(), arr.end());
     vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
 
     int i = 0;
-
     while (i < n)
     {
-        int start = i + 1;
-        int end = n - 1;
-        int req = -arr[i];
-
-        while (start < end)
+        int j = i + 1;
+        while (j < n)
         {
-            int sum = arr[start] + arr[end];
-            if (sum == req)
+            int start = j + 1;
+            int end = n - 1;
+            while (start < end)
             {
-                ans.push_back({arr[i], arr[start], arr[end]});
-                start++;
-                end--;
-
-                while (start < end && arr[start] == arr[start - 1])
+                int sum = nums[i] + nums[j] + nums[start] + nums[end];
+                if (sum == target)
+                {
+                    ans.push_back({nums[i], nums[j], nums[start], nums[end]});
+                    while (start < end && nums[start] == nums[start + 1])
+                    {
+                        start++;
+                    }
+                    while (start < end && nums[end] == nums[end - 1])
+                    {
+                        end--;
+                    }
                     start++;
-                while (start < end && arr[end] == arr[end + 1])
                     end--;
+                }
+                else if (sum > target)
+                {
+                    end--;
+                }
+                else
+                {
+                    start++;
+                }
             }
-            else if (sum > req)
-                end--;
-            else
-                start++;
+            j++;
+
+            while (j < n && nums[j] == nums[j - 1])
+            {
+                j++;
+            }
         }
-
         i++;
-
-        while (i < n && arr[i] == arr[i - 1])
+        while (i < n && nums[i] == nums[i - 1])
         {
             i++;
         }
