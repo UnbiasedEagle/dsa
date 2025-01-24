@@ -1,30 +1,25 @@
 class Solution {
   /**
-   * @param {string[]} strs
-   * @returns {string}
+   * @param {number[]} nums
+   * @return {number}
    */
-  encode(strs) {
-    let result = '';
-    for (const str of strs) {
-      result += `${str.length}#${str}`;
+  longestConsecutive(nums) {
+    const numSet = new Set(nums);
+    let longestStreak = 0;
+    for (const num of numSet) {
+      if (!numSet.has(num - 1)) {
+        let currentNum = num;
+        let currentStreak = 0;
+        while (numSet.has(currentNum)) {
+          currentNum += 1;
+          currentStreak += 1;
+        }
+        longestStreak = Math.max(longestStreak, currentStreak);
+      }
     }
-    return result;
-  }
-
-  /**
-   * @param {string} str
-   * @returns {string[]}
-   */
-  decode(str) {
-    const result = [];
-    let i = 0;
-    while (i < str.length) {
-      const delimiterIndex = str.indexOf('#', i);
-      const length = parseInt(str.slice(i, delimiterIndex));
-      const word = str.slice(delimiterIndex + 1, delimiterIndex + 1 + length);
-      result.push(word);
-      i = delimiterIndex + 1 + length;
-    }
-    return result;
+    return longestStreak;
   }
 }
+
+// Time complexity: O(n)
+// Space complexity: O(n)
