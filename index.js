@@ -1,38 +1,30 @@
 class Solution {
   /**
    * @param {number[]} nums
-   * @param {number} k
    * @return {number[]}
    */
-  topKFrequent(nums, k) {
-    const map = new Map();
-    for (let i = 0; i < nums.length; i++) {
-      const num = nums[i];
-      if (map.has(num)) {
-        map.set(num, map.get(num) + 1);
-      } else {
-        map.set(num, 1);
-      }
+  productExceptSelf(nums) {
+    if (!Array.isArray(nums) || nums.length === 0) {
+      return [];
     }
 
-    const minHeap = new MinPriorityQueue({ priority: (item) => item.value });
-
-    for (let [key, value] of map) {
-      if (minHeap.size() < k) {
-        minHeap.enqueue({ value, key });
-      } else if (value > minHeap.front().element.value) {
-        minHeap.dequeue();
-        minHeap.enqueue({ value, key });
-      }
+    const n = nums.length;
+    const result = new Array(n);
+    
+    // Calculate products of all elements to the left
+    let leftProduct = 1;
+    for (let i = 0; i < n; i++) {
+      result[i] = leftProduct;
+      leftProduct *= nums[i];
     }
-
-    const result = [];
-
-    while (minHeap.size() > 0) {
-      result.push(minHeap.front().element.key);
-      minHeap.dequeue();
+    
+    // Calculate products of all elements to the right and combine
+    let rightProduct = 1;
+    for (let i = n - 1; i >= 0; i--) {
+      result[i] *= rightProduct;
+      rightProduct *= nums[i];
     }
-
+    
     return result;
   }
 }
