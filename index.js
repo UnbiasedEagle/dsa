@@ -1,25 +1,36 @@
 class Solution {
   /**
-   * @param {number[]} heights
+   * @param {number[]} height
    * @return {number}
    */
-  maxArea(heights) {
-    let max = 0;
-    let left = 0;
-    let right = heights.length - 1;
+  trap(height) {
+    const maxLeftHeight = Array.from({ length: height.length }, () => 0);
+    const maxRightHeight = Array.from({ length: height.length }, () => 0);
 
-    while (left < right) {
-      const width = right - left;
-      const height = Math.min(heights[left], heights[right]);
-      const area = width * height;
-      max = Math.max(max, area);
-      if (heights[left] < heights[right]) {
-        left++;
-      } else {
-        right--;
+    let leftMaxHeight = height[0];
+
+    for (let i = 0; i < height.length; i++) {
+      maxLeftHeight[i] = leftMaxHeight;
+      leftMaxHeight = Math.max(leftMaxHeight, height[i]);
+    }
+
+    let rightMaxHeight = height[height.length - 1];
+
+    for (let i = height.length - 1; i >= 0; i--) {
+      maxRightHeight[i] = rightMaxHeight;
+      rightMaxHeight = Math.max(rightMaxHeight, height[i]);
+    }
+
+    let totalWater = 0;
+
+    for (let i = 0; i < height.length; i++) {
+      const currentWater =
+        Math.min(maxLeftHeight[i], maxRightHeight[i]) - height[i];
+      if (currentWater > 0) {
+        totalWater += currentWater;
       }
     }
 
-    return max;
+    return totalWater;
   }
 }
