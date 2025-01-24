@@ -1,30 +1,37 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {number[]}
+   * @param {character[][]} board
+   * @return {boolean}
    */
-  productExceptSelf(nums) {
-    if (!Array.isArray(nums) || nums.length === 0) {
-      return [];
+  isValidSudoku(board) {
+    // Pre-calculate grid indices to avoid repeated calculations
+    const getGridIndex = (i, j) => Math.floor(i / 3) * 3 + Math.floor(j / 3);
+
+    // Use a single Set to store all seen values with their position context
+    const seen = new Set();
+
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        const num = board[i][j];
+        if (num === '.') continue;
+
+        // Create unique keys for each position context
+        const rowKey = `row-${i}-${num}`;
+        const colKey = `col-${j}-${num}`;
+        const gridKey = `grid-${getGridIndex(i, j)}-${num}`;
+
+        // Check if number already exists in any context
+        if (seen.has(rowKey) || seen.has(colKey) || seen.has(gridKey)) {
+          return false;
+        }
+
+        // Add all position contexts to the set
+        seen.add(rowKey);
+        seen.add(colKey);
+        seen.add(gridKey);
+      }
     }
 
-    const n = nums.length;
-    const result = new Array(n);
-    
-    // Calculate products of all elements to the left
-    let leftProduct = 1;
-    for (let i = 0; i < n; i++) {
-      result[i] = leftProduct;
-      leftProduct *= nums[i];
-    }
-    
-    // Calculate products of all elements to the right and combine
-    let rightProduct = 1;
-    for (let i = n - 1; i >= 0; i--) {
-      result[i] *= rightProduct;
-      rightProduct *= nums[i];
-    }
-    
-    return result;
+    return true;
   }
 }
