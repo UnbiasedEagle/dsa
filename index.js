@@ -1,31 +1,37 @@
 class Solution {
   /**
-   * @param {string[]} strs
-   * @return {string[][]}
+   * @param {number[]} nums
+   * @param {number} k
+   * @return {number[]}
    */
-  groupAnagrams(strs) {
-    const result = [];
+  topKFrequent(nums, k) {
     const map = new Map();
-
-    for (let i = 0; i < strs.length; i++) {
-      const str = strs[i];
-      const freq = Array.from({ length: 26 }, () => 0);
-
-      for (let j = 0; j < str.length; j++) {
-        freq[str[j].charCodeAt(0) - 97]++;
-      }
-
-      const key = freq.join('#');
-      if (map.has(key)) {
-        map.get(key).push(str);
+    for (let i = 0; i < nums.length; i++) {
+      const num = nums[i];
+      if (map.has(num)) {
+        map.set(num, map.get(num) + 1);
       } else {
-        map.set(key, [str]);
+        map.set(num, 1);
       }
     }
 
-    Array.from(map.values()).forEach((v) => {
-      result.push(v);
-    });
+    const minHeap = new MinPriorityQueue({ priority: (item) => item.value });
+
+    for (let [key, value] of map) {
+      if (minHeap.size() < k) {
+        minHeap.enqueue({ value, key });
+      } else if (value > minHeap.front().element.value) {
+        minHeap.dequeue();
+        minHeap.enqueue({ value, key });
+      }
+    }
+
+    const result = [];
+
+    while (minHeap.size() > 0) {
+      result.push(minHeap.front().element.key);
+      minHeap.dequeue();
+    }
 
     return result;
   }
