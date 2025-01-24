@@ -1,23 +1,42 @@
 class Solution {
   /**
-   * @param {number[]} numbers
-   * @param {number} target
-   * @return {number[]}
+   * @param {number[]} nums
+   * @return {number[][]}
    */
-  twoSum(numbers, target) {
-    let start = 0;
-    let end = numbers.length - 1;
+  threeSum(nums) {
+    nums.sort((a, b) => a - b);
+    const result = [];
+    let i = 0;
 
-    while (start < end) {
-      const sum = numbers[start] + numbers[end];
-      if (sum === target) {
-        return [start + 1, end + 1];
-      } else if (sum < target) {
-        start++;
-      } else {
-        end--;
+    while (i < nums.length) {
+      let left = i + 1;
+      let right = nums.length - 1;
+
+      while (left < right) {
+        const sum = nums[i] + nums[left] + nums[right];
+        if (sum === 0) {
+          result.push([nums[i], nums[left], nums[right]]);
+          left++;
+          right--;
+
+          while (left < right && nums[left] === nums[left - 1]) {
+            left++;
+          }
+          while (left < right && nums[right] === nums[right + 1]) {
+            right--;
+          }
+        } else if (sum < 0) {
+          left++;
+        } else {
+          right--;
+        }
+      }
+      i++;
+      while (i < nums.length && nums[i] === nums[i - 1]) {
+        i++;
       }
     }
-    return [];
+
+    return result;
   }
 }
