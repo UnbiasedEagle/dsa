@@ -1,31 +1,23 @@
 class Solution {
   /**
-   * @param {string} s
-   * @return {boolean}
+   * @param {number[]} numbers
+   * @param {number} target
+   * @return {number[]}
    */
-
-  isAlphaNumeric(char) {
-    return char.match(/^[a-z0-9]+$/i);
-  }
-
-  isPalindrome(s) {
+  twoSum(numbers, target) {
     let start = 0;
-    let end = s.length - 1;
+    let end = numbers.length - 1;
 
-    while (start <= end) {
-      while (start <= end && !this.isAlphaNumeric(s[start])) {
+    while (start < end) {
+      const sum = numbers[start] + numbers[end];
+      if (sum === target) {
+        return [start + 1, end + 1];
+      } else if (sum < target) {
         start++;
-      }
-      while (start <= end && !this.isAlphaNumeric(s[end])) {
+      } else {
         end--;
       }
-      if (start <= end && s[start].toLowerCase() !== s[end].toLowerCase()) {
-        return false;
-      }
-      start++;
-      end--;
     }
-
-    return true;
+    return [];
   }
 }
