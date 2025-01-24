@@ -1,25 +1,31 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {number}
+   * @param {string} s
+   * @return {boolean}
    */
-  longestConsecutive(nums) {
-    const numSet = new Set(nums);
-    let longestStreak = 0;
-    for (const num of numSet) {
-      if (!numSet.has(num - 1)) {
-        let currentNum = num;
-        let currentStreak = 0;
-        while (numSet.has(currentNum)) {
-          currentNum += 1;
-          currentStreak += 1;
-        }
-        longestStreak = Math.max(longestStreak, currentStreak);
+
+  isAlphaNumeric(char) {
+    return char.match(/^[a-z0-9]+$/i);
+  }
+
+  isPalindrome(s) {
+    let start = 0;
+    let end = s.length - 1;
+
+    while (start <= end) {
+      while (start <= end && !this.isAlphaNumeric(s[start])) {
+        start++;
       }
+      while (start <= end && !this.isAlphaNumeric(s[end])) {
+        end--;
+      }
+      if (start <= end && s[start].toLowerCase() !== s[end].toLowerCase()) {
+        return false;
+      }
+      start++;
+      end--;
     }
-    return longestStreak;
+
+    return true;
   }
 }
-
-// Time complexity: O(n)
-// Space complexity: O(n)
