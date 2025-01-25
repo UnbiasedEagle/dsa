@@ -1,20 +1,24 @@
 class Solution {
   /**
-   * @param {number[]} prices
+   * @param {string} s
    * @return {number}
    */
-  maxProfit(prices) {
-    let buyPrice = prices[0];
-    let maxProfit = 0;
+  lengthOfLongestSubstring(s) {
+    const map = new Map();
+    let left = 0;
+    let result = 0;
 
-    for (let i = 1; i < prices.length; i++) {
-      if (prices[i] < buyPrice) {
-        buyPrice = prices[i];
-      } else {
-        maxProfit = Math.max(maxProfit, prices[i] - buyPrice);
+    for (let right = 0; right < s.length; right++) {
+      if (map.has(s[right])) {
+        left = Math.max(left, map.get(s[right]) + 1);
       }
+      map.set(s[right], right);
+      result = Math.max(result, right - left + 1);
     }
 
-    return maxProfit;
+    return result;
   }
 }
+
+// Time complexity: O(n)
+// Space complexity: O(n)
