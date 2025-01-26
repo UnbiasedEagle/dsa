@@ -1,28 +1,41 @@
-class Solution {
+class MinStack {
+  constructor() {
+    this.stack = [];
+  }
+
   /**
-   * @param {string} s
-   * @return {boolean}
+   * @param {number} val
+   * @return {void}
    */
-  isValid(s) {
-    const bracketMap = {
-      '(': ')',
-      '{': '}',
-      '[': ']',
-    };
-
-    const stack = [];
-    for (let i = 0; i < s.length; i++) {
-      const char = s[i];
-      if (bracketMap[char]) {
-        stack.push(char);
-      } else {
-        const top = stack.pop();
-        if (bracketMap[top] !== char) {
-          return false;
-        }
-      }
+  push(val) {
+    if (this.stack.length === 0) {
+      this.stack.push({ val, min: val });
+    } else {
+      this.stack.push({
+        val,
+        min: Math.min(val, this.stack[this.stack.length - 1].min),
+      });
     }
+  }
 
-    return stack.length === 0;
+  /**
+   * @return {void}
+   */
+  pop() {
+    this.stack.pop();
+  }
+
+  /**
+   * @return {number}
+   */
+  top() {
+    return this.stack[this.stack.length - 1].val;
+  }
+
+  /**
+   * @return {number}
+   */
+  getMin() {
+    return this.stack[this.stack.length - 1].min;
   }
 }
