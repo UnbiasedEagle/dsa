@@ -1,24 +1,32 @@
 class Solution {
   /**
-   * @param {string} s
-   * @param {number} k
-   * @return {number}
+   * @param {string} s1
+   * @param {string} s2
+   * @return {boolean}
    */
-  characterReplacement(s, k) {
-    let left = 0;
-    let right = 0;
-    const freq = Array.from({ length: 26 }, () => 0);
-    let result = 0;
-    while (right < s.length) {
-      freq[s.charCodeAt(right) - 'A'.charCodeAt(0)]++;
-      const maxFreq = Math.max(...freq);
-      while (right - left + 1 - maxFreq > k) {
-        freq[s.charCodeAt(left) - 'A'.charCodeAt(0)]--;
-        left++;
-      }
-      result = Math.max(result, right - left + 1);
-      right++;
+  checkInclusion(s1, s2) {
+    if (s2.length < s1.length) {
+      return false;
     }
-    return result;
+    const freq = Array.from({ length: 26 }, () => 0);
+    for (let i = 0; i < s1.length; i++) {
+      freq[s1.charCodeAt(i) - 'a'.charCodeAt(0)]--;
+    }
+
+    for (let i = 0; i < s2.length; i++) {
+      if (i < s1.length) {
+        freq[s2.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+      } else {
+        freq[s2.charCodeAt(i) - 'a'.charCodeAt(0)]++;
+        freq[s2.charCodeAt(i - s1.length) - 'a'.charCodeAt(0)]--;
+      }
+      if (freq.every((count) => count === 0)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
+
+// Time complexity: O(n)
+// Space complexity: O(1)
