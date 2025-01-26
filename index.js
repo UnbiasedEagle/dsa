@@ -1,41 +1,32 @@
-class MinStack {
-  constructor() {
-    this.stack = [];
-  }
-
+class Solution {
   /**
-   * @param {number} val
-   * @return {void}
+   * @param {string[]} tokens
+   * @return {number}
    */
-  push(val) {
-    if (this.stack.length === 0) {
-      this.stack.push({ val, min: val });
-    } else {
-      this.stack.push({
-        val,
-        min: Math.min(val, this.stack[this.stack.length - 1].min),
-      });
+  evalRPN(tokens) {
+    const stack = [];
+    for (const token of tokens) {
+      if (!isNaN(parseInt(token))) {
+        stack.push(parseInt(token));
+      } else {
+        const operand2 = stack.pop();
+        const operand1 = stack.pop();
+        switch (token) {
+          case '+':
+            stack.push(operand1 + operand2);
+            break;
+          case '-':
+            stack.push(operand1 - operand2);
+            break;
+          case '*':
+            stack.push(operand1 * operand2);
+            break;
+          case '/':
+            stack.push(Math.trunc(operand1 / operand2));
+            break;
+        }
+      }
     }
-  }
-
-  /**
-   * @return {void}
-   */
-  pop() {
-    this.stack.pop();
-  }
-
-  /**
-   * @return {number}
-   */
-  top() {
-    return this.stack[this.stack.length - 1].val;
-  }
-
-  /**
-   * @return {number}
-   */
-  getMin() {
-    return this.stack[this.stack.length - 1].min;
+    return stack[0];
   }
 }
