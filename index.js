@@ -1,32 +1,29 @@
 class Solution {
   /**
-   * @param {string[]} tokens
-   * @return {number}
+   * @param {number} n
+   * @return {string[]}
    */
-  evalRPN(tokens) {
-    const stack = [];
-    for (const token of tokens) {
-      if (!isNaN(parseInt(token))) {
-        stack.push(parseInt(token));
-      } else {
-        const operand2 = stack.pop();
-        const operand1 = stack.pop();
-        switch (token) {
-          case '+':
-            stack.push(operand1 + operand2);
-            break;
-          case '-':
-            stack.push(operand1 - operand2);
-            break;
-          case '*':
-            stack.push(operand1 * operand2);
-            break;
-          case '/':
-            stack.push(Math.trunc(operand1 / operand2));
-            break;
+  generateParenthesis(n) {
+    if (n <= 0) {
+      return [];
+    }
+
+    const dp = new Array(n + 1).fill(null).map(() => new Set());
+    dp[0].add('');
+
+    for (let i = 1; i <= n; i++) {
+      for (let j = 0; j < i; j++) {
+        for (const left of dp[j]) {
+          for (const right of dp[i - 1 - j]) {
+            dp[i].add(`(${left})${right}`);
+          }
         }
       }
     }
-    return stack[0];
+
+    return Array.from(dp[n]);
   }
 }
+
+// Time complexity: O(4^n / sqrt(n))
+// Space complexity: O(4^n / sqrt(n))
