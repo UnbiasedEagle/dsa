@@ -1,29 +1,25 @@
 class Solution {
   /**
-   * @param {number} n
-   * @return {string[]}
+   * @param {number[]} temperatures
+   * @return {number[]}
    */
-  generateParenthesis(n) {
-    if (n <= 0) {
-      return [];
-    }
+  dailyTemperatures(temperatures) {
+    const stack = [];
+    const result = Array.from({ length: temperatures.length }, () => 0);
 
-    const dp = new Array(n + 1).fill(null).map(() => new Set());
-    dp[0].add('');
-
-    for (let i = 1; i <= n; i++) {
-      for (let j = 0; j < i; j++) {
-        for (const left of dp[j]) {
-          for (const right of dp[i - 1 - j]) {
-            dp[i].add(`(${left})${right}`);
-          }
-        }
+    for (let i = 0; i < temperatures.length; i++) {
+      while (
+        stack.length &&
+        temperatures[stack[stack.length - 1]] < temperatures[i]
+      ) {
+        const index = stack.pop();
+        result[index] = i - index;
       }
+      stack.push(i);
     }
-
-    return Array.from(dp[n]);
+    return result;
   }
 }
 
-// Time complexity: O(4^n / sqrt(n))
-// Space complexity: O(4^n / sqrt(n))
+// Time complexity: O(n)
+// Space complexity: O(n)
