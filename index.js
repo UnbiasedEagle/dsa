@@ -1,42 +1,28 @@
 class Solution {
   /**
-   * @param {number[][]} matrix
-   * @param {number} target
-   * @return {boolean}
+   * @param {number[]} piles
+   * @param {number} h
+   * @return {number}
    */
-  binarySearch(arr, target) {
+  minEatingSpeed(piles, h) {
     let start = 0;
-    let end = arr.length - 1;
-    while (start <= end) {
-      const mid = Math.floor((start + end) / 2);
-      if (arr[mid] === target) {
-        return true;
-      } else if (arr[mid] < target) {
-        start = mid + 1;
-      } else {
-        end = mid - 1;
-      }
-    }
-    return false;
-  }
+    let end = Math.max(...piles);
 
-  searchMatrix(matrix, target) {
-    let start = 0;
-    let end = matrix.length - 1;
+    let result = end;
 
     while (start <= end) {
       const mid = Math.floor((start + end) / 2);
-      if (target < matrix[mid][0]) {
+      let totalTime = 0;
+      for (const pile of piles) {
+        totalTime += Math.ceil(pile / mid);
+      }
+      if (totalTime <= h) {
+        result = Math.min(result, mid);
         end = mid - 1;
-      } else if (target > matrix[mid][matrix[mid].length - 1]) {
-        start = mid + 1;
       } else {
-        return this.binarySearch(matrix[mid], target);
+        start = mid + 1;
       }
     }
-    return false;
+    return result;
   }
 }
-
-// Time complexity: O(log(m) + log(n))
-// Space complexity: O(1)
