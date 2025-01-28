@@ -1,30 +1,30 @@
 class Solution {
   /**
-   * @param {number} target
-   * @param {number[]} position
-   * @param {number[]} speed
+   * @param {number[]} heights
    * @return {number}
    */
-  carFleet(target, position, speed) {
-    const arr = [];
-    for (let i = 0; i < position.length; i++) {
-      arr.push({
-        position: position[i],
-        time: (target - position[i]) / speed[i],
-      });
-    }
-    arr.sort((a, b) => b.position - a.position);
-    let fleet = 1;
-    let maxTime = arr[0].time;
-    for (let i = 1; i < arr.length; i++) {
-      if (arr[i].time > maxTime) {
-        fleet++;
-        maxTime = arr[i].time;
+  largestRectangleArea(heights) {
+    let maxArea = 0;
+    const stack = [];
+
+    for (let i = 0; i < heights.length; i++) {
+      let leftIdx = i;
+      while (stack.length && stack[stack.length - 1][1] > heights[i]) {
+        const [idx, height] = stack.pop();
+        maxArea = Math.max(maxArea, height * (i - idx));
+        leftIdx = idx;
       }
+      stack.push([leftIdx, heights[i]]);
     }
-    return fleet;
+
+    while (stack.length) {
+      const [idx, height] = stack.pop();
+      maxArea = Math.max(maxArea, height * (heights.length - idx));
+    }
+
+    return maxArea;
   }
 }
 
-// Time complexity: O(nlogn)
+// Time complexity: O(n)
 // Space complexity: O(n)
