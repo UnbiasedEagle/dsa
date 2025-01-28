@@ -1,30 +1,42 @@
 class Solution {
   /**
-   * @param {number[]} heights
-   * @return {number}
+   * @param {number[][]} matrix
+   * @param {number} target
+   * @return {boolean}
    */
-  largestRectangleArea(heights) {
-    let maxArea = 0;
-    const stack = [];
-
-    for (let i = 0; i < heights.length; i++) {
-      let leftIdx = i;
-      while (stack.length && stack[stack.length - 1][1] > heights[i]) {
-        const [idx, height] = stack.pop();
-        maxArea = Math.max(maxArea, height * (i - idx));
-        leftIdx = idx;
+  binarySearch(arr, target) {
+    let start = 0;
+    let end = arr.length - 1;
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
+      if (arr[mid] === target) {
+        return true;
+      } else if (arr[mid] < target) {
+        start = mid + 1;
+      } else {
+        end = mid - 1;
       }
-      stack.push([leftIdx, heights[i]]);
     }
+    return false;
+  }
 
-    while (stack.length) {
-      const [idx, height] = stack.pop();
-      maxArea = Math.max(maxArea, height * (heights.length - idx));
+  searchMatrix(matrix, target) {
+    let start = 0;
+    let end = matrix.length - 1;
+
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
+      if (target < matrix[mid][0]) {
+        end = mid - 1;
+      } else if (target > matrix[mid][matrix[mid].length - 1]) {
+        start = mid + 1;
+      } else {
+        return this.binarySearch(matrix[mid], target);
+      }
     }
-
-    return maxArea;
+    return false;
   }
 }
 
-// Time complexity: O(n)
-// Space complexity: O(n)
+// Time complexity: O(log(m) + log(n))
+// Space complexity: O(1)
