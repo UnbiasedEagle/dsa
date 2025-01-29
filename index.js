@@ -10,20 +10,28 @@
 
 class Solution {
   /**
-   * @param {ListNode} head
+   * @param {ListNode} list1
+   * @param {ListNode} list2
    * @return {ListNode}
    */
-  reverseList(head) {
-    let prev = null;
-    let current = head;
-
-    while (current) {
-      const next = current.next;
-      current.next = prev;
-      prev = current;
-      current = next;
+  mergeTwoLists(list1, list2) {
+    const dummyNode = new ListNode();
+    let tail = dummyNode;
+    while (list1 && list2) {
+      if (list1.val <= list2.val) {
+        tail.next = list1;
+        list1 = list1.next;
+      } else {
+        tail.next = list2;
+        list2 = list2.next;
+      }
+      tail = tail.next;
     }
-
-    return prev;
+    if (list1) {
+      tail.next = list1;
+    } else {
+      tail.next = list2;
+    }
+    return dummyNode.next;
   }
 }
