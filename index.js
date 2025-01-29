@@ -1,37 +1,41 @@
-class Solution {
+class TimeMap {
+  constructor() {
+    this.keyStore = new Map();
+  }
+
   /**
-   * @param {number[]} nums
-   * @param {number} target
-   * @return {number}
+   * @param {string} key
+   * @param {string} value
+   * @param {number} timestamp
+   * @return {void}
    */
-  search(nums, target) {
-    let start = 0;
-    let end = nums.length - 1;
+  set(key, value, timestamp) {
+    if (!this.keyStore.has(key)) {
+      this.keyStore.set(key, []);
+    }
+    this.keyStore.get(key).push([value, timestamp]);
+  }
 
-    while (start <= end) {
-      const mid = Math.floor((start + end) / 2);
-
-      if (nums[mid] === target) {
-        return mid;
-      }
-
-      if (nums[mid] > nums[end]) {
-        if (target >= nums[start] && target < nums[mid]) {
-          end = mid - 1;
-        } else {
-          start = mid + 1;
-        }
+  /**
+   * @param {string} key
+   * @param {number} timestamp
+   * @return {string}
+   */
+  get(key, timestamp) {
+    const values = this.keyStore.get(key) || [];
+    let left = 0;
+    let right = values.length - 1;
+    let result = '';
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
+      const [value, time] = values[mid];
+      if (time <= timestamp) {
+        result = value;
+        left = mid + 1;
       } else {
-        if (target > nums[mid] && target <= nums[end]) {
-          start = mid + 1;
-        } else {
-          end = mid - 1;
-        }
+        right = mid - 1;
       }
     }
-    return -1;
+    return result;
   }
 }
-
-// Time Complexity: O(log n)
-// Space Complexity: O(1)
