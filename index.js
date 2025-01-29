@@ -10,28 +10,25 @@
 
 class Solution {
   /**
-   * @param {ListNode} list1
-   * @param {ListNode} list2
-   * @return {ListNode}
+   * @param {ListNode} head
+   * @return {boolean}
    */
-  mergeTwoLists(list1, list2) {
-    const dummyNode = new ListNode();
-    let tail = dummyNode;
-    while (list1 && list2) {
-      if (list1.val <= list2.val) {
-        tail.next = list1;
-        list1 = list1.next;
-      } else {
-        tail.next = list2;
-        list2 = list2.next;
+  hasCycle(head) {
+    if (!head || !head.next) {
+      return false;
+    }
+
+    let slow = head;
+    let fast = head.next;
+
+    while (slow !== fast) {
+      if (!fast || !fast.next) {
+        return false;
       }
-      tail = tail.next;
+      slow = slow.next;
+      fast = fast.next.next;
     }
-    if (list1) {
-      tail.next = list1;
-    } else {
-      tail.next = list2;
-    }
-    return dummyNode.next;
+
+    return true;
   }
 }
