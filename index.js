@@ -11,24 +11,56 @@
 class Solution {
   /**
    * @param {ListNode} head
-   * @return {boolean}
+   * @return {void}
    */
-  hasCycle(head) {
-    if (!head || !head.next) {
-      return false;
+
+  reverse(head) {
+    let prev = null;
+    let curr = head;
+    while (curr) {
+      let nextNode = curr.next;
+      curr.next = prev;
+      prev = curr;
+      curr = nextNode;
     }
+    return prev;
+  }
 
+  reorderList(head) {
+    if (!head || !head.next) {
+      return;
+    }
     let slow = head;
-    let fast = head.next;
-
-    while (slow !== fast) {
-      if (!fast || !fast.next) {
-        return false;
-      }
+    let fast = head;
+    while (fast && fast.next) {
       slow = slow.next;
       fast = fast.next.next;
     }
 
-    return true;
+    let nextNode = slow.next;
+    slow.next = null;
+    let rev = this.reverse(nextNode);
+
+    let dummy = new ListNode();
+    let tail1 = head;
+    let tail2 = rev;
+
+    while (tail1 && tail2) {
+      dummy.next = tail1;
+      tail1 = tail1.next;
+      dummy.next.next = tail2;
+      tail2 = tail2.next;
+      dummy = dummy.next.next;
+    }
+
+    if (tail1) {
+      dummy.next = tail1;
+    }
+
+    if (tail2) {
+      dummy.next = tail2;
+    }
+
+    head = dummy.next;
   }
 }
