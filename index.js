@@ -11,56 +11,25 @@
 class Solution {
   /**
    * @param {ListNode} head
-   * @return {void}
+   * @param {number} n
+   * @return {ListNode}
    */
-
-  reverse(head) {
-    let prev = null;
-    let curr = head;
-    while (curr) {
-      let nextNode = curr.next;
-      curr.next = prev;
-      prev = curr;
-      curr = nextNode;
-    }
-    return prev;
-  }
-
-  reorderList(head) {
-    if (!head || !head.next) {
-      return;
-    }
-    let slow = head;
+  removeNthFromEnd(head, n) {
+    const dummyNode = new ListNode(0, head);
+    let slow = dummyNode;
     let fast = head;
-    while (fast && fast.next) {
+
+    while (n > 0) {
+      fast = fast.next;
+      n--;
+    }
+
+    while (fast) {
       slow = slow.next;
-      fast = fast.next.next;
+      fast = fast.next;
     }
 
-    let nextNode = slow.next;
-    slow.next = null;
-    let rev = this.reverse(nextNode);
-
-    let dummy = new ListNode();
-    let tail1 = head;
-    let tail2 = rev;
-
-    while (tail1 && tail2) {
-      dummy.next = tail1;
-      tail1 = tail1.next;
-      dummy.next.next = tail2;
-      tail2 = tail2.next;
-      dummy = dummy.next.next;
-    }
-
-    if (tail1) {
-      dummy.next = tail1;
-    }
-
-    if (tail2) {
-      dummy.next = tail2;
-    }
-
-    head = dummy.next;
+    slow.next = slow.next.next;
+    return dummyNode.next;
   }
 }
