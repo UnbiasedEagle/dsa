@@ -1,33 +1,36 @@
-// class Node {
-//   constructor(val, next = null, random = null) {
-//       this.val = val;
-//       this.next = next;
-//       this.random = random;
-//   }
-// }
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
 
 class Solution {
   /**
-   * @param {Node} head
-   * @return {Node}
+   * @param {ListNode} l1
+   * @param {ListNode} l2
+   * @return {ListNode}
    */
-  copyRandomList(head) {
-    if (!head) return null;
-    const map = new Map();
+  addTwoNumbers(l1, l2) {
+    const dummy = new ListNode();
+    let tail = dummy;
+    let current1 = l1;
+    let current2 = l2;
+    let carry = 0;
 
-    let current = head;
-    while (current) {
-      map.set(current, new Node(current.val));
-      current = current.next;
+    while (current1 || current2 || carry) {
+      const sum =
+        (current1 ? current1.val : 0) + (current2 ? current2.val : 0) + carry;
+      carry = Math.floor(sum / 10);
+      tail.next = new ListNode(sum % 10);
+      tail = tail.next;
+      current1 = current1 ? current1.next : null;
+      current2 = current2 ? current2.next : null;
     }
 
-    current = head;
-    while (current) {
-      map.get(current).next = map.get(current.next) || null;
-      map.get(current).random = map.get(current.random) || null;
-      current = current.next;
-    }
-
-    return map.get(head);
+    return dummy.next;
   }
 }
