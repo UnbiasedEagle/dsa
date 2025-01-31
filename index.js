@@ -1,35 +1,33 @@
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     constructor(val = 0, next = null) {
- *         this.val = val;
- *         this.next = next;
- *     }
- * }
- */
+// class Node {
+//   constructor(val, next = null, random = null) {
+//       this.val = val;
+//       this.next = next;
+//       this.random = random;
+//   }
+// }
 
 class Solution {
   /**
-   * @param {ListNode} head
-   * @param {number} n
-   * @return {ListNode}
+   * @param {Node} head
+   * @return {Node}
    */
-  removeNthFromEnd(head, n) {
-    const dummyNode = new ListNode(0, head);
-    let slow = dummyNode;
-    let fast = head;
+  copyRandomList(head) {
+    if (!head) return null;
+    const map = new Map();
 
-    while (n > 0) {
-      fast = fast.next;
-      n--;
+    let current = head;
+    while (current) {
+      map.set(current, new Node(current.val));
+      current = current.next;
     }
 
-    while (fast) {
-      slow = slow.next;
-      fast = fast.next;
+    current = head;
+    while (current) {
+      map.get(current).next = map.get(current.next) || null;
+      map.get(current).random = map.get(current.random) || null;
+      current = current.next;
     }
 
-    slow.next = slow.next.next;
-    return dummyNode.next;
+    return map.get(head);
   }
 }
