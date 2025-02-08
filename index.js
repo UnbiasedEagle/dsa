@@ -14,12 +14,33 @@ class Solution {
    * @param {TreeNode} root
    * @return {number}
    */
-  maxDepth(root) {
-    if (!root) return 0;
 
-    const left = this.maxDepth(root.left);
-    const right = this.maxDepth(root.right);
+  helper(root) {
+    if (root === null) {
+      return {
+        height: 0,
+        diameter: 0,
+      };
+    }
 
-    return Math.max(left, right) + 1;
+    const leftHeight = this.helper(root.left);
+    const rightHeight = this.helper(root.right);
+
+    const height = Math.max(leftHeight.height, rightHeight.height) + 1;
+
+    const diameter = Math.max(
+      leftHeight.diameter,
+      rightHeight.diameter,
+      leftHeight.height + rightHeight.height
+    );
+
+    return {
+      height,
+      diameter,
+    };
+  }
+
+  diameterOfBinaryTree(root) {
+    return this.helper(root).diameter;
   }
 }
