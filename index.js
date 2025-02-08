@@ -1,69 +1,103 @@
-class Node {
-  constructor(key, value) {
-    this.key = key;
-    this.value = value;
-    this.next = null;
-    this.prev = null;
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     constructor(val = 0, next = null) {
+ *         this.val = val;
+ *         this.next = next;
+ *     }
+ * }
+ */
+
+class Solution {
+  /**
+   * @param {ListNode[]} lists
+   * @return {ListNode}
+   */
+  mergeKLists(lists) {
+    const minHeap = new MinHeap();
+    for (let i = 0; i < lists.length; i++) {
+      let node = lists[i];
+      while (node) {
+        minHeap.insert(node);
+        node = node.next;
+      }
+    }
+
+    const dummyNode = new ListNode(0);
+    let current = dummyNode;
+
+    while (minHeap.heap.length > 0) {
+      const node = minHeap.extractMin();
+      current.next = node;
+      current = current.next;
+    }
+
+    return dummyNode.next;
   }
 }
 
-class LRUCache {
-  /**
-   * @param {number} capacity
-   */
-  constructor(capacity) {
-    this.capacity = capacity;
-    this.map = new Map();
-    this.head = new Node();
-    this.tail = new Node();
-    this.head.next = this.tail;
-    this.tail.prev = this.head;
+class MinHeap {
+  constructor() {
+    this.heap = [];
   }
 
-  /**
-   * @param {number} key
-   * @return {number}
-   */
-  get(key) {
-    if (!this.map.has(key)) return -1;
-    const node = this.map.get(key);
-    this.removeNode(node);
-    this.addNode(node);
-    return node.value;
+  insert(value) {
+    this.heap.push(value);
+    this.bubbleUp(this.heap.length - 1);
   }
 
-  /**
-   * @param {number} key
-   * @param {number} value
-   * @return {void}
-   */
-  put(key, value) {
-    if (this.map.has(key)) {
-      const node = this.map.get(key);
-      node.value = value;
-      this.removeNode(node);
-      this.addNode(node);
-      return;
+  bubbleUp(index) {
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+
+      if (this.heap[index].val < this.heap[parentIndex].val) {
+        const temp = this.heap[index];
+        this.heap[index] = this.heap[parentIndex];
+        this.heap[parentIndex] = temp;
+      }
+
+      index = parentIndex;
     }
-    if (this.map.size >= this.capacity) {
-      const node = this.head.next;
-      this.removeNode(node);
-      this.map.delete(node.key);
+  }
+
+  extractMin() {
+    if (this.heap.length < 2) {
+      return this.heap.pop();
     }
-    const node = new Node(key, value);
-    this.map.set(key, node);
-    this.addNode(node);
+    const min = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    this.bubbleDown(0);
+    return min;
   }
 
-  removeNode(node) {
-    node.prev.next = node.next;
-    node.next.prev = node.prev;
-  }
+  bubbleDown(index) {
+    while (true) {
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
 
-  addNode(node) {
-    node.prev = this.tail.prev;
-    node.next = this.tail;
-    this.tail.prev.next = node;
-    this.tail.prev = node;
+      let minIndex = index;
+
+      if (leftChildIndex < this.heap.length) {
+        if (this.heap[leftChildIndex].val < this.heap[minIndex].val) {
+          minIndex = leftChildIndex;
+        }
+      }
+
+      if (rightChildIndex < this.heap.length) {
+        if (this.heap[rightChildIndex].val < this.heap[minIndex].val) {
+          minIndex = rightChildIndex;
+        }
+      }
+
+      if (minIndex === index) {
+        break;
+      }
+
+      const temp = this.heap[index];
+      this.heap[index] = this.heap[minIndex];
+      this.heap[minIndex] = temp;
+
+      index = minIndex;
+    }
   }
 }
