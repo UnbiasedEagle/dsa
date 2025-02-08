@@ -1,50 +1,25 @@
 /**
- * Definition for singly-linked list.
- * class ListNode {
- *     constructor(val = 0, next = null) {
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
  *         this.val = val;
- *         this.next = next;
+ *         this.left = left;
+ *         this.right = right;
  *     }
  * }
  */
 
 class Solution {
   /**
-   * @param {ListNode} head
-   * @param {number} k
-   * @return {ListNode}
+   * @param {TreeNode} root
+   * @return {number}
    */
-  reverseKGroup(head, k) {
-    // single node
-    if (!head || !head.next) return head;
+  maxDepth(root) {
+    if (!root) return 0;
 
-    let current = head;
-    let count = 0;
+    const left = this.maxDepth(root.left);
+    const right = this.maxDepth(root.right);
 
-    while (current && count < k - 1) {
-      current = current.next;
-      count++;
-    }
-
-    if (!current) return head;
-
-    let nextNode = current.next;
-    current.next = null;
-    let reversed = this.reverseKGroup(nextNode, k);
-    const newHead = this.reverse(head);
-    head.next = reversed;
-    return newHead;
-  }
-
-  reverse(head) {
-    let current = head;
-    let prev = null;
-    while (current) {
-      let next = current.next;
-      current.next = prev;
-      prev = current;
-      current = next;
-    }
-    return prev;
+    return Math.max(left, right) + 1;
   }
 }
