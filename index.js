@@ -11,30 +11,19 @@
 
 class Solution {
   /**
-   * @param {TreeNode} root
+   * @param {TreeNode} p
+   * @param {TreeNode} q
    * @return {boolean}
    */
+  isSameTree(p, q) {
+    if (p === null && q === null) return true;
 
-  helper(root) {
-    if (root == null) {
-      return {
-        height: 0,
-        balanced: true,
-      };
-    }
-    const left = this.helper(root.left);
-    const right = this.helper(root.right);
-    const height = Math.max(left.height, right.height) + 1;
-    return {
-      height,
-      balanced:
-        left.balanced &&
-        right.balanced &&
-        Math.abs(left.height - right.height) <= 1,
-    };
-  }
+    if (p === null || q === null) return false;
 
-  isBalanced(root) {
-    return this.helper(root).balanced;
+    return (
+      p.val === q.val &&
+      this.isSameTree(p.left, q.left) &&
+      this.isSameTree(p.right, q.right)
+    );
   }
 }
