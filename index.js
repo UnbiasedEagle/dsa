@@ -12,35 +12,29 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @return {number}
+   * @return {boolean}
    */
 
   helper(root) {
-    if (root === null) {
+    if (root == null) {
       return {
         height: 0,
-        diameter: 0,
+        balanced: true,
       };
     }
-
-    const leftHeight = this.helper(root.left);
-    const rightHeight = this.helper(root.right);
-
-    const height = Math.max(leftHeight.height, rightHeight.height) + 1;
-
-    const diameter = Math.max(
-      leftHeight.diameter,
-      rightHeight.diameter,
-      leftHeight.height + rightHeight.height
-    );
-
+    const left = this.helper(root.left);
+    const right = this.helper(root.right);
+    const height = Math.max(left.height, right.height) + 1;
     return {
       height,
-      diameter,
+      balanced:
+        left.balanced &&
+        right.balanced &&
+        Math.abs(left.height - right.height) <= 1,
     };
   }
 
-  diameterOfBinaryTree(root) {
-    return this.helper(root).diameter;
+  isBalanced(root) {
+    return this.helper(root).balanced;
   }
 }
