@@ -11,19 +11,27 @@
 
 class Solution {
   /**
+   * @param {TreeNode} root
    * @param {TreeNode} p
    * @param {TreeNode} q
-   * @return {boolean}
+   * @return {TreeNode}
    */
-  isSameTree(p, q) {
-    if (p === null && q === null) return true;
+  lowestCommonAncestor(root, p, q) {
+    if (!root) {
+      return null;
+    }
 
-    if (p === null || q === null) return false;
+    if (root.val === p.val || root.val === q.val) {
+      return root;
+    }
 
-    return (
-      p.val === q.val &&
-      this.isSameTree(p.left, q.left) &&
-      this.isSameTree(p.right, q.right)
-    );
+    const left = this.lowestCommonAncestor(root.left, p, q);
+    const right = this.lowestCommonAncestor(root.right, p, q);
+
+    if (left && right) {
+      return root;
+    }
+
+    return left || right;
   }
 }
