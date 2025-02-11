@@ -12,26 +12,27 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @param {TreeNode} p
-   * @param {TreeNode} q
-   * @return {TreeNode}
+   * @return {number[][]}
    */
-  lowestCommonAncestor(root, p, q) {
-    if (!root) {
-      return null;
+  levelOrder(root) {
+    if (!root) return [];
+
+    const result = [];
+    const queue = [root, null];
+    let level = [];
+
+    while (queue.length) {
+      const node = queue.shift();
+      if (node) {
+        level.push(node.val);
+        if (node.left) queue.push(node.left);
+        if (node.right) queue.push(node.right);
+      } else {
+        result.push(level);
+        level = [];
+        if (queue.length) queue.push(null);
+      }
     }
-
-    if (root.val === p.val || root.val === q.val) {
-      return root;
-    }
-
-    const left = this.lowestCommonAncestor(root.left, p, q);
-    const right = this.lowestCommonAncestor(root.right, p, q);
-
-    if (left && right) {
-      return root;
-    }
-
-    return left || right;
+    return result;
   }
 }
