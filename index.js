@@ -12,27 +12,33 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @return {number[][]}
+   * @return {number[]}
    */
-  levelOrder(root) {
+  rightSideView(root) {
     if (!root) return [];
 
     const result = [];
     const queue = [root, null];
-    let level = [];
+    let prev = null;
 
     while (queue.length) {
       const node = queue.shift();
       if (node) {
-        level.push(node.val);
-        if (node.left) queue.push(node.left);
-        if (node.right) queue.push(node.right);
+        prev = node;
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
       } else {
-        result.push(level);
-        level = [];
-        if (queue.length) queue.push(null);
+        result.push(prev.val);
+        if (queue.length) {
+          queue.push(null);
+        }
       }
     }
+
     return result;
   }
 }
