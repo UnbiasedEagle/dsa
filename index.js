@@ -12,33 +12,25 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @return {number[]}
+   * @return {number}
    */
-  rightSideView(root) {
-    if (!root) return [];
-
+  goodNodes(root) {
     const result = [];
-    const queue = [root, null];
-    let prev = null;
 
-    while (queue.length) {
-      const node = queue.shift();
-      if (node) {
-        prev = node;
-        if (node.left) {
-          queue.push(node.left);
-        }
-        if (node.right) {
-          queue.push(node.right);
-        }
-      } else {
-        result.push(prev.val);
-        if (queue.length) {
-          queue.push(null);
-        }
+    const dfs = (node, maxValue = Number.MIN_SAFE_INTEGER) => {
+      if (node === null) return;
+
+      if (node.val > maxValue) {
+        maxValue = node.val;
+        result.push(node.val);
       }
-    }
 
-    return result;
+      dfs(node.left, maxValue);
+      dfs(node.right, maxValue);
+    };
+
+    dfs(root);
+
+    return result.length;
   }
 }
