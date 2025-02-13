@@ -12,21 +12,22 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @return {boolean}
+   * @param {number} k
+   * @return {number}
    */
 
-  helper(root, min, max) {
-    if (root === null) return true;
+  kthSmallest(root, k) {
+    const arr = [];
 
-    if (root.val <= min || root.val >= max) return false;
+    const inorderTraversal = (root) => {
+      if (!root) return;
+      inorderTraversal(root.left);
+      arr.push(root.val);
+      inorderTraversal(root.right);
+    };
 
-    return (
-      this.helper(root.right, root.val, max) &&
-      this.helper(root.left, min, root.val)
-    );
-  }
+    inorderTraversal(root);
 
-  isValidBST(root) {
-    return this.helper(root, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+    return arr[k - 1];
   }
 }
