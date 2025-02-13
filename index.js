@@ -12,25 +12,21 @@
 class Solution {
   /**
    * @param {TreeNode} root
-   * @return {number}
+   * @return {boolean}
    */
-  goodNodes(root) {
-    const result = [];
 
-    const dfs = (node, maxValue = Number.MIN_SAFE_INTEGER) => {
-      if (node === null) return;
+  helper(root, min, max) {
+    if (root === null) return true;
 
-      if (node.val > maxValue) {
-        maxValue = node.val;
-        result.push(node.val);
-      }
+    if (root.val <= min || root.val >= max) return false;
 
-      dfs(node.left, maxValue);
-      dfs(node.right, maxValue);
-    };
+    return (
+      this.helper(root.right, root.val, max) &&
+      this.helper(root.left, min, root.val)
+    );
+  }
 
-    dfs(root);
-
-    return result.length;
+  isValidBST(root) {
+    return this.helper(root, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
   }
 }
