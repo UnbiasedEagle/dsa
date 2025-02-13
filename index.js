@@ -11,23 +11,23 @@
 
 class Solution {
   /**
-   * @param {TreeNode} root
-   * @param {number} k
-   * @return {number}
+   * @param {number[]} preorder
+   * @param {number[]} inorder
+   * @return {TreeNode}
    */
-
-  kthSmallest(root, k) {
-    const arr = [];
-
-    const inorderTraversal = (root) => {
-      if (!root) return;
-      inorderTraversal(root.left);
-      arr.push(root.val);
-      inorderTraversal(root.right);
-    };
-
-    inorderTraversal(root);
-
-    return arr[k - 1];
+  buildTree(preorder, inorder) {
+    let idx = -1;
+    function build(left, right) {
+      if (left > right) {
+        return null;
+      }
+      idx++;
+      let root = new TreeNode(preorder[idx]);
+      const index = inorder.indexOf(preorder[idx]);
+      root.left = build(left, index - 1);
+      root.right = build(index + 1, right);
+      return root;
+    }
+    return build(0, preorder.length - 1);
   }
 }
