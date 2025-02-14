@@ -1,41 +1,52 @@
-/**
- * Definition for a binary tree node.
- * class TreeNode {
- *     constructor(val = 0, left = null, right = null) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-
-class Solution {
+class Codec {
   /**
+   * Encodes a tree to a single string.
+   *
    * @param {TreeNode} root
-   * @return {number}
+   * @return {string}
    */
-  maxPathSum(root) {
-    let maxSum = Number.MIN_SAFE_INTEGER;
+  serialize(root) {
+    if (!root) {
+      return 'null';
+    }
 
-    const dfs = (node) => {
-      if (!node) return Number.MIN_SAFE_INTEGER;
-      const left = dfs(node.left);
-      const right = dfs(node.right);
+    const left = this.serialize(root.left);
+    const right = this.serialize(root.right);
 
-      const sum = Math.max(
-        node.val,
-        node.val + left,
-        node.val + right,
-        node.val + left + right
-      );
+    let result = root.val;
+    result += ',' + left;
+    result += ',' + right;
+    return result;
+  }
 
-      maxSum = Math.max(maxSum, sum);
+  /**
+   * Decodes your encoded data to tree.
+   *
+   * @param {string} data
+   * @return {TreeNode}
+   */
+  deserialize(data) {
+    const nodes = data.split(',');
 
-      return Math.max(node.val, node.val + left, node.val + right);
+    let index = 0;
+
+    const dfs = () => {
+      if (index >= nodes.length) {
+        return null;
+      }
+
+      if (nodes[index] === 'null') {
+        return null;
+      }
+
+      const node = new TreeNode(parseInt(nodes[index]));
+      index++;
+      node.left = dfs();
+      index++;
+      node.right = dfs();
+      return node;
     };
 
-    dfs(root);
-
-    return maxSum;
+    return dfs();
   }
 }
