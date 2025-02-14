@@ -11,23 +11,31 @@
 
 class Solution {
   /**
-   * @param {number[]} preorder
-   * @param {number[]} inorder
-   * @return {TreeNode}
+   * @param {TreeNode} root
+   * @return {number}
    */
-  buildTree(preorder, inorder) {
-    let idx = -1;
-    function build(left, right) {
-      if (left > right) {
-        return null;
-      }
-      idx++;
-      let root = new TreeNode(preorder[idx]);
-      const index = inorder.indexOf(preorder[idx]);
-      root.left = build(left, index - 1);
-      root.right = build(index + 1, right);
-      return root;
-    }
-    return build(0, preorder.length - 1);
+  maxPathSum(root) {
+    let maxSum = Number.MIN_SAFE_INTEGER;
+
+    const dfs = (node) => {
+      if (!node) return Number.MIN_SAFE_INTEGER;
+      const left = dfs(node.left);
+      const right = dfs(node.right);
+
+      const sum = Math.max(
+        node.val,
+        node.val + left,
+        node.val + right,
+        node.val + left + right
+      );
+
+      maxSum = Math.max(maxSum, sum);
+
+      return Math.max(node.val, node.val + left, node.val + right);
+    };
+
+    dfs(root);
+
+    return maxSum;
   }
 }
