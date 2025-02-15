@@ -1,52 +1,70 @@
-class Codec {
-  /**
-   * Encodes a tree to a single string.
-   *
-   * @param {TreeNode} root
-   * @return {string}
-   */
-  serialize(root) {
-    if (!root) {
-      return 'null';
-    }
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.children = new Map();
+    this.isEnd = false;
+  }
+}
 
-    const left = this.serialize(root.left);
-    const right = this.serialize(root.right);
-
-    let result = root.val;
-    result += ',' + left;
-    result += ',' + right;
-    return result;
+class PrefixTree {
+  constructor() {
+    this.root = new Node();
   }
 
   /**
-   * Decodes your encoded data to tree.
-   *
-   * @param {string} data
-   * @return {TreeNode}
+   * @param {string} word
+   * @return {void}
    */
-  deserialize(data) {
-    const nodes = data.split(',');
+  insert(word) {
+    let node = this.root;
 
-    let index = 0;
-
-    const dfs = () => {
-      if (index >= nodes.length) {
-        return null;
+    for (let i = 0; i < word.length; i++) {
+      const char = word[i];
+      if (!node.children.has(char)) {
+        const newNode = new Node();
+        node.children.set(char, newNode);
       }
+      node = node.children.get(char);
 
-      if (nodes[index] === 'null') {
-        return null;
+      if (i === word.length - 1) {
+        node.isEnd = true;
       }
+    }
+  }
 
-      const node = new TreeNode(parseInt(nodes[index]));
-      index++;
-      node.left = dfs();
-      index++;
-      node.right = dfs();
-      return node;
-    };
+  /**
+   * @param {string} word
+   * @return {boolean}
+   */
+  search(word) {
+    let node = this.root;
 
-    return dfs();
+    for (let i = 0; i < word.length; i++) {
+      const char = word[i];
+      if (!node.children.has(char)) {
+        return false;
+      }
+      node = node.children.get(char);
+    }
+
+    return node.isEnd;
+  }
+
+  /**
+   * @param {string} prefix
+   * @return {boolean}
+   */
+  startsWith(prefix) {
+    let node = this.root;
+
+    for (let i = 0; i < prefix.length; i++) {
+      const char = prefix[i];
+      if (!node.children.has(char)) {
+        return false;
+      }
+      node = node.children.get(char);
+    }
+
+    return true;
   }
 }
