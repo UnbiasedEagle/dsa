@@ -1,12 +1,12 @@
 class Node {
-  constructor(val) {
-    this.val = val;
+  constructor(value) {
+    this.value = value;
     this.children = new Map();
     this.isEnd = false;
   }
 }
 
-class PrefixTree {
+class WordDictionary {
   constructor() {
     this.root = new Node();
   }
@@ -15,56 +15,50 @@ class PrefixTree {
    * @param {string} word
    * @return {void}
    */
-  insert(word) {
+  addWord(word) {
     let node = this.root;
-
     for (let i = 0; i < word.length; i++) {
       const char = word[i];
       if (!node.children.has(char)) {
-        const newNode = new Node();
-        node.children.set(char, newNode);
+        node.children.set(char, new Node(char));
       }
       node = node.children.get(char);
-
-      if (i === word.length - 1) {
-        node.isEnd = true;
-      }
     }
+    node.isEnd = true;
   }
 
   /**
    * @param {string} word
    * @return {boolean}
    */
-  search(word) {
-    let node = this.root;
 
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      if (!node.children.has(char)) {
-        return false;
-      }
-      node = node.children.get(char);
+  helper(node, word) {
+    if (node.isEnd && word.length === 0) {
+      return true;
     }
 
-    return node.isEnd;
+    if (word.length === 0) {
+      return false;
+    }
+    const char = word[0];
+
+    if (char === '.') {
+      for (const [key, value] of node.children) {
+        if (this.helper(value, word.slice(1))) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    if (node.children.has(char)) {
+      return this.helper(node.children.get(char), word.slice(1));
+    }
+
+    return false;
   }
 
-  /**
-   * @param {string} prefix
-   * @return {boolean}
-   */
-  startsWith(prefix) {
-    let node = this.root;
-
-    for (let i = 0; i < prefix.length; i++) {
-      const char = prefix[i];
-      if (!node.children.has(char)) {
-        return false;
-      }
-      node = node.children.get(char);
-    }
-
-    return true;
+  search(word) {
+    return this.helper(this.root, word);
   }
 }
