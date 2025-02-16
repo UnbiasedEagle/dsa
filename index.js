@@ -1,64 +1,74 @@
 class Node {
-  constructor(value) {
-    this.value = value;
-    this.children = new Map();
+  constructor(val) {
+    this.val = val;
     this.isEnd = false;
+    this.children = new Map();
   }
 }
 
-class WordDictionary {
-  constructor() {
-    this.root = new Node();
-  }
-
+class Solution {
   /**
-   * @param {string} word
-   * @return {void}
-   */
-  addWord(word) {
-    let node = this.root;
-    for (let i = 0; i < word.length; i++) {
-      const char = word[i];
-      if (!node.children.has(char)) {
-        node.children.set(char, new Node(char));
-      }
-      node = node.children.get(char);
-    }
-    node.isEnd = true;
-  }
-
-  /**
-   * @param {string} word
-   * @return {boolean}
+   * @param {character[][]} board
+   * @param {string[]} words
+   * @return {string[]}
    */
 
-  helper(node, word) {
-    if (node.isEnd && word.length === 0) {
-      return true;
-    }
-
-    if (word.length === 0) {
-      return false;
-    }
-    const char = word[0];
-
-    if (char === '.') {
-      for (const [key, value] of node.children) {
-        if (this.helper(value, word.slice(1))) {
-          return true;
+  buildTrie(words) {
+    let root = new Node(null);
+    for (let word of words) {
+      let node = root;
+      for (let char of word) {
+        if (!node.children.has(char)) {
+          node.children.set(char, new Node(char));
         }
+        node = node.children.get(char);
       }
-      return false;
+      node.isEnd = true;
     }
-
-    if (node.children.has(char)) {
-      return this.helper(node.children.get(char), word.slice(1));
-    }
-
-    return false;
+    return root;
   }
 
-  search(word) {
-    return this.helper(this.root, word);
+  dfs(board, trie, i, j, result, path) {
+    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
+      return;
+    }
+
+    if (board[i][j] === '.') {
+      return;
+    }
+
+    const node = trie.children.get(board[i][j]);
+
+    if (!node) {
+      return;
+    }
+
+    if (node.isEnd) {
+      result.add(path + node.val);
+    }
+
+    board[i][j] = '.';
+
+    this.dfs(board, node, i + 1, j, result, path + node.val);
+    this.dfs(board, node, i - 1, j, result, path + node.val);
+    this.dfs(board, node, i, j + 1, result, path + node.val);
+    this.dfs(board, node, i, j - 1, result, path + node.val);
+
+    board[i][j] = node.val;
+  }
+
+  findWords(board, words) {
+    const row = board.length;
+    const col = board[0].length;
+    const trie = this.buildTrie(words);
+    const result = new Set();
+
+    for (let i = 0; i < row; i++) {
+      for (let j = 0; j < col; j++) {
+        this.dfs(board, trie, i, j, result, '');
+      }
+    }
+
+    return Array.from(result);
   }
 }
