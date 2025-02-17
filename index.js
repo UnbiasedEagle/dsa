@@ -1,92 +1,104 @@
-class KthLargest {
+class Solution {
   /**
-   * @param {number} k
-   * @param {number[]} nums
-   */
-  constructor(k, nums) {
-    this.minHeap = new MinHeap(k);
-
-    for (const num of nums) {
-      this.minHeap.insert(num);
-    }
-  }
-
-  /**
-   * @param {number} val
+   * @param {number[]} stones
    * @return {number}
    */
-  add(val) {
-    this.minHeap.insert(val);
-    return this.minHeap.peek();
+  lastStoneWeight(stones) {
+    const maxHeap = new MaxHeap();
+
+    for (let i = 0; i < stones.length; i++) {
+      maxHeap.insert(stones[i]);
+    }
+
+    while (maxHeap.getSize() > 1) {
+      const max1 = maxHeap.extractMax();
+      const max2 = maxHeap.extractMax();
+
+      if (max1 === max2) {
+        continue;
+      }
+
+      maxHeap.insert(Math.abs(max1 - max2));
+    }
+
+    if (maxHeap.getSize() === 1) {
+      return maxHeap.extractMax();
+    }
+
+    return 0;
   }
 }
 
-class MinHeap {
-  constructor(size) {
-    this.maxSize = size;
-    this.heap = new Array(size);
-    this.size = 0;
+class MaxHeap {
+  constructor() {
+    this.heap = [];
   }
 
-  insert(val) {
-    if (this.size < this.maxSize) {
-      this.heap[this.size] = val;
-      this.size++;
-      this.siftUp(this.size - 1);
-      return;
-    }
-
-    if (this.heap[0] > val) {
-      return;
-    }
-
-    this.heap[0] = val;
-    this.siftDown(0);
+  insert(value) {
+    this.heap.push(value);
+    this.bubbleUp(this.heap.length - 1);
   }
 
-  siftUp(pos) {
-    while (pos > 0) {
-      const parentPose = Math.floor((pos - 1) / 2);
+  bubbleUp(index) {
+    while (index >= 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
 
-      if (parentPose < 0 || this.heap[parentPose] < this.heap[pos]) {
-        break;
+      if (parentIndex < 0 || this.heap[parentIndex] > this.heap[index]) {
+        return;
       }
 
-      [this.heap[parentPose], this.heap[pos]] = [
-        this.heap[pos],
-        this.heap[parentPose],
+      [this.heap[parentIndex], this.heap[index]] = [
+        this.heap[index],
+        this.heap[parentIndex],
       ];
 
-      pos = parentPose;
+      index = parentIndex;
     }
   }
 
-  siftDown(pos) {
+  extractMax() {
+    const max = this.heap[0];
+    this.heap[0] = this.heap[this.heap.length - 1];
+    this.heap.pop();
+    this.bubbleDown(0);
+    return max;
+  }
+
+  getSize() {
+    return this.heap.length;
+  }
+
+  bubbleDown(index) {
     while (true) {
-      const leftPos = pos * 2 + 1;
-      const rightPos = pos * 2 + 2;
+      const leftIndex = 2 * index + 1;
+      const rightIndex = 2 * index + 2;
 
-      let minPos = pos;
+      let maxIndex = index;
 
-      if (leftPos < this.size && this.heap[leftPos] < this.heap[minPos]) {
-        minPos = leftPos;
+      if (
+        leftIndex < this.heap.length &&
+        this.heap[leftIndex] > this.heap[maxIndex]
+      ) {
+        maxIndex = leftIndex;
       }
 
-      if (rightPos < this.size && this.heap[rightPos] < this.heap[minPos]) {
-        minPos = rightPos;
+      if (
+        rightIndex < this.heap.length &&
+        this.heap[rightIndex] > this.heap[maxIndex]
+      ) {
+        maxIndex = rightIndex;
       }
 
-      if (minPos === pos) {
-        break;
+      if (maxIndex === index) {
+        return;
       }
 
-      [this.heap[pos], this.heap[minPos]] = [this.heap[minPos], this.heap[pos]];
+      [this.heap[maxIndex], this.heap[index]] = [
+        this.heap[index],
+        this.heap[maxIndex],
+      ];
 
-      pos = minPos;
+      index = maxIndex;
     }
-  }
-
-  peek() {
-    return this.heap[0];
   }
 }
