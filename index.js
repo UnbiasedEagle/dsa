@@ -1,74 +1,92 @@
-class Node {
-  constructor(val) {
-    this.val = val;
-    this.isEnd = false;
-    this.children = new Map();
+class KthLargest {
+  /**
+   * @param {number} k
+   * @param {number[]} nums
+   */
+  constructor(k, nums) {
+    this.minHeap = new MinHeap(k);
+
+    for (const num of nums) {
+      this.minHeap.insert(num);
+    }
+  }
+
+  /**
+   * @param {number} val
+   * @return {number}
+   */
+  add(val) {
+    this.minHeap.insert(val);
+    return this.minHeap.peek();
   }
 }
 
-class Solution {
-  /**
-   * @param {character[][]} board
-   * @param {string[]} words
-   * @return {string[]}
-   */
-
-  buildTrie(words) {
-    let root = new Node(null);
-    for (let word of words) {
-      let node = root;
-      for (let char of word) {
-        if (!node.children.has(char)) {
-          node.children.set(char, new Node(char));
-        }
-        node = node.children.get(char);
-      }
-      node.isEnd = true;
-    }
-    return root;
+class MinHeap {
+  constructor(size) {
+    this.maxSize = size;
+    this.heap = new Array(size);
+    this.size = 0;
   }
 
-  dfs(board, trie, i, j, result, path) {
-    if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) {
+  insert(val) {
+    if (this.size < this.maxSize) {
+      this.heap[this.size] = val;
+      this.size++;
+      this.siftUp(this.size - 1);
       return;
     }
 
-    if (board[i][j] === '.') {
+    if (this.heap[0] > val) {
       return;
     }
 
-    const node = trie.children.get(board[i][j]);
-
-    if (!node) {
-      return;
-    }
-
-    if (node.isEnd) {
-      result.add(path + node.val);
-    }
-
-    board[i][j] = '.';
-
-    this.dfs(board, node, i + 1, j, result, path + node.val);
-    this.dfs(board, node, i - 1, j, result, path + node.val);
-    this.dfs(board, node, i, j + 1, result, path + node.val);
-    this.dfs(board, node, i, j - 1, result, path + node.val);
-
-    board[i][j] = node.val;
+    this.heap[0] = val;
+    this.siftDown(0);
   }
 
-  findWords(board, words) {
-    const row = board.length;
-    const col = board[0].length;
-    const trie = this.buildTrie(words);
-    const result = new Set();
+  siftUp(pos) {
+    while (pos > 0) {
+      const parentPose = Math.floor((pos - 1) / 2);
 
-    for (let i = 0; i < row; i++) {
-      for (let j = 0; j < col; j++) {
-        this.dfs(board, trie, i, j, result, '');
+      if (parentPose < 0 || this.heap[parentPose] < this.heap[pos]) {
+        break;
       }
-    }
 
-    return Array.from(result);
+      [this.heap[parentPose], this.heap[pos]] = [
+        this.heap[pos],
+        this.heap[parentPose],
+      ];
+
+      pos = parentPose;
+    }
+  }
+
+  siftDown(pos) {
+    while (true) {
+      const leftPos = pos * 2 + 1;
+      const rightPos = pos * 2 + 2;
+
+      let minPos = pos;
+
+      if (leftPos < this.size && this.heap[leftPos] < this.heap[minPos]) {
+        minPos = leftPos;
+      }
+
+      if (rightPos < this.size && this.heap[rightPos] < this.heap[minPos]) {
+        minPos = rightPos;
+      }
+
+      if (minPos === pos) {
+        break;
+      }
+
+      [this.heap[pos], this.heap[minPos]] = [this.heap[minPos], this.heap[pos]];
+
+      pos = minPos;
+    }
+  }
+
+  peek() {
+    return this.heap[0];
   }
 }
