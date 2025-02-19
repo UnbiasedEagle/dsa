@@ -1,50 +1,51 @@
 class Solution {
   /**
-   * @param {number[]} stones
-   * @return {number}
+   * @param {number[][]} points
+   * @param {number} k
+   * @return {number[][]}
    */
-  lastStoneWeight(stones) {
-    const maxHeap = new MaxHeap();
-
-    for (let i = 0; i < stones.length; i++) {
-      maxHeap.insert(stones[i]);
+  kClosest(points, k) {
+    const maxHeap = new MaxHeap(k);
+    for (let i = 0; i < points.length; i++) {
+      const distance = points[i][0] ** 2 + points[i][1] ** 2;
+      maxHeap.insert({ point: points[i], distance });
     }
-
-    while (maxHeap.getSize() > 1) {
-      const max1 = maxHeap.extractMax();
-      const max2 = maxHeap.extractMax();
-
-      if (max1 === max2) {
-        continue;
-      }
-
-      maxHeap.insert(Math.abs(max1 - max2));
+    const result = [];
+    while (maxHeap.size > 0) {
+      const max = maxHeap.getMax();
+      result.push(max.point);
     }
-
-    if (maxHeap.getSize() === 1) {
-      return maxHeap.extractMax();
-    }
-
-    return 0;
+    return result;
   }
 }
 
 class MaxHeap {
-  constructor() {
+  constructor(maxSize) {
+    this.maxSize = maxSize;
     this.heap = [];
+    this.size = 0;
   }
 
-  insert(value) {
-    this.heap.push(value);
-    this.bubbleUp(this.heap.length - 1);
+  insert(element) {
+    if (this.size < this.maxSize) {
+      this.heap.push(element);
+      this.size++;
+      this.bubbleUp(this.size - 1);
+    } else if (element.distance < this.heap[0].distance) {
+      this.heap[0] = element;
+      this.bubbleDown(0);
+    }
   }
 
   bubbleUp(index) {
-    while (index >= 0) {
+    while (index > 0) {
       const parentIndex = Math.floor((index - 1) / 2);
 
-      if (parentIndex < 0 || this.heap[parentIndex] > this.heap[index]) {
-        return;
+      if (
+        parentIndex < 0 ||
+        this.heap[parentIndex].distance > this.heap[index].distance
+      ) {
+        break;
       }
 
       [this.heap[parentIndex], this.heap[index]] = [
@@ -56,49 +57,46 @@ class MaxHeap {
     }
   }
 
-  extractMax() {
-    const max = this.heap[0];
-    this.heap[0] = this.heap[this.heap.length - 1];
+  getMax() {
+    const maxi = this.heap[0];
+    this.heap[0] = this.heap[this.size - 1];
     this.heap.pop();
+    this.size--;
     this.bubbleDown(0);
-    return max;
-  }
-
-  getSize() {
-    return this.heap.length;
+    return maxi;
   }
 
   bubbleDown(index) {
     while (true) {
-      const leftIndex = 2 * index + 1;
-      const rightIndex = 2 * index + 2;
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
 
-      let maxIndex = index;
+      let minIndex = index;
 
-      if (
-        leftIndex < this.heap.length &&
-        this.heap[leftIndex] > this.heap[maxIndex]
-      ) {
-        maxIndex = leftIndex;
+      if (leftChildIndex < this.size) {
+        if (this.heap[leftChildIndex].distance < this.heap[minIndex].distance) {
+          minIndex = leftChildIndex;
+        }
       }
 
-      if (
-        rightIndex < this.heap.length &&
-        this.heap[rightIndex] > this.heap[maxIndex]
-      ) {
-        maxIndex = rightIndex;
+      if (rightChildIndex < this.size) {
+        if (
+          this.heap[rightChildIndex].distance < this.heap[minIndex].distance
+        ) {
+          minIndex = rightChildIndex;
+        }
       }
 
-      if (maxIndex === index) {
-        return;
+      if (minIndex === index) {
+        break;
       }
 
-      [this.heap[maxIndex], this.heap[index]] = [
+      [this.heap[index], this.heap[minIndex]] = [
+        this.heap[minIndex],
         this.heap[index],
-        this.heap[maxIndex],
       ];
 
-      index = maxIndex;
+      index = minIndex;
     }
   }
 }
