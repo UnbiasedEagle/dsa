@@ -1,83 +1,121 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} k
+   * @param {character[]} tasks
+   * @param {number} n
    * @return {number}
    */
-  findKthLargest(nums, k) {
-    const minHeap = new MinHeap(k);
-    for (let i = 0; i < nums.length; i++) {
-      minHeap.insert(nums[i]);
+  leastInterval(tasks, n) {
+    const map = new Map();
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (map.has(tasks[i])) {
+        map.set(tasks[i], map.get(tasks[i]) + 1);
+      } else {
+        map.set(tasks[i], 1);
+      }
     }
-    return minHeap.getMax();
+
+    const heap = new MaxHeap();
+
+    for (const value of map.values()) {
+      heap.push(value);
+    }
+
+    let time = 0;
+    const queue = [];
+
+    while (heap.getLength() > 0 || queue.length > 0) {
+      time++;
+
+      if (queue.length > 0 && queue[0][1] <= time) {
+        heap.push(queue.shift()[0]);
+      }
+
+      if (heap.getLength() > 0) {
+        const element = heap.getMax();
+
+        if (element - 1 > 0) {
+          queue.push([element - 1, time + n + 1]);
+        }
+      }
+    }
+
+    return time;
   }
 }
 
-class MinHeap {
-  constructor(k) {
-    this.k = k;
+class MaxHeap {
+  constructor() {
     this.heap = [];
-    this.size = 0;
   }
 
-  insert(num) {
-    if (this.size < this.k) {
-      this.heap.push(num);
-      this.size++;
-      this.heapifyUp(this.size - 1);
-    } else if (num > this.heap[0]) {
-      this.heap[0] = num;
-      this.heapifyDown(0);
-    }
+  getLength() {
+    return this.heap.length;
+  }
+
+  push(element) {
+    this.heap.push(element);
+    this.heapifyUp(this.heap.length - 1);
   }
 
   getMax() {
-    return this.heap[0];
+    const max = this.heap[0];
+
+    if (this.heap.length === 1) {
+      this.heap.pop();
+      return max;
+    }
+
+    this.heap[0] = this.heap.pop();
+    this.heapifyDown(0);
+    return max;
   }
 
-  heapifyUp(i) {
-    while (i > 0) {
-      const parentIndex = Math.floor((i - 1) / 2);
+  heapifyUp(index) {
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
 
-      if (parentIndex < 0 || this.heap[parentIndex] < this.heap[i]) {
+      if (parentIndex < 0 || this.heap[parentIndex] > this.heap[index]) {
         break;
       }
 
-      [this.heap[i], this.heap[parentIndex]] = [
+      [this.heap[parentIndex], this.heap[index]] = [
+        this.heap[index],
         this.heap[parentIndex],
-        this.heap[i],
       ];
-      i = parentIndex;
+      index = parentIndex;
     }
   }
 
-  heapifyDown(i) {
+  heapifyDown(index) {
     while (true) {
-      let leftChildIndex = 2 * i + 1;
-      let rightChildIndex = 2 * i + 2;
-
-      let minIndex = i;
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
+      let minIndex = index;
 
       if (
-        leftChildIndex < this.size &&
-        this.heap[leftChildIndex] < this.heap[minIndex]
+        leftChildIndex < this.heap.length &&
+        this.heap[leftChildIndex] > this.heap[minIndex]
       ) {
         minIndex = leftChildIndex;
       }
 
       if (
-        rightChildIndex < this.size &&
-        this.heap[rightChildIndex] < this.heap[minIndex]
+        rightChildIndex < this.heap.length &&
+        this.heap[rightChildIndex] > this.heap[minIndex]
       ) {
         minIndex = rightChildIndex;
       }
 
-      if (minIndex === i) {
+      if (minIndex === index) {
         break;
       }
 
-      [this.heap[i], this.heap[minIndex]] = [this.heap[minIndex], this.heap[i]];
-      i = minIndex;
+      [this.heap[index], this.heap[minIndex]] = [
+        this.heap[minIndex],
+        this.heap[index],
+      ];
+      index = minIndex;
     }
   }
 }
