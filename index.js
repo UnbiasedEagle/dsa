@@ -1,13 +1,24 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {number}
+   * @param {number} n
+   * @return {number[]}
    */
-  singleNumber(nums) {
-    let result = 0;
-    for (let i = 0; i < nums.length; i++) {
-      result ^= nums[i];
+  countSetBits(n) {
+    let count = 0;
+    while (n) {
+      count++;
+      n = n & (n - 1);
     }
+    return count;
+  }
+
+  countBits(n) {
+    const result = [];
+
+    for (let i = 0; i <= n; i++) {
+      result.push(this.countSetBits(i));
+    }
+
     return result;
   }
 }
