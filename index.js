@@ -1,24 +1,23 @@
 class Solution {
   /**
-   * @param {number} n
-   * @return {number[]}
+   * @param {number[]} nums
+   * @return {number[][]}
    */
-  countSetBits(n) {
-    let count = 0;
-    while (n) {
-      count++;
-      n = n & (n - 1);
+
+  helper(nums, i, current, result) {
+    if (i === nums.length) {
+      result.push([...current]);
+      return;
     }
-    return count;
+    this.helper(nums, i + 1, current, result);
+    current.push(nums[i]);
+    this.helper(nums, i + 1, current, result);
+    current.pop();
   }
 
-  countBits(n) {
+  subsets(nums) {
     const result = [];
-
-    for (let i = 0; i <= n; i++) {
-      result.push(this.countSetBits(i));
-    }
-
+    this.helper(nums, 0, [], result);
     return result;
   }
 }
