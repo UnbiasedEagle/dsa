@@ -1,33 +1,33 @@
+/**
+ * Definition of Interval:
+ * class Interval {
+ *   constructor(start, end) {
+ *     this.start = start;
+ *     this.end = end;
+ *   }
+ * }
+ */
+
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} target
-   * @returns {number[][]}
+   * @param {Interval[]} intervals
+   * @returns {boolean}
    */
-
-  backtrack(idx, nums, target, result, current) {
-    if (target === 0) {
-      result.push([...current]);
-      return;
+  canAttendMeetings(intervals) {
+    if (intervals.length <= 1) {
+      return true;
     }
 
-    for (let i = idx; i < nums.length; i++) {
-      if (nums[i] > target) {
-        break;
+    intervals.sort((a, b) => a.start - b.start);
+    let end = intervals[0].end;
+
+    for (let i = 1; i < intervals.length; i++) {
+      if (intervals[i].start < end) {
+        return false;
       }
-      current.push(nums[i]);
-      this.backtrack(i, nums, target - nums[i], result, current);
-      current.pop();
+      end = intervals[i].end;
     }
-  }
 
-  combinationSum(nums, target) {
-    nums.sort((a, b) => a - b);
-    const result = [];
-    const current = [];
-
-    this.backtrack(0, nums, target, result, current);
-
-    return result;
+    return true;
   }
 }
