@@ -1,33 +1,42 @@
-/**
- * Definition of Interval:
- * class Interval {
- *   constructor(start, end) {
- *     this.start = start;
- *     this.end = end;
- *   }
- * }
- */
-
 class Solution {
   /**
-   * @param {Interval[]} intervals
-   * @returns {boolean}
+   * @param {number[][]} intervals
+   * @param {number[]} newInterval
+   * @return {number[][]}
    */
-  canAttendMeetings(intervals) {
-    if (intervals.length <= 1) {
-      return true;
+  insert(intervals, newInterval) {
+    if (intervals.length === 0) {
+      return [newInterval];
     }
 
-    intervals.sort((a, b) => a.start - b.start);
-    let end = intervals[0].end;
+    let i = 0;
 
-    for (let i = 1; i < intervals.length; i++) {
-      if (intervals[i].start < end) {
-        return false;
-      }
-      end = intervals[i].end;
+    while (i < intervals.length && intervals[i][1] < newInterval[0]) {
+      i++;
     }
 
-    return true;
+    if (i === intervals.length) {
+      return [...intervals, newInterval];
+    }
+
+    if (intervals[i][0] > newInterval[1]) {
+      return [...intervals.slice(0, i), newInterval, ...intervals.slice(i)];
+    }
+
+    const mergeStart = i;
+
+    let intervalStart = Math.min(intervals[i][0], newInterval[0]);
+    let intervalEnd = Math.max(intervals[i][1], newInterval[1]);
+
+    while (i < intervals.length && intervalEnd >= intervals[i][0]) {
+      intervalEnd = Math.max(intervals[i][1], intervalEnd);
+      i++;
+    }
+
+    return [
+      ...intervals.slice(0, mergeStart),
+      [intervalStart, intervalEnd],
+      ...intervals.slice(i),
+    ];
   }
 }
