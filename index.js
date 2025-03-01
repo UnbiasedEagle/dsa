@@ -1,26 +1,24 @@
 class Solution {
   /**
    * @param {number[][]} intervals
-   * @return {number[][]}
+   * @return {number}
    */
-  merge(intervals) {
-    intervals.sort((a, b) => a[0] - b[0]);
+  eraseOverlapIntervals(intervals) {
+    intervals.sort((a, b) => a[1] - b[1]);
 
-    const result = [];
-    let intervalStart = intervals[0][0];
-    let intervalEnd = intervals[0][1];
+    let count = 0;
+    let end = intervals[0][1];
 
     for (let i = 1; i < intervals.length; i++) {
-      if (intervals[i][0] > intervalEnd) {
-        result.push([intervalStart, intervalEnd]);
-        intervalStart = intervals[i][0];
-        intervalEnd = intervals[i][1];
+      if (intervals[i][0] < end) {
+        count++;
       } else {
-        intervalEnd = Math.max(intervalEnd, intervals[i][1]);
+        end = intervals[i][1];
       }
     }
 
-    result.push([intervalStart, intervalEnd]);
-    return result;
+    return count;
   }
 }
+
+const solution = new Solution();
