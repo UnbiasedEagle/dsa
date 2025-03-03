@@ -1,35 +1,30 @@
 class Solution {
   /**
-   * @param {number[]} candidates
-   * @param {number} target
+   * @param {number[]} nums
    * @return {number[][]}
    */
 
-  backtrack(candidates, target, path, result, index) {
-    if (target === 0) {
-      result.push([...path]);
+  backtrack(nums, current, result, used) {
+    if (current.length === nums.length) {
+      result.push(current.slice());
       return;
     }
 
-    for (let i = index; i < candidates.length; i++) {
-      if (candidates[i] > target) break;
-
-      if (i > index && candidates[i] == candidates[i - 1]) continue;
-
-      path.push(candidates[i]);
-      this.backtrack(candidates, target - candidates[i], path, result, i + 1);
-      path.pop();
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;
+      current.push(nums[i]);
+      used[i] = true;
+      this.backtrack(nums, current, result, used);
+      used[i] = false;
+      current.pop();
     }
   }
 
-  combinationSum2(candidates, target) {
-    candidates.sort((a, b) => a - b);
-
+  permute(nums) {
     const current = [];
     const result = [];
-
-    this.backtrack(candidates, target, current, result, 0);
-
+    const used = Array(nums.length).fill(false);
+    backtrack(nums, current, result, used);
     return result;
   }
 }
