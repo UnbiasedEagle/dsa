@@ -1,111 +1,35 @@
-/**
- * Definition of Interval:
- * class Interval {
- *   constructor(start, end) {
- *     this.start = start;
- *     this.end = end;
- *   }
- * }
- */
-
 class Solution {
   /**
-   * @param {Interval[]} intervals
-   * @returns {number}
+   * @param {number[]} candidates
+   * @param {number} target
+   * @return {number[][]}
    */
-  minMeetingRooms(intervals) {
-    intervals.sort((a, b) => a.start - b.start);
 
-    let days = 0;
-    const intervalHeap = new MinHeap();
-
-    for (let i = 0; i < intervals.length; i++) {
-      if (intervalHeap.getSize() === 0) {
-        intervalHeap.insert(intervals[i].end);
-      } else if (intervalHeap.extractMin() > intervals[i].start) {
-        intervalHeap.insert(intervals[i].end);
-      } else {
-        intervalHeap.pop();
-        intervalHeap.insert(intervals[i].end);
-      }
-
-      days = Math.max(days, intervalHeap.getSize());
-    }
-
-    return days;
-  }
-}
-
-class MinHeap {
-  constructor() {
-    this.heap = [];
-  }
-
-  getSize() {
-    return this.heap.length;
-  }
-
-  insert(value) {
-    this.heap.push(value);
-    this.bubbleUp(this.heap.length - 1);
-  }
-
-  bubbleUp(index) {
-    while (index >= 0) {
-      const parentIndex = Math.floor((index - 1) / 2);
-
-      if (parentIndex < 0 || this.heap[parentIndex] <= this.heap[index]) {
-        break;
-      }
-
-      [this.heap[parentIndex], this.heap[index]] = [
-        this.heap[index],
-        this.heap[parentIndex],
-      ];
-      index = parentIndex;
-    }
-  }
-
-  pop() {
-    if (this.heap.length === 1) {
-      this.heap.pop();
+  backtrack(candidates, target, path, result, index) {
+    if (target === 0) {
+      result.push([...path]);
       return;
     }
-    this.heap[0] = this.heap.pop();
-    this.bubbleDown(0);
-  }
 
-  extractMin() {
-    return this.heap[0];
-  }
+    for (let i = index; i < candidates.length; i++) {
+      if (candidates[i] > target) break;
 
-  bubbleDown(index) {
-    while (true) {
-      const leftIndex = 2 * index + 1;
-      const rightIndex = 2 * index + 2;
-      let minIndex = index;
+      if (i > index && candidates[i] == candidates[i - 1]) continue;
 
-      if (leftIndex < this.heap.length) {
-        if (this.heap[leftIndex] < this.heap[minIndex]) {
-          minIndex = leftIndex;
-        }
-      }
-
-      if (rightIndex < this.heap.length) {
-        if (this.heap[rightIndex] < this.heap[minIndex]) {
-          minIndex = rightIndex;
-        }
-      }
-
-      if (minIndex === index) {
-        break;
-      }
-
-      [this.heap[minIndex], this.heap[index]] = [
-        this.heap[index],
-        this.heap[minIndex],
-      ];
-      index = minIndex;
+      path.push(candidates[i]);
+      this.backtrack(candidates, target - candidates[i], path, result, i + 1);
+      path.pop();
     }
+  }
+
+  combinationSum2(candidates, target) {
+    candidates.sort((a, b) => a - b);
+
+    const current = [];
+    const result = [];
+
+    this.backtrack(candidates, target, current, result, 0);
+
+    return result;
   }
 }
