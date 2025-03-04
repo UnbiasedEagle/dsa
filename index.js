@@ -1,63 +1,27 @@
 class Solution {
   /**
-   * @param {number} n
-   * @return {string[][]}
+   * @param {number[]} nums
+   * @return {number[][]}
    */
 
-  backtrack(board, row, result) {
-    if (row === board.length) {
-      const currentBoard = [];
+  backtrack(nums, current, subsets, index = 0) {
+    subsets.push(current.slice());
 
-      for (let i = 0; i < board.length; i++) {
-        currentBoard.push([...board[i]].join(''));
-      }
-
-      result.push(currentBoard);
-      return;
-    }
-
-    for (let i = 0; i < board.length; i++) {
-      if (this.isValidPosition(board, row, i)) {
-        board[row][i] = 'Q';
-        this.backtrack(board, row + 1, result);
-        board[row][i] = '.';
-      }
+    for (let i = index; i < nums.length; i++) {
+      if (i > index && nums[i] === nums[i - 1]) continue;
+      current.push(nums[i]);
+      this.backtrack(nums, current, subsets, i + 1);
+      current.pop();
     }
   }
 
-  isValidPosition(board, row, col) {
-    for (let i = 0; i < row; i++) {
-      if (board[i][col] === 'Q') {
-        return false;
-      }
-    }
+  subsetsWithDup(nums) {
+    nums.sort((a, b) => a - b);
+    const current = [];
+    const subsets = [];
 
-    let i = row - 1;
-    let j = col - 1;
+    this.backtrack(nums, current, subsets);
 
-    while (i >= 0 && j >= 0) {
-      if (board[i][j] === 'Q') {
-        return false;
-      }
-      i--;
-      j--;
-    }
-    i = row - 1;
-    j = col + 1;
-    while (i >= 0 && j < board.length) {
-      if (board[i][j] === 'Q') {
-        return false;
-      }
-      i--;
-      j++;
-    }
-    return true;
-  }
-
-  solveNQueens(n) {
-    const board = Array.from({ length: n }, () => Array(n).fill('.'));
-    const result = [];
-    this.backtrack(board, 0, result);
-    return result;
+    return subsets;
   }
 }
