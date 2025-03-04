@@ -1,30 +1,63 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {number[][]}
+   * @param {number} n
+   * @return {string[][]}
    */
 
-  backtrack(nums, current, result, used) {
-    if (current.length === nums.length) {
-      result.push(current.slice());
+  backtrack(board, row, result) {
+    if (row === board.length) {
+      const currentBoard = [];
+
+      for (let i = 0; i < board.length; i++) {
+        currentBoard.push([...board[i]].join(''));
+      }
+
+      result.push(currentBoard);
       return;
     }
 
-    for (let i = 0; i < nums.length; i++) {
-      if (used[i]) continue;
-      current.push(nums[i]);
-      used[i] = true;
-      this.backtrack(nums, current, result, used);
-      used[i] = false;
-      current.pop();
+    for (let i = 0; i < board.length; i++) {
+      if (this.isValidPosition(board, row, i)) {
+        board[row][i] = 'Q';
+        this.backtrack(board, row + 1, result);
+        board[row][i] = '.';
+      }
     }
   }
 
-  permute(nums) {
-    const current = [];
+  isValidPosition(board, row, col) {
+    for (let i = 0; i < row; i++) {
+      if (board[i][col] === 'Q') {
+        return false;
+      }
+    }
+
+    let i = row - 1;
+    let j = col - 1;
+
+    while (i >= 0 && j >= 0) {
+      if (board[i][j] === 'Q') {
+        return false;
+      }
+      i--;
+      j--;
+    }
+    i = row - 1;
+    j = col + 1;
+    while (i >= 0 && j < board.length) {
+      if (board[i][j] === 'Q') {
+        return false;
+      }
+      i--;
+      j++;
+    }
+    return true;
+  }
+
+  solveNQueens(n) {
+    const board = Array.from({ length: n }, () => Array(n).fill('.'));
     const result = [];
-    const used = Array(nums.length).fill(false);
-    backtrack(nums, current, result, used);
+    this.backtrack(board, 0, result);
     return result;
   }
 }
