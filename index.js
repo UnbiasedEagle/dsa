@@ -1,36 +1,16 @@
 class Solution {
   /**
-   * @param {string} s
-   * @return {string[][]}
+   * @param {number} n - a positive integer
+   * @return {number} - a positive integer
    */
+  reverseBits(n) {
+    let result = 0;
 
-  backtrack(s, index, current, result) {
-    if (index === s.length) {
-      result.push(current.slice());
-      return;
+    for (let i = 0; i < 32; i++) {
+      result = (result << 1) | (n & 1);
+      n = n >> 1;
     }
 
-    for (let i = index; i < s.length; i++) {
-      const str = s.substring(index, i + 1);
-
-      if (this.isPalindrome(str)) {
-        current.push(str);
-        this.backtrack(s, i + 1, current, result);
-        current.pop();
-      }
-    }
-  }
-
-  isPalindrome(s) {
-    return s === s.split('').reverse().join('');
-  }
-
-  partition(s) {
-    const result = [];
-    const current = [];
-
-    this.backtrack(s, 0, current, result);
-
-    return result;
+    return result >>> 0;
   }
 }
