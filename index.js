@@ -1,16 +1,18 @@
 class Solution {
   /**
-   * @param {number} n - a positive integer
-   * @return {number} - a positive integer
+   * @param {number} n
+   * @return {number}
    */
-  reverseBits(n) {
-    let result = 0;
+  climbStairs(n) {
+    const dp = Array.from({ length: n + 1 }, () => 0);
 
-    for (let i = 0; i < 32; i++) {
-      result = (result << 1) | (n & 1);
-      n = n >> 1;
+    dp[0] = 1;
+    dp[1] = 1;
+
+    for (let i = 2; i <= n; i++) {
+      dp[i] = dp[i - 1] + dp[i - 2];
     }
 
-    return result >>> 0;
+    return dp[n];
   }
 }
