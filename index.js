@@ -1,18 +1,17 @@
 class Solution {
   /**
-   * @param {number} n
+   * @param {number[]} cost
    * @return {number}
    */
-  climbStairs(n) {
-    const dp = Array.from({ length: n + 1 }, () => 0);
+  minCostClimbingStairs(cost) {
+    const dp = Array.from({ length: cost.length }, () => 0);
+    dp[0] = cost[0];
+    dp[1] = cost[1];
 
-    dp[0] = 1;
-    dp[1] = 1;
-
-    for (let i = 2; i <= n; i++) {
-      dp[i] = dp[i - 1] + dp[i - 2];
+    for (let i = 2; i < cost.length; i++) {
+      dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
     }
 
-    return dp[n];
+    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
   }
 }
