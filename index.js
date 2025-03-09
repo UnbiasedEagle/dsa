@@ -1,17 +1,17 @@
 class Solution {
   /**
-   * @param {number[]} cost
+   * @param {number[]} nums
    * @return {number}
    */
-  minCostClimbingStairs(cost) {
-    const dp = Array.from({ length: cost.length }, () => 0);
-    dp[0] = cost[0];
-    dp[1] = cost[1];
+  maxSubArray(nums) {
+    let currentMax = nums[0];
+    let max = nums[0];
 
-    for (let i = 2; i < cost.length; i++) {
-      dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
+    for (let i = 1; i < nums.length; i++) {
+      currentMax = Math.max(currentMax + nums[i], nums[i]);
+      max = Math.max(max, currentMax);
     }
 
-    return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+    return max;
   }
 }
