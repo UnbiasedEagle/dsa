@@ -1,22 +1,39 @@
 class Solution {
   /**
-   * @param {string[]} strs
-   * @return {string}
+   * @param {string} s
+   * @return {boolean}
    */
-  longestCommonPrefix(strs) {
-    let result = '';
+  isPalindrome(s) {
+    let left = 0;
+    let right = s.length - 1;
 
-    for (let i = 0; i < strs[0].length; i++) {
-      for (let j = 1; j < strs.length; j++) {
-        if (i >= strs[j].length || strs[0][i] !== strs[j][i]) {
-          return result;
-        }
+    while (left <= right) {
+      while (left <= right && !this.isAlphaNumeric(s[left])) {
+        left++;
       }
-      result += strs[0][i];
+      while (left <= right && !this.isAlphaNumeric(s[right])) {
+        right--;
+      }
+      if (left > right) {
+        break;
+      }
+      if (s[left].toLowerCase() !== s[right].toLowerCase()) {
+        return false;
+      }
+      left++;
+      right--;
     }
-    return result;
+    return true;
+  }
+
+  isAlphaNumeric(char) {
+    return (
+      (char >= '0' && char <= '9') ||
+      (char >= 'a' && char <= 'z') ||
+      (char >= 'A' && char <= 'Z')
+    );
   }
 }
 
-// Time Complexity: O(n*m)
+// Time Complexity: O(n)
 // Space Complexity: O(1)
