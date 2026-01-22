@@ -1,20 +1,18 @@
 class Solution {
   /**
    * @param {number[]} nums
-   * @return {number[]}
+   * @return {boolean}
    */
-  getConcatenation(nums) {
-    const result = [];
-    const count = 2;
+  hasDuplicate(nums) {
+    const set = new Set();
 
-    for (let i = 0; i < count; i++) {
-      for (let j = 0; j < nums.length; j++) {
-        result.push(nums[j]);
+    for (const num of nums) {
+      if (set.has(num)) {
+        return true;
       }
+      set.add(num);
     }
-    return result;
+
+    return false;
   }
 }
-
-// Time Complexity: O(n)
-// Space Complexity: O(1)
