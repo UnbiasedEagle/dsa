@@ -1,23 +1,22 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} target
-   * @return {number[]}
+   * @param {string[]} strs
+   * @return {string}
    */
-  twoSum(nums, target) {
-    const map = new Map();
+  longestCommonPrefix(strs) {
+    let result = '';
 
-    for (let i = 0; i < nums.length; i++) {
-      const comp = target - nums[i];
-      if (map.has(comp)) {
-        return [map.get(comp), i];
+    for (let i = 0; i < strs[0].length; i++) {
+      for (let j = 1; j < strs.length; j++) {
+        if (i >= strs[j].length || strs[0][i] !== strs[j][i]) {
+          return result;
+        }
       }
-      map.set(nums[i], i);
+      result += strs[0][i];
     }
-
-    return [];
+    return result;
   }
 }
 
-// Time Complexity: O(n)
-// Space Complexity: O(n)
+// Time Complexity: O(n*m)
+// Space Complexity: O(1)
