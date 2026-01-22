@@ -1,39 +1,31 @@
 class Solution {
   /**
-   * @param {string} s
-   * @return {boolean}
+   * @param {string[]} strs
+   * @return {string[][]}
    */
-  isPalindrome(s) {
-    let left = 0;
-    let right = s.length - 1;
+  groupAnagrams(strs) {
+    const map = new Map();
 
-    while (left <= right) {
-      while (left <= right && !this.isAlphaNumeric(s[left])) {
-        left++;
+    for (const str of strs) {
+      const freqArr = Array.from({ length: 26 }, () => 0);
+
+      for (const char of str) {
+        const idx = char.charCodeAt(0) - 'a'.charCodeAt(0);
+        freqArr[idx]++;
       }
-      while (left <= right && !this.isAlphaNumeric(s[right])) {
-        right--;
+
+      const key = freqArr.join('#');
+
+      if (map.has(key)) {
+        map.get(key).push(str);
+      } else {
+        map.set(key, [str]);
       }
-      if (left > right) {
-        break;
-      }
-      if (s[left].toLowerCase() !== s[right].toLowerCase()) {
-        return false;
-      }
-      left++;
-      right--;
     }
-    return true;
-  }
 
-  isAlphaNumeric(char) {
-    return (
-      (char >= '0' && char <= '9') ||
-      (char >= 'a' && char <= 'z') ||
-      (char >= 'A' && char <= 'Z')
-    );
+    return Array.from(map.values());
   }
 }
 
-// Time Complexity: O(n)
-// Space Complexity: O(1)
+// Time Complexity: O(n*m)
+// Space Complexity: O(n)
