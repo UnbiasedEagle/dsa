@@ -1,31 +1,37 @@
 class Solution {
   /**
-   * @param {string[]} strs
-   * @return {string[][]}
+   * @param {string} s
+   * @return {boolean}
    */
-  groupAnagrams(strs) {
-    const map = new Map();
+  validPalindrome(s) {
+    let left = 0;
+    let right = s.length - 1;
 
-    for (const str of strs) {
-      const freqArr = Array.from({ length: 26 }, () => 0);
-
-      for (const char of str) {
-        const idx = char.charCodeAt(0) - 'a'.charCodeAt(0);
-        freqArr[idx]++;
+    while (left <= right) {
+      if (s[left] !== s[right]) {
+        return (
+          this.checkPalindrome(s, left + 1, right) ||
+          this.checkPalindrome(s, left, right - 1)
+        );
       }
-
-      const key = freqArr.join('#');
-
-      if (map.has(key)) {
-        map.get(key).push(str);
-      } else {
-        map.set(key, [str]);
-      }
+      left++;
+      right--;
     }
 
-    return Array.from(map.values());
+    return true;
+  }
+
+  checkPalindrome(s, left, right) {
+    while (left <= right) {
+      if (s[left] !== s[right]) {
+        return false;
+      }
+      left++;
+      right--;
+    }
+    return true;
   }
 }
 
-// Time Complexity: O(n*m)
-// Space Complexity: O(n)
+// Time Complexity: O(n)
+// Space Complexity: O(1)
