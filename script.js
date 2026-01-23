@@ -1,24 +1,28 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @return {void} Do not return anything, modify nums in-place instead.
+   * @param {string} word1
+   * @param {string} word2
+   * @return {string}
    */
-  sortColors(nums) {
-    let start = 0;
-    let end = nums.length - 1;
-    let mid = 0;
+  mergeAlternately(word1, word2) {
+    let result = '';
 
-    while (mid <= end) {
-      if (nums[mid] === 1) {
-        mid++;
-      } else if (nums[mid] === 0) {
-        [nums[mid], nums[start]] = [nums[start], nums[mid]];
-        start++;
-        mid++;
-      } else {
-        [nums[mid], nums[end]] = [nums[end], nums[mid]];
-        end--;
-      }
+    let i = 0;
+    let j = 0;
+
+    while (i < word1.length && j < word2.length) {
+      result += word1[i];
+      result += word2[j];
+      i++;
+      j++;
     }
+
+    while (i < word1.length) {
+      result += word1[i++];
+    }
+    while (j < word2.length) {
+      result += word2[j++];
+    }
+    return result;
   }
 }
