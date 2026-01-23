@@ -1,37 +1,23 @@
 class Solution {
   /**
-   * @param {string} s
-   * @return {boolean}
+   * @param {number[]} nums
+   * @return {number}
    */
-  validPalindrome(s) {
-    let left = 0;
-    let right = s.length - 1;
+  majorityElement(nums) {
+    let result = nums[0];
+    let count = 1;
 
-    while (left <= right) {
-      if (s[left] !== s[right]) {
-        return (
-          this.checkPalindrome(s, left + 1, right) ||
-          this.checkPalindrome(s, left, right - 1)
-        );
+    for (let i = 1; i < nums.length; i++) {
+      if (nums[i] === result) {
+        count++;
+      } else {
+        count--;
+        if (count === 0) {
+          count = 1;
+          result = nums[i];
+        }
       }
-      left++;
-      right--;
     }
-
-    return true;
-  }
-
-  checkPalindrome(s, left, right) {
-    while (left <= right) {
-      if (s[left] !== s[right]) {
-        return false;
-      }
-      left++;
-      right--;
-    }
-    return true;
+    return result;
   }
 }
-
-// Time Complexity: O(n)
-// Space Complexity: O(1)
