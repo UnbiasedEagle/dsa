@@ -2,33 +2,32 @@ class Solution {
   /**
    * @param {number[]} nums
    * @param {number} k
-   * @return {number[]}
+   * @return {boolean}
    */
-  topKFrequent(nums, k) {
-    const freqMap = new Map();
+  containsNearbyDuplicate(nums, k) {
+    const map = new Map();
 
-    for (const num of nums) {
-      freqMap.set(num, (freqMap.get(num) || 0) + 1);
-    }
+    for (let i = 0; i < nums.length; i++) {
+      if (i <= k) {
+        if (map.has(nums[i])) {
+          return true;
+        }
+        map.set(nums[i], 1);
+      } else {
+        const element = nums[i - k - 1];
+        map.set(element, map.get(element) - 1);
 
-    const arr = Array.from({ length: nums.length + 1 }, () => []);
+        if (map.get(element) === 0) {
+          map.delete(element);
+        }
 
-    for (const [key, value] of freqMap) {
-      arr[value].push(key);
-    }
-
-    const result = [];
-    let idx = nums.length;
-    while (k > 0) {
-      let i = 0;
-      while (k > 0 && i < arr[idx].length) {
-        result.push(arr[idx][i]);
-        i++;
-        k--;
+        if (map.has(nums[i])) {
+          return true;
+        }
+        map.set(nums[i], 1);
       }
-      idx--;
     }
 
-    return result;
+    return false;
   }
 }
