@@ -1,36 +1,61 @@
 class Node {
-  constructor(value) {
+  constructor(key, value) {
+    this.key = key;
     this.value = value;
     this.next = null;
   }
 }
 
-class MyHashSet {
+class MyHashMap {
   constructor() {
     this.maxSize = 10 ** 4;
-    this.arr = Array.from({ length: this.maxSize }, () => new Node(-1));
+    this.arr = Array.from({ length: this.maxSize }, () => new Node(-1, -1));
+  }
+
+  getIdx(key) {
+    return key % this.maxSize;
   }
 
   /**
    * @param {number} key
+   * @param {number} value
    * @return {void}
    */
-  add(key) {
-    const idx = key % this.maxSize;
+  put(key, value) {
+    const idx = this.getIdx(key);
     let temp = this.arr[idx];
 
     while (temp.next) {
-      if (temp.value === key) {
+      if (temp.key === key) {
+        temp.value = value;
         return;
       }
       temp = temp.next;
     }
 
-    if (temp.value === key) {
+    if (temp.key === key) {
+      temp.value = value;
       return;
     }
 
-    temp.next = new Node(key);
+    temp.next = new Node(key, value);
+  }
+
+  /**
+   * @param {number} key
+   * @return {number}
+   */
+  get(key) {
+    const idx = this.getIdx(key);
+    let temp = this.arr[idx];
+
+    while (temp) {
+      if (temp.key === key) {
+        return temp.value;
+      }
+      temp = temp.next;
+    }
+    return -1;
   }
 
   /**
@@ -38,10 +63,10 @@ class MyHashSet {
    * @return {void}
    */
   remove(key) {
-    const idx = key % this.maxSize;
+    const idx = this.getIdx(key);
     let temp = this.arr[idx];
 
-    while (temp.next && temp.next.value !== key) {
+    while (temp.next && temp.next.key !== key) {
       temp = temp.next;
     }
 
@@ -49,31 +74,16 @@ class MyHashSet {
       return;
     }
 
-    temp.next = temp.next.next;
-  }
-
-  /**
-   * @param {number} key
-   * @return {boolean}
-   */
-  contains(key) {
-    const idx = key % this.maxSize;
-    let temp = this.arr[idx];
-
-    while (temp) {
-      if (temp.value === key) {
-        return true;
-      }
-      temp = temp.next;
+    if (temp.next.key === key) {
+      temp.next = temp.next.next;
     }
-    return false;
   }
 }
 
 /**
- * Your MyHashSet object will be instantiated and called as such:
- * var obj = new MyHashSet()
- * obj.add(key)
+ * Your MyHashMap object will be instantiated and called as such:
+ * var obj = new MyHashMap()
+ * obj.put(key,value)
+ * var param_2 = obj.get(key)
  * obj.remove(key)
- * var param_3 = obj.contains(key)
  */
