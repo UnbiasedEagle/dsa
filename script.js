@@ -1,89 +1,17 @@
-class Node {
-  constructor(key, value) {
-    this.key = key;
-    this.value = value;
-    this.next = null;
-  }
-}
-
-class MyHashMap {
-  constructor() {
-    this.maxSize = 10 ** 4;
-    this.arr = Array.from({ length: this.maxSize }, () => new Node(-1, -1));
-  }
-
-  getIdx(key) {
-    return key % this.maxSize;
-  }
-
+class Solution {
   /**
-   * @param {number} key
-   * @param {number} value
-   * @return {void}
-   */
-  put(key, value) {
-    const idx = this.getIdx(key);
-    let temp = this.arr[idx];
-
-    while (temp.next) {
-      if (temp.key === key) {
-        temp.value = value;
-        return;
-      }
-      temp = temp.next;
-    }
-
-    if (temp.key === key) {
-      temp.value = value;
-      return;
-    }
-
-    temp.next = new Node(key, value);
-  }
-
-  /**
-   * @param {number} key
+   * @param {number[]} nums
    * @return {number}
    */
-  get(key) {
-    const idx = this.getIdx(key);
-    let temp = this.arr[idx];
+  removeDuplicates(nums) {
+    let idx = 1;
 
-    while (temp) {
-      if (temp.key === key) {
-        return temp.value;
+    for (let i = 1; i < nums.length; i++) {
+      if (nums[i] !== nums[idx - 1]) {
+        nums[idx] = nums[i];
+        idx++;
       }
-      temp = temp.next;
     }
-    return -1;
-  }
-
-  /**
-   * @param {number} key
-   * @return {void}
-   */
-  remove(key) {
-    const idx = this.getIdx(key);
-    let temp = this.arr[idx];
-
-    while (temp.next && temp.next.key !== key) {
-      temp = temp.next;
-    }
-
-    if (!temp.next) {
-      return;
-    }
-
-    if (temp.next.key === key) {
-      temp.next = temp.next.next;
-    }
+    return idx;
   }
 }
-
-/**
- * Your MyHashMap object will be instantiated and called as such:
- * var obj = new MyHashMap()
- * obj.put(key,value)
- * var param_2 = obj.get(key)
- * obj.remove(key)
- */
