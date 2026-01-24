@@ -1,40 +1,48 @@
 class Solution {
   /**
-   * @param {number[]} nums1
-   * @param {number} m
-   * @param {number[]} nums2
-   * @param {number} n
-   * @return {void} Do not return anything, modify nums1 in-place instead.
+   * @param {number[]} nums
+   * @return {number[]}
    */
-  merge(nums1, m, nums2, n) {
-    let i = 0;
-    let j = m - 1;
+  sortArray(nums) {
+    const left = 0;
+    const right = nums.length - 1;
+    this.sort(nums, left, right);
+    return nums;
+  }
 
-    while (i < j) {
-      [nums1[i], nums1[j]] = [nums1[j], nums1[i]];
-      i++;
-      j--;
+  sort(nums, left, right) {
+    if (left >= right) {
+      return;
     }
+    const mid = Math.floor((left + right) / 2);
+    this.sort(nums, left, mid);
+    this.sort(nums, mid + 1, right);
+    this.merge(nums, left, mid, right);
+  }
 
-    nums1.reverse();
+  merge(nums, left, mid, right) {
+    const temp = [];
 
-    let idx = 0;
-    j = 0;
-    i = nums1.length - m;
+    let i = left;
+    let j = mid + 1;
 
-    while (i < nums1.length && j < nums2.length) {
-      if (nums1[i] < nums2[j]) {
-        nums1[idx] = nums1[i++];
+    while (i <= mid && j <= right) {
+      if (nums[i] < nums[j]) {
+        temp.push(nums[i++]);
       } else {
-        nums1[idx] = nums2[j++];
+        temp.push(nums[j++]);
       }
-      idx++;
     }
 
-    while (j < nums2.length) {
-      nums1[idx] = nums2[j++];
-      idx++;
+    while (i <= mid) {
+      temp.push(nums[i++]);
     }
-    return nums1;
+    while (j <= right) {
+      temp.push(nums[j++]);
+    }
+
+    for (let i = 0; i < temp.length; i++) {
+      nums[i + left] = temp[i];
+    }
   }
 }
