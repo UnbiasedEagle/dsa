@@ -1,17 +1,34 @@
 class Solution {
   /**
    * @param {number[]} nums
-   * @return {number}
+   * @param {number} k
+   * @return {number[]}
    */
-  removeDuplicates(nums) {
-    let idx = 1;
+  topKFrequent(nums, k) {
+    const freqMap = new Map();
 
-    for (let i = 1; i < nums.length; i++) {
-      if (nums[i] !== nums[idx - 1]) {
-        nums[idx] = nums[i];
-        idx++;
-      }
+    for (const num of nums) {
+      freqMap.set(num, (freqMap.get(num) || 0) + 1);
     }
-    return idx;
+
+    const arr = Array.from({ length: nums.length + 1 }, () => []);
+
+    for (const [key, value] of freqMap) {
+      arr[value].push(key);
+    }
+
+    const result = [];
+    let idx = nums.length;
+    while (k > 0) {
+      let i = 0;
+      while (k > 0 && i < arr[idx].length) {
+        result.push(arr[idx][i]);
+        i++;
+        k--;
+      }
+      idx--;
+    }
+
+    return result;
   }
 }
