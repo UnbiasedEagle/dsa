@@ -1,33 +1,37 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} k
-   * @return {boolean}
+   * @param {string[]} strs
+   * @returns {string}
    */
-  containsNearbyDuplicate(nums, k) {
-    const map = new Map();
+  encode(strs) {
+    let result = "";
+    for (const str of strs) {
+      result += str.length + "#" + str;
+    }
+    return result;
+  }
 
-    for (let i = 0; i < nums.length; i++) {
-      if (i <= k) {
-        if (map.has(nums[i])) {
-          return true;
-        }
-        map.set(nums[i], 1);
-      } else {
-        const element = nums[i - k - 1];
-        map.set(element, map.get(element) - 1);
+  /**
+   * @param {string} str
+   * @returns {string[]}
+   */
+  decode(str) {
+    const result = [];
 
-        if (map.get(element) === 0) {
-          map.delete(element);
-        }
+    let i = 0;
 
-        if (map.has(nums[i])) {
-          return true;
-        }
-        map.set(nums[i], 1);
+    while (i < str.length) {
+      let j = i;
+      let length = "";
+      while (str[j] !== "#") {
+        length += str[j];
+        j++;
       }
+      j++;
+      result.push(str.slice(j, j + +length));
+      i = j + +length;
     }
 
-    return false;
+    return result;
   }
 }
