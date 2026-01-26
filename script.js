@@ -1,38 +1,27 @@
 class Solution {
   /**
-   * @param {character[][]} board
-   * @return {boolean}
+   * @param {number[]} numbers
+   * @param {number} target
+   * @return {number[]}
    */
-  isValidSudoku(board) {
-    const rowsSet = Array.from({ length: 9 }, () => new Set());
-    const cols = Array.from({ length: 9 }, () => new Set());
-    const grid = Array.from({ length: 3 }, () =>
-      Array.from({ length: 3 }, () => new Set()),
-    );
+  twoSum(nums, target) {
+    let start = 0;
+    let end = nums.length - 1;
 
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        if (board[i][j] !== ".") {
-          if (rowsSet[i].has(board[i][j])) {
-            return false;
-          }
-          if (cols[j].has(board[i][j])) {
-            return false;
-          }
-          const gridRow = Math.floor(i / 3);
-          const gridCol = Math.floor(j / 3);
+    while (start < end) {
+      const total = nums[start] + nums[end];
 
-          if (grid[gridRow][gridCol].has(board[i][j])) {
-            return false;
-          }
+      if (total === target) {
+        return [start + 1, end + 1];
+      }
 
-          cols[j].add(board[i][j]);
-          rowsSet[i].add(board[i][j]);
-          grid[gridRow][gridCol].add(board[i][j]);
-        }
+      if (total > target) {
+        end--;
+      } else {
+        start++;
       }
     }
 
-    return true;
+    return [];
   }
 }
