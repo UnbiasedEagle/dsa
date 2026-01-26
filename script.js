@@ -1,30 +1,17 @@
 class Solution {
   /**
-   * @param {number[]} nums
+   * @param {number[]} prices
    * @return {number}
    */
-  longestConsecutive(nums) {
-    const uniqueNums = new Set(nums);
+  maxProfit(prices) {
+    let result = 0;
 
-    let maxLength = 0;
-
-    let i = 0;
-
-    while (i < nums.length) {
-      if (!uniqueNums.has(nums[i] - 1)) {
-        let length = 0;
-        let num = nums[i];
-
-        while (uniqueNums.has(num)) {
-          length++;
-          num++;
-        }
-
-        maxLength = Math.max(maxLength, length);
+    for (let i = 1; i < prices.length; i++) {
+      if (prices[i] > prices[i - 1]) {
+        result += prices[i] - prices[i - 1];
       }
-      i++;
     }
 
-    return maxLength;
+    return result;
   }
 }
