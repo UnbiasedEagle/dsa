@@ -1,36 +1,49 @@
 class Solution {
   /**
    * @param {number[]} nums
+   * @param {number} target
    * @return {number[][]}
    */
-  threeSum(nums) {
+  fourSum(nums, target) {
     nums.sort((a, b) => a - b);
 
     let i = 0;
+
     const result = [];
+
     while (i < nums.length) {
-      let start = i + 1;
-      let end = nums.length - 1;
+      let j = i + 1;
+      while (j < nums.length) {
+        let start = j + 1;
+        let end = nums.length - 1;
 
-      while (start < end) {
-        const total = nums[i] + nums[start] + nums[end];
+        while (start < end) {
+          const total = nums[i] + nums[j] + nums[start] + nums[end];
 
-        if (total === 0) {
-          result.push([nums[i], nums[start], nums[end]]);
-          start++;
-          end--;
+          if (total === target) {
+            result.push([nums[i], nums[j], nums[start], nums[end]]);
 
-          while (start < end && nums[start] === nums[start - 1]) {
+            start++;
+            end--;
+
+            while (start < end && nums[start] === nums[start - 1]) {
+              start++;
+            }
+
+            while (start < end && nums[end] === nums[end + 1]) {
+              end--;
+            }
+          } else if (total > target) {
+            end--;
+          } else {
             start++;
           }
+        }
 
-          while (start < end && nums[end] === nums[end + 1]) {
-            end--;
-          }
-        } else if (total > 0) {
-          end--;
-        } else {
-          start++;
+        j++;
+
+        while (j < nums.length && nums[j] === nums[j - 1]) {
+          j++;
         }
       }
 
