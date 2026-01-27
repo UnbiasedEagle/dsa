@@ -1,22 +1,26 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} k
-   * @return {void} Do not return anything, modify nums in-place instead.
+   * @param {number[]} heights
+   * @return {number}
    */
-  rotate(nums, k) {
-    k = k % nums.length;
-    const rem = nums.length - k;
-    this.reverse(nums, 0, rem - 1);
-    this.reverse(nums, rem, nums.length - 1);
-    this.reverse(nums, 0, nums.length - 1);
-  }
+  maxArea(heights) {
+    let maxWater = 0;
 
-  reverse(nums, left, right) {
-    while (left <= right) {
-      [nums[left], nums[right]] = [nums[right], nums[left]];
-      left++;
-      right--;
+    let start = 0;
+    let end = heights.length - 1;
+
+    while (start < end) {
+      if (heights[start] < heights[end]) {
+        const water = heights[start] * (end - start);
+        maxWater = Math.max(water, maxWater);
+        start++;
+      } else {
+        const water = heights[end] * (end - start);
+        maxWater = Math.max(water, maxWater);
+        end--;
+      }
     }
+
+    return maxWater;
   }
 }
