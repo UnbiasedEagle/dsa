@@ -1,26 +1,29 @@
 class Solution {
   /**
-   * @param {number[]} heights
+   * @param {number[]} nums
    * @return {number}
    */
-  maxArea(heights) {
-    let maxWater = 0;
-
-    let start = 0;
-    let end = heights.length - 1;
-
-    while (start < end) {
-      if (heights[start] < heights[end]) {
-        const water = heights[start] * (end - start);
-        maxWater = Math.max(water, maxWater);
-        start++;
-      } else {
-        const water = heights[end] * (end - start);
-        maxWater = Math.max(water, maxWater);
-        end--;
+  firstMissingPositive(nums) {
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] < 0) {
+        nums[i] = 0;
       }
     }
 
-    return maxWater;
+    for (let i = 0; i < nums.length; i++) {
+      const idx = Math.abs(nums[i]) - 1;
+
+      if (idx < nums.length) {
+        nums[idx] = Math.abs(nums[idx]) * -1;
+      }
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] > 0) {
+        return i + 1;
+      }
+    }
+
+    return nums.length;
   }
 }
