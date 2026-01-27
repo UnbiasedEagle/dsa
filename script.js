@@ -2,27 +2,21 @@ class Solution {
   /**
    * @param {number[]} nums
    * @param {number} k
-   * @return {number}
+   * @return {void} Do not return anything, modify nums in-place instead.
    */
-  subarraySum(nums, k) {
-    let sum = 0;
-    const sumMap = new Map();
-    let count = 0;
+  rotate(nums, k) {
+    k = k % nums.length;
+    const rem = nums.length - k;
+    this.reverse(nums, 0, rem - 1);
+    this.reverse(nums, rem, nums.length - 1);
+    this.reverse(nums, 0, nums.length - 1);
+  }
 
-    for (let i = 0; i < nums.length; i++) {
-      sum += nums[i];
-
-      if (sum === k) {
-        count++;
-      }
-
-      const comp = sum - k;
-
-      count += map.get(comp) || 0;
-
-      map.set(sum, (map.get(sum) || 0) + 1);
+  reverse(nums, left, right) {
+    while (left <= right) {
+      [nums[left], nums[right]] = [nums[right], nums[left]];
+      left++;
+      right--;
     }
-
-    return count;
   }
 }
