@@ -1,29 +1,27 @@
 class Solution {
   /**
-   * @param {number[]} nums
+   * @param {number[]} people
+   * @param {number} limit
    * @return {number}
    */
-  firstMissingPositive(nums) {
-    for (let i = 0; i < nums.length; i++) {
-      if (nums[i] < 0) {
-        nums[i] = 0;
+  numRescueBoats(people, limit) {
+    people.sort((a, b) => a - b);
+
+    let start = 0;
+    let end = people.length - 1;
+    let count = 0;
+
+    while (start <= end) {
+      if (people[start] + people[end] <= limit) {
+        count++;
+        start++;
+        end--;
+      } else {
+        count++;
+        end--;
       }
     }
 
-    for (let i = 0; i < nums.length; i++) {
-      const idx = Math.abs(nums[i]) - 1;
-
-      if (idx < nums.length) {
-        nums[idx] = Math.abs(nums[idx]) * -1;
-      }
-    }
-
-    for (let i = 0; i < nums.length; i++) {
-      if (nums[i] > 0) {
-        return i + 1;
-      }
-    }
-
-    return nums.length;
+    return count;
   }
 }
