@@ -1,27 +1,26 @@
 class Solution {
   /**
-   * @param {number[]} people
-   * @param {number} limit
+   * @param {number[]} height
    * @return {number}
    */
-  numRescueBoats(people, limit) {
-    people.sort((a, b) => a - b);
-
-    let start = 0;
-    let end = people.length - 1;
-    let count = 0;
-
-    while (start <= end) {
-      if (people[start] + people[end] <= limit) {
-        count++;
-        start++;
-        end--;
+  trap(height) {
+    let l = 0;
+    let r = height.length - 1;
+    let maxLeft = height[l];
+    let maxRight = height[r];
+    let result = 0;
+    while (l < r) {
+      if (height[l] < height[r]) {
+        l++;
+        maxLeft = Math.max(maxLeft, height[l]);
+        result += maxLeft - height[l];
       } else {
-        count++;
-        end--;
+        r--;
+        maxRight = Math.max(maxRight, height[r]);
+        result += maxRight - height[r];
       }
     }
 
-    return count;
+    return result;
   }
 }
