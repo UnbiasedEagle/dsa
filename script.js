@@ -1,23 +1,17 @@
 class Solution {
   /**
-   * @param {number[]} height
+   * @param {number[]} prices
    * @return {number}
    */
-  trap(height) {
-    let l = 0;
-    let r = height.length - 1;
-    let maxLeft = height[l];
-    let maxRight = height[r];
+  maxProfit(prices) {
     let result = 0;
-    while (l < r) {
-      if (height[l] < height[r]) {
-        l++;
-        maxLeft = Math.max(maxLeft, height[l]);
-        result += maxLeft - height[l];
+    let minPrice = prices[0];
+
+    for (let i = 1; i < prices.length; i++) {
+      if (prices[i] < minPrice) {
+        minPrice = prices[i];
       } else {
-        r--;
-        maxRight = Math.max(maxRight, height[r]);
-        result += maxRight - height[r];
+        result = Math.max(result, prices[i] - minPrice);
       }
     }
 
