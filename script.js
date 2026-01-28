@@ -1,22 +1,29 @@
 class Solution {
   /**
    * @param {string} s
+   * @param {number} k
    * @return {number}
    */
-  lengthOfLongestSubstring(s) {
-    const map = new Map();
-    let left = 0;
+  characterReplacement(s, k) {
+    const freq = Array.from({ length: 26 }, () => 0);
+
     let maxLength = 0;
 
+    let left = 0;
+
     for (let right = 0; right < s.length; right++) {
-      if (!map.has(s[right]) || map.get(s[right]) < left) {
-        map.set(s[right], right);
-      } else {
-        left = map.get(s[right]) + 1;
-        map.set(s[right], right);
+      const idx = s[right].charCodeAt(0) - "A".charCodeAt(0);
+      freq[idx]++;
+
+      let diff = right - left + 1 - Math.max(...freq);
+      while (left < right && diff > k) {
+        const leftIdx = s[left].charCodeAt(0) - "A".charCodeAt(0);
+        freq[leftIdx]--;
+        left++;
+        diff = right - left + 1 - Math.max(...freq);
       }
-      const currentLength = right - left + 1;
-      maxLength = Math.max(maxLength, currentLength);
+
+      maxLength = Math.max(maxLength, right - left + 1);
     }
 
     return maxLength;
