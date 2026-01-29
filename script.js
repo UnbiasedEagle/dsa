@@ -1,31 +1,50 @@
 class Solution {
   /**
-   * @param {string} s
-   * @param {number} k
-   * @return {number}
+   * @param {string} s1
+   * @param {string} s2
+   * @return {boolean}
    */
-  characterReplacement(s, k) {
-    const freq = Array.from({ length: 26 }, () => 0);
+  checkInclusion(s1, s2) {
+    const freq1 = Array.from({ length: 26 }, () => 0);
+    const freq2 = Array.from({ length: 26 }, () => 0);
 
-    let maxLength = 0;
-
-    let left = 0;
-
-    for (let right = 0; right < s.length; right++) {
-      const idx = s[right].charCodeAt(0) - "A".charCodeAt(0);
-      freq[idx]++;
-
-      let diff = right - left + 1 - Math.max(...freq);
-      while (left < right && diff > k) {
-        const leftIdx = s[left].charCodeAt(0) - "A".charCodeAt(0);
-        freq[leftIdx]--;
-        left++;
-        diff = right - left + 1 - Math.max(...freq);
-      }
-
-      maxLength = Math.max(maxLength, right - left + 1);
+    for (const char of s1) {
+      const idx = char.charCodeAt(0) - "a".charCodeAt(0);
+      freq1[idx]++;
     }
 
-    return maxLength;
+    for (let i = 0; i < s2.length; i++) {
+      if (i < s1.length) {
+        const idx = s2[i].charCodeAt(0) - "a".charCodeAt(0);
+        freq2[idx]++;
+        let found = true;
+        for (let j = 0; j < 26; j++) {
+          if (freq1[j] !== freq2[j]) {
+            found = false;
+            break;
+          }
+        }
+        if (found) {
+          return true;
+        }
+      } else {
+        const idxToRemove = s2[i - s1.length].charCodeAt(0) - "a".charCodeAt(0);
+        freq2[idxToRemove]--;
+        const idx = s2[i].charCodeAt(0) - "a".charCodeAt(0);
+        freq2[idx]++;
+        let found = true;
+        for (let j = 0; j < 26; j++) {
+          if (freq1[j] !== freq2[j]) {
+            found = false;
+            break;
+          }
+        }
+        if (found) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
