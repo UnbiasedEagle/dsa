@@ -1,29 +1,28 @@
 class Solution {
   /**
-   * @param {string[]} operations
-   * @return {number}
+   * @param {string} s
+   * @return {boolean}
    */
-  calPoints(operations) {
+  isValid(s) {
+    const map = {
+      ")": "(",
+      "}": "{",
+      "]": "[",
+    };
+
     const stack = [];
 
-    for (const operation of operations) {
-      if (operation === "+") {
-        const num1 = stack.pop();
-        const num2 = stack.pop();
-        stack.push(num2);
-        stack.push(num1);
-        stack.push(num1 + num2);
-      } else if (operation === "D") {
-        stack.push(stack[stack.length - 1] * 2);
-      } else if (operation === "C") {
+    for (const ch of s) {
+      if (ch in map) {
+        if (stack.length === 0 || stack[stack.length - 1] !== map[ch]) {
+          return false;
+        }
         stack.pop();
       } else {
-        stack.push(+operation);
+        stack.push(ch);
       }
     }
 
-    return stack.reduce((acc, curr) => {
-      return acc + curr;
-    }, 0);
+    return stack.length === 0;
   }
 }
