@@ -1,50 +1,29 @@
 class Solution {
   /**
-   * @param {string} s1
-   * @param {string} s2
-   * @return {boolean}
+   * @param {string[]} operations
+   * @return {number}
    */
-  checkInclusion(s1, s2) {
-    const freq1 = Array.from({ length: 26 }, () => 0);
-    const freq2 = Array.from({ length: 26 }, () => 0);
+  calPoints(operations) {
+    const stack = [];
 
-    for (const char of s1) {
-      const idx = char.charCodeAt(0) - "a".charCodeAt(0);
-      freq1[idx]++;
-    }
-
-    for (let i = 0; i < s2.length; i++) {
-      if (i < s1.length) {
-        const idx = s2[i].charCodeAt(0) - "a".charCodeAt(0);
-        freq2[idx]++;
-        let found = true;
-        for (let j = 0; j < 26; j++) {
-          if (freq1[j] !== freq2[j]) {
-            found = false;
-            break;
-          }
-        }
-        if (found) {
-          return true;
-        }
+    for (const operation of operations) {
+      if (operation === "+") {
+        const num1 = stack.pop();
+        const num2 = stack.pop();
+        stack.push(num2);
+        stack.push(num1);
+        stack.push(num1 + num2);
+      } else if (operation === "D") {
+        stack.push(stack[stack.length - 1] * 2);
+      } else if (operation === "C") {
+        stack.pop();
       } else {
-        const idxToRemove = s2[i - s1.length].charCodeAt(0) - "a".charCodeAt(0);
-        freq2[idxToRemove]--;
-        const idx = s2[i].charCodeAt(0) - "a".charCodeAt(0);
-        freq2[idx]++;
-        let found = true;
-        for (let j = 0; j < 26; j++) {
-          if (freq1[j] !== freq2[j]) {
-            found = false;
-            break;
-          }
-        }
-        if (found) {
-          return true;
-        }
+        stack.push(+operation);
       }
     }
 
-    return false;
+    return stack.reduce((acc, curr) => {
+      return acc + curr;
+    }, 0);
   }
 }
