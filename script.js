@@ -1,30 +1,27 @@
 class Solution {
   /**
-   * @param {number} target
    * @param {number[]} nums
+   * @param {number} target
    * @return {number}
    */
-  minSubArrayLen(target, nums) {
-    let minLength = Infinity;
+  search(nums, target) {
+    let start = 0;
+    let end = nums.length - 1;
 
-    let sum = 0;
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
 
-    let left = 0;
-    let right = 0;
-
-    while (right < nums.length) {
-      sum += nums[right];
-
-      while (sum >= target) {
-        const length = right - left + 1;
-        minLength = Math.min(minLength, length);
-        sum -= nums[left];
-        left++;
+      if (nums[mid] === target) {
+        return mid;
       }
 
-      right++;
+      if (nums[mid] > target) {
+        end = mid - 1;
+      } else {
+        start = mid + 1;
+      }
     }
 
-    return minLength === Infinity ? 0 : minLength;
+    return -1;
   }
 }
