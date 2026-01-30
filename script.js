@@ -1,27 +1,27 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} target
-   * @return {number}
+   * @param {number[]} arr
+   * @param {number} k
+   * @param {number} x
+   * @return {number[]}
    */
-  search(nums, target) {
-    let start = 0;
-    let end = nums.length - 1;
+  findClosestElements(arr, k, x) {
+    let ws = 0;
+    let we = arr.length - 1;
 
-    while (start <= end) {
-      const mid = Math.floor((start + end) / 2);
+    while (we - ws + 1 > k) {
+      const diff1 = Math.abs(x - arr[ws]);
+      const diff2 = Math.abs(x - arr[we]);
 
-      if (nums[mid] === target) {
-        return mid;
-      }
-
-      if (nums[mid] > target) {
-        end = mid - 1;
+      if (diff1 > diff2) {
+        ws++;
+      } else if (diff2 > diff1) {
+        we--;
       } else {
-        start = mid + 1;
+        we--;
       }
     }
 
-    return -1;
+    return arr.slice(ws, we + 1);
   }
 }
