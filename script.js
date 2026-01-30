@@ -1,28 +1,30 @@
 class Solution {
   /**
-   * @param {string} s
-   * @return {boolean}
+   * @param {number} target
+   * @param {number[]} nums
+   * @return {number}
    */
-  isValid(s) {
-    const map = {
-      ")": "(",
-      "}": "{",
-      "]": "[",
-    };
+  minSubArrayLen(target, nums) {
+    let minLength = Infinity;
 
-    const stack = [];
+    let sum = 0;
 
-    for (const ch of s) {
-      if (ch in map) {
-        if (stack.length === 0 || stack[stack.length - 1] !== map[ch]) {
-          return false;
-        }
-        stack.pop();
-      } else {
-        stack.push(ch);
+    let left = 0;
+    let right = 0;
+
+    while (right < nums.length) {
+      sum += nums[right];
+
+      while (sum >= target) {
+        const length = right - left + 1;
+        minLength = Math.min(minLength, length);
+        sum -= nums[left];
+        left++;
       }
+
+      right++;
     }
 
-    return stack.length === 0;
+    return minLength === Infinity ? 0 : minLength;
   }
 }
