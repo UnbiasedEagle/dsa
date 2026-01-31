@@ -1,27 +1,41 @@
-class Solution {
+class MinStack {
+  constructor() {
+    this.stack = [];
+  }
+
   /**
-   * @param {number[]} arr
-   * @param {number} k
-   * @param {number} x
-   * @return {number[]}
+   * @param {number} val
+   * @return {void}
    */
-  findClosestElements(arr, k, x) {
-    let ws = 0;
-    let we = arr.length - 1;
-
-    while (we - ws + 1 > k) {
-      const diff1 = Math.abs(x - arr[ws]);
-      const diff2 = Math.abs(x - arr[we]);
-
-      if (diff1 > diff2) {
-        ws++;
-      } else if (diff2 > diff1) {
-        we--;
-      } else {
-        we--;
-      }
+  push(val) {
+    if (this.stack.length === 0) {
+      this.stack.push([val, val]);
+    } else {
+      this.stack.push([
+        val,
+        Math.min(val, this.stack[this.stack.length - 1][1]),
+      ]);
     }
+  }
 
-    return arr.slice(ws, we + 1);
+  /**
+   * @return {void}
+   */
+  pop() {
+    this.stack.pop();
+  }
+
+  /**
+   * @return {number}
+   */
+  top() {
+    return this.stack[this.stack.length - 1][0];
+  }
+
+  /**
+   * @return {number}
+   */
+  getMin() {
+    return this.stack[this.stack.length - 1][1];
   }
 }
