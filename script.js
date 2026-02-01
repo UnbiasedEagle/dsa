@@ -1,28 +1,36 @@
 class Solution {
   /**
-   * @param {string[]} tokens
+   * @param {number[]} nums
+   * @param {number} target
    * @return {number}
    */
-  evalRPN(tokens) {
-    const operators = ["+", "-", "/", "*"];
-    const operations = {
-      "+": (a, b) => a + b,
-      "-": (a, b) => a - b,
-      "/": (a, b) => Math.trunc(a / b),
-      "*": (a, b) => a * b,
-    };
-    const stack = [];
-    for (const token of tokens) {
-      if (operators.includes(token)) {
-        const num1 = stack.pop();
-        const num2 = stack.pop();
+  searchInsert(nums, target) {
+    if (target < nums[0]) {
+      return 0;
+    }
+    if (target > nums[nums.length - 1]) {
+      return nums.length;
+    }
 
-        stack.push(operations[token](num2, num1));
+    let start = 0;
+    let end = nums.length - 1;
+    let result = nums.length;
+
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
+
+      if (nums[mid] === target) {
+        return mid;
+      }
+
+      if (nums[mid] > target) {
+        result = mid;
+        end = mid - 1;
       } else {
-        stack.push(+token);
+        start = mid + 1;
       }
     }
 
-    return stack[stack.length - 1];
+    return result;
   }
 }
