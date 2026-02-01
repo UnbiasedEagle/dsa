@@ -1,7 +1,7 @@
-class MyStack {
+class MyQueue {
   constructor() {
-    this.queue1 = [];
-    this.queue2 = [];
+    this.stack1 = [];
+    this.stack2 = [];
   }
 
   /**
@@ -9,14 +9,12 @@ class MyStack {
    * @return {void}
    */
   push(x) {
-    this.queue2.push(x);
-
-    while (this.queue1.length > 0) {
-      this.queue2.push(this.queue1.shift());
+    while (this.stack1.length > 0) {
+      this.stack2.push(this.stack1.pop());
     }
-
-    while (this.queue2.length > 0) {
-      this.queue1.push(this.queue2.shift());
+    this.stack2.push(x);
+    while (this.stack2.length > 0) {
+      this.stack1.push(this.stack2.pop());
     }
   }
 
@@ -24,29 +22,29 @@ class MyStack {
    * @return {number}
    */
   pop() {
-    return this.queue1.shift();
+    return this.stack1.pop();
   }
 
   /**
    * @return {number}
    */
-  top() {
-    return this.queue1[0];
+  peek() {
+    return this.stack1[this.stack1.length - 1];
   }
 
   /**
    * @return {boolean}
    */
   empty() {
-    return this.queue1.length === 0;
+    return this.stack1.length === 0;
   }
 }
 
 /**
- * Your MyStack object will be instantiated and called as such:
- * var obj = new MyStack()
+ * Your MyQueue object will be instantiated and called as such:
+ * var obj = new MyQueue()
  * obj.push(x)
  * var param_2 = obj.pop()
- * var param_3 = obj.top()
+ * var param_3 = obj.peek()
  * var param_4 = obj.empty()
  */
