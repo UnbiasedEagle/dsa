@@ -1,34 +1,25 @@
-/**
- * Forward declaration of guess API.
- * @param {number} num   your guess
- * @return 	     -1 if num is higher than the picked number
- *			      1 if num is lower than the picked number
- *               otherwise return 0
- * function guess(num) {}
- */
-
 class Solution {
   /**
-   * @param {number} n
+   * @param {number} x
    * @return {number}
    */
-  guessNumber(n) {
-    let start = 1;
-    let end = n;
+  mySqrt(x) {
+    let start = 0;
+    let end = x;
+
+    let result = x;
 
     while (start <= end) {
       const mid = Math.floor((start + end) / 2);
 
-      const res = guess(mid);
-
-      if (res === 0) {
-        return mid;
-      }
-      if (res === -1) {
-        end = mid - 1;
-      } else {
+      if (mid * mid <= x) {
+        result = mid;
         start = mid + 1;
+      } else {
+        end = mid - 1;
       }
     }
+
+    return result;
   }
 }
