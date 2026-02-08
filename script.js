@@ -1,50 +1,34 @@
-class MyQueue {
-  constructor() {
-    this.stack1 = [];
-    this.stack2 = [];
-  }
+/**
+ * Forward declaration of guess API.
+ * @param {number} num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * function guess(num) {}
+ */
 
+class Solution {
   /**
-   * @param {number} x
-   * @return {void}
-   */
-  push(x) {
-    while (this.stack1.length > 0) {
-      this.stack2.push(this.stack1.pop());
-    }
-    this.stack2.push(x);
-    while (this.stack2.length > 0) {
-      this.stack1.push(this.stack2.pop());
-    }
-  }
-
-  /**
+   * @param {number} n
    * @return {number}
    */
-  pop() {
-    return this.stack1.pop();
-  }
+  guessNumber(n) {
+    let start = 1;
+    let end = n;
 
-  /**
-   * @return {number}
-   */
-  peek() {
-    return this.stack1[this.stack1.length - 1];
-  }
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
 
-  /**
-   * @return {boolean}
-   */
-  empty() {
-    return this.stack1.length === 0;
+      const res = guess(mid);
+
+      if (res === 0) {
+        return mid;
+      }
+      if (res === -1) {
+        end = mid - 1;
+      } else {
+        start = mid + 1;
+      }
+    }
   }
 }
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * var obj = new MyQueue()
- * obj.push(x)
- * var param_2 = obj.pop()
- * var param_3 = obj.peek()
- * var param_4 = obj.empty()
- */
