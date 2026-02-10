@@ -1,26 +1,32 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} k
+   * @param {number[]} asteroids
    * @return {number[]}
    */
-  maxSlidingWindow(nums, k) {
-    const queue = [];
+  asteroidCollision(asteroids) {
     const result = [];
 
-    for (let i = 0; i < nums.length; i++) {
-      while (queue.length > 0 && i - queue[0] >= k) {
-        queue.shift();
+    for (const asteroid of asteroids) {
+      let broken = false;
+
+      while (
+        result.length > 0 &&
+        result[result.length - 1] > 0 &&
+        asteroid < 0
+      ) {
+        if (result[result.length - 1] < Math.abs(asteroid)) {
+          result.pop();
+        } else {
+          broken = true;
+          if (result[result.length - 1] === Math.abs(asteroid)) {
+            result.pop();
+          }
+          break;
+        }
       }
 
-      while (queue.length > 0 && nums[queue[queue.length - 1]] <= nums[i]) {
-        queue.pop();
-      }
-
-      queue.push(i);
-
-      if (i >= k - 1) {
-        result.push(nums[queue[0]]);
+      if (!broken) {
+        result.push(asteroid);
       }
     }
 
