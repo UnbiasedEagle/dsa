@@ -1,26 +1,26 @@
-function makeCounter(initialValue = 0) {
-  let counter = initialValue;
+function getResultByPath(path, obj) {
+  let result = null;
+  let currentObj = obj;
+  const pathArr = path.replace(/\[(\d+)\]/g, ".$1").split(".");
 
-  return {
-    increment() {
-      counter++;
-      return counter;
-    },
-    decrement() {
-      counter--;
-      return counter;
-    },
-    reset() {
-      counter = initialValue;
-      return counter;
-    },
-  };
+  for (const key of pathArr) {
+    result = currentObj[key];
+    if (!result) {
+      return result;
+    }
+    currentObj = result;
+  }
+
+  return result;
 }
-
-const counter = makeCounter(5);
-
-console.log(counter.increment());
-console.log(counter.increment());
-console.log(counter.decrement());
-console.log(counter.reset());
-console.log(counter.decrement());
+const path = "data.results.status";
+const obj = {
+  data: {
+    results: {
+      status: "completed",
+      error: "",
+    },
+  },
+};
+getResultByPath(path, obj);
+module.exports = getResultByPath;
