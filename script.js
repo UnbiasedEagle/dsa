@@ -1,26 +1,31 @@
-class Solution {
+class StockSpanner {
+  constructor() {
+    this.stockPrices = [];
+  }
+
   /**
-   * @param {number[]} temperatures
-   * @return {number[]}
+   * @param {number} price
+   * @return {number}
    */
-  dailyTemperatures(temperatures) {
-    const result = Array.from({ length: temperatures.length }, () => 0);
-    const stack = [temperatures.length - 1];
+  next(price) {
+    let days = 1;
 
-    for (let i = temperatures.length - 2; i >= 0; i--) {
-      while (
-        stack.length > 0 &&
-        temperatures[i] >= temperatures[stack[stack.length - 1]]
-      ) {
-        stack.pop();
-      }
-
-      if (stack.length > 0) {
-        result[i] = stack[stack.length - 1] - i;
-      }
-      stack.push(i);
+    while (
+      this.stockPrices.length > 0 &&
+      this.stockPrices[this.stockPrices.length - 1][0] <= price
+    ) {
+      days += this.stockPrices[this.stockPrices.length - 1][1];
+      this.stockPrices.pop();
     }
 
-    return result;
+    this.stockPrices.push([price, days]);
+
+    return days;
   }
 }
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * var obj = new StockSpanner()
+ * var param_1 = obj.next(price)
+ */
