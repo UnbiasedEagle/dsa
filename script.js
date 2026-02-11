@@ -1,21 +1,18 @@
 /**
- * @param {string} s
- * @return {number}
+ * @param {number} x
+ * @return {boolean}
  */
-var secondHighest = function (s) {
-  let largest = -Infinity;
-  let secondLargest = -Infinity;
+var isPalindrome = function (x) {
+  if (x < 0) {
+    return false;
+  }
+  let reverse = 0;
+  let copy = x;
 
-  for (const char of s) {
-    if (!Number.isNaN(char)) {
-      if (Number(char) > largest) {
-        secondLargest = largest;
-        largest = Number(char);
-      } else if (Number(char) > secondLargest && Number(char) !== largest) {
-        secondLargest = Number(char);
-      }
-    }
+  while (copy > 0) {
+    reverse = reverse * 10 + (copy % 10);
+    copy = Math.floor(copy / 10);
   }
 
-  return secondLargest === -Infinity ? -1 : secondLargest;
+  return reverse === x;
 };
