@@ -1,33 +1,24 @@
 class Solution {
   /**
-   * @param {number[]} asteroids
+   * @param {number[]} temperatures
    * @return {number[]}
    */
-  asteroidCollision(asteroids) {
-    const result = [];
+  dailyTemperatures(temperatures) {
+    const result = Array.from({ length: temperatures.length }, () => 0);
+    const stack = [temperatures.length - 1];
 
-    for (const asteroid of asteroids) {
-      let broken = false;
-
+    for (let i = temperatures.length - 2; i >= 0; i--) {
       while (
-        result.length > 0 &&
-        result[result.length - 1] > 0 &&
-        asteroid < 0
+        stack.length > 0 &&
+        temperatures[i] >= temperatures[stack[stack.length - 1]]
       ) {
-        if (result[result.length - 1] < Math.abs(asteroid)) {
-          result.pop();
-        } else {
-          broken = true;
-          if (result[result.length - 1] === Math.abs(asteroid)) {
-            result.pop();
-          }
-          break;
-        }
+        stack.pop();
       }
 
-      if (!broken) {
-        result.push(asteroid);
+      if (stack.length > 0) {
+        result[i] = stack[stack.length - 1] - i;
       }
+      stack.push(i);
     }
 
     return result;
