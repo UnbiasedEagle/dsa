@@ -1,26 +1,27 @@
-function getResultByPath(path, obj) {
-  let result = null;
-  let currentObj = obj;
-  const pathArr = path.replace(/\[(\d+)\]/g, ".$1").split(".");
+function findLargest(arr) {
+  if (!Array.isArray(arr)) {
+    return false;
+  }
+  if (arr.length === 0) {
+    return null;
+  }
 
-  for (const key of pathArr) {
-    result = currentObj[key];
-    if (!result) {
-      return result;
+  if (!Number.isFinite(arr[0])) {
+    return false;
+  }
+
+  let result = arr[0];
+
+  for (let i = 1; i < arr.length; i++) {
+    if (!Number.isFinite(arr[i])) {
+      return false;
     }
-    currentObj = result;
+    if (arr[i] > result) {
+      result = arr[i];
+    }
   }
 
   return result;
 }
-const path = "data.results.status";
-const obj = {
-  data: {
-    results: {
-      status: "completed",
-      error: "",
-    },
-  },
-};
-getResultByPath(path, obj);
-module.exports = getResultByPath;
+
+module.exports = { findLargest };
