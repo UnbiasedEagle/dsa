@@ -1,27 +1,10 @@
-function findSmallest(arr) {
-  if (!Array.isArray(arr)) {
-    return false;
-  }
-  if (arr.length === 0) {
-    return null;
-  }
-
-  if (!Number.isFinite(arr[0])) {
-    return false;
-  }
-
-  let result = arr[0];
-
-  for (let i = 1; i < arr.length; i++) {
-    if (!Number.isFinite(arr[i])) {
-      return false;
-    }
-    if (arr[i] < result) {
-      result = arr[i];
-    }
-  }
-
-  return result;
+function sum(...args) {
+  return args.reduce((acc, curr) => {
+    return acc + curr;
+  }, 0);
 }
 
-module.exports = { findSmallest };
+//For the purpose of user debugging.
+sum(100, 200, 300, 400);
+
+module.exports = sum;
