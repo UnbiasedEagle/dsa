@@ -1,10 +1,21 @@
-function sum(...args) {
-  return args.reduce((acc, curr) => {
-    return acc + curr;
-  }, 0);
-}
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var secondHighest = function (s) {
+  let largest = -Infinity;
+  let secondLargest = -Infinity;
 
-//For the purpose of user debugging.
-sum(100, 200, 300, 400);
+  for (const char of s) {
+    if (!Number.isNaN(char)) {
+      if (Number(char) > largest) {
+        secondLargest = largest;
+        largest = Number(char);
+      } else if (Number(char) > secondLargest && Number(char) !== largest) {
+        secondLargest = Number(char);
+      }
+    }
+  }
 
-module.exports = sum;
+  return secondLargest === -Infinity ? -1 : secondLargest;
+};
