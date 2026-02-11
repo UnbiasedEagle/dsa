@@ -1,4 +1,4 @@
-function findLargest(arr) {
+function findSmallest(arr) {
   if (!Array.isArray(arr)) {
     return false;
   }
@@ -16,7 +16,7 @@ function findLargest(arr) {
     if (!Number.isFinite(arr[i])) {
       return false;
     }
-    if (arr[i] > result) {
+    if (arr[i] < result) {
       result = arr[i];
     }
   }
@@ -24,4 +24,4 @@ function findLargest(arr) {
   return result;
 }
 
-module.exports = { findLargest };
+module.exports = { findSmallest };
