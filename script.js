@@ -1,25 +1,30 @@
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number}
- */
-var search = function (nums, target) {
-  let start = 0;
-  let end = nums.length - 1;
+class Solution {
+  /**
+   * @param {number} target
+   * @param {number[]} position
+   * @param {number[]} speed
+   * @return {number}
+   */
+  carFleet(target, position, speed) {
+    const combined = [];
 
-  while (start <= end) {
-    const mid = Math.floor((start + end) / 2);
-
-    if (nums[mid] === target) {
-      return mid;
+    for (let i = 0; i < position.length; i++) {
+      combined.push([position[i], speed[i]]);
     }
 
-    if (nums[mid] > target) {
-      end = mid - 1;
-    } else {
-      start = mid + 1;
+    combined.sort((a, b) => a[0] - b[0]);
+
+    const stack = [];
+
+    for (let i = combined.length - 1; i >= 0; i--) {
+      const [pos, speed] = combined[i];
+      const time = (target - pos) / speed;
+
+      if (stack.length === 0 || time > stack[stack.length - 1]) {
+        stack.push(time);
+      }
     }
+
+    return stack.length;
   }
-
-  return -1;
-};
+}
