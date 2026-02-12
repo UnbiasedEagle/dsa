@@ -1,30 +1,50 @@
-class Solution {
-  /**
-   * @param {number} target
-   * @param {number[]} position
-   * @param {number[]} speed
-   * @return {number}
-   */
-  carFleet(target, position, speed) {
-    const combined = [];
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function (nums) {
+  mergeSort(nums, 0, nums.length - 1);
+  return nums;
+};
 
-    for (let i = 0; i < position.length; i++) {
-      combined.push([position[i], speed[i]]);
+function mergeSort(nums, start, end) {
+  if (start >= end) {
+    return;
+  }
+  const mid = Math.floor((start + end) / 2);
+
+  mergeSort(nums, start, mid);
+  mergeSort(nums, mid + 1, end);
+
+  merge(nums, start, mid, end);
+}
+
+function merge(nums, start, mid, end) {
+  const temp = [];
+  let i = start;
+  let j = mid + 1;
+
+  while (i <= mid && j <= end) {
+    if (nums[i] < nums[j]) {
+      temp.push(nums[i]);
+      i++;
+    } else {
+      temp.push(nums[j]);
+      j++;
     }
+  }
 
-    combined.sort((a, b) => a[0] - b[0]);
+  while (i <= mid) {
+    temp.push(nums[i]);
+    i++;
+  }
 
-    const stack = [];
+  while (j <= end) {
+    temp.push(nums[j]);
+    j++;
+  }
 
-    for (let i = combined.length - 1; i >= 0; i--) {
-      const [pos, speed] = combined[i];
-      const time = (target - pos) / speed;
-
-      if (stack.length === 0 || time > stack[stack.length - 1]) {
-        stack.push(time);
-      }
-    }
-
-    return stack.length;
+  for (let i = 0; i < temp.length; i++) {
+    nums[start + i] = temp[i];
   }
 }
