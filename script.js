@@ -1,14 +1,19 @@
-function customSort(arr) {
-  const charArr = arr.filter((item) => isNaN(item));
-  const numArr = arr.filter((item) => !isNaN(item));
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var findMaxConsecutiveOnes = function (nums) {
+  let result = 0;
+  let current = 0;
 
-  charArr.sort((a, b) => a.charCodeAt(0) - b.charCodeAt(0));
-  numArr.sort((a, b) => a - b);
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === 1) {
+      current++;
+    } else {
+      current = 0;
+    }
+    result = Math.max(result, current);
+  }
 
-  return [...charArr, ...numArr];
-}
-
-const input = ["g", "s", 5, 2, "c", "e", 6, 1, "a"];
-console.log(customSort(input));
-
-// module.exports = customSort;
+  return result;
+};
