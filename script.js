@@ -1,14 +1,23 @@
-/**
- * @param {number[]} nums
- * @return {void} Do not return anything, modify nums in-place instead.
- */
-var moveZeroes = function (nums) {
-  let idx = 0;
+class Solution {
+  /**
+   * @param {string} path
+   * @return {string}
+   */
+  simplifyPath(path) {
+    const dirs = path.split("/").filter((el) => el.length > 0);
 
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] !== 0) {
-      [nums[idx], nums[i]] = [nums[i], nums[idx]];
-      idx++;
+    const stack = [];
+
+    for (const dir of dirs) {
+      if (dir === ".") {
+        continue;
+      } else if (dir === "..") {
+        stack.pop();
+      } else {
+        stack.push(dir);
+      }
     }
+
+    return "/" + stack.join("/");
   }
-};
+}
