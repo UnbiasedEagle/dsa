@@ -1,17 +1,14 @@
 /**
- * @param {number[]} nums
- * @param {number} val
- * @return {number}
+ * @param {character[]} s
+ * @return {void} Do not return anything, modify s in-place instead.
  */
-var removeElement = function (nums, val) {
-  let idx = 0;
+var reverseString = function (s) {
+  let start = 0;
+  let end = s.length - 1;
 
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] !== val) {
-      nums[idx] = nums[i];
-      idx++;
-    }
+  while (start < end) {
+    [s[start], s[end]] = [s[end], s[start]];
+    start++;
+    end--;
   }
-
-  return idx;
 };
