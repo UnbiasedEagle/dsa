@@ -1,18 +1,39 @@
 /**
- * @param {number[]} prices
- * @return {number}
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
  */
-var maxProfit = function (prices) {
-  let result = 0;
-  let minPrice = prices[0];
+var merge = function (nums1, m, nums2, n) {
+  reverse(nums1, 0, m - 1);
+  reverse(nums1, 0, nums1.length - 1);
+  let idx = 0;
+  let i = nums1.length - m;
+  let j = 0;
 
-  for (let i = 1; i < prices.length; i++) {
-    if (prices[i] > minPrice) {
-      result = Math.max(maxProfit, prices[i] - minPrice);
+  while (i < nums1.length && j < nums2.length) {
+    if (nums1[i] < nums2[j]) {
+      nums1[idx] = nums1[i];
+      i++;
     } else {
-      minPrice = prices[i];
+      nums1[idx] = nums2[j];
+      j++;
     }
+    idx++;
   }
 
-  return result;
+  while (j < nums2.length) {
+    nums1[idx] = nums2[j];
+    idx++;
+    j++;
+  }
 };
+
+function reverse(nums, start, end) {
+  while (start < end) {
+    [nums[start], nums[end]] = [nums[end], nums[start]];
+    start++;
+    end--;
+  }
+}
