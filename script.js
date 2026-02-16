@@ -1,34 +1,36 @@
-// All paths from src to target
-
-function findAllPaths(graph, currNode, visted, target, currPath, result) {
-  if (currNode === target) {
-    result.push([...currPath]);
-    return;
+/**
+ * @param {number[][]} image
+ * @param {number} sr
+ * @param {number} sc
+ * @param {number} color
+ * @return {number[][]}
+ */
+var floodFill = function (image, sr, sc, color) {
+  const originalColor = image[sr][sc];
+  if (originalColor === color) {
+    return image;
   }
-  if (visted.has(currNode)) {
-    return;
-  }
-
-  visted.add(currNode);
-
-  for (const neighbour of graph[currNode]) {
-    currPath.push(neighbour);
-    findAllPaths(graph, neighbour, visted, target, currPath, result);
-    currPath.pop();
-  }
-
-  visted.delete(currNode);
-}
-
-const result = [];
-const graph = {
-  0: [1, 4, 2],
-  1: [3],
-  2: [3],
-  3: [],
-  4: [2],
+  dfs(image, sr, sc, originalColor, color);
+  return image;
 };
 
-findAllPaths(graph, 0, new Set(), 3, [0], result);
+function dfs(image, r, c, originalColor, color) {
+  if (r < 0 || r >= image.length || c < 0 || c >= image[0].length) {
+    return;
+  }
+  if (image[r][c] !== originalColor) {
+    return;
+  }
+  image[r][c] = color;
 
-console.log(result);
+  const directions = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+
+  for (const dir of directions) {
+    dfs(image, r + dir[0], c + dir[1], originalColor, color);
+  }
+}
