@@ -1,27 +1,21 @@
-/**
- * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
- * }
- */
+function bfs(graph, srcNode) {
+  const visted = new Set();
+  const queue = [];
+  queue.push(srcNode);
+  visted.add(srcNode);
+  const result = [];
 
-/**
- * @param {ListNode} head
- * @return {boolean}
- */
-var hasCycle = function (head) {
-  let slow = head;
-  let fast = head;
+  while (queue.length) {
+    const curr = queue.shift();
+    result.push(curr);
 
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-
-    if (slow === fast) {
-      return true;
+    for (const neighbour of graph[curr]) {
+      if (!visted.has(neighbour)) {
+        visted.add(neighbour);
+        queue.push(neighbour);
+      }
     }
   }
 
-  return false;
-};
+  return result;
+}
