@@ -1,27 +1,23 @@
 /**
  * @param {number} numCourses
  * @param {number[][]} prerequisites
- * @return {boolean}
+ * @return {number[]}
  */
-var canFinish = function (numCourses, prerequisites) {
+var findOrder = function (numCourses, prerequisites) {
   const graph = {};
+  const indegree = Array(numCourses).fill(0);
 
   for (let i = 0; i < numCourses; i++) {
     graph[i] = [];
   }
 
   for (const prerequisite of prerequisites) {
-    graph[prerequisite[0]].push(prerequisite[1]);
+    graph[prerequisite[1]].push(prerequisite[0]);
+    indegree[prerequisite[0]]++;
   }
 
-  const indegree = Array(numCourses).fill(0);
-
-  for (const prerequisite of prerequisites) {
-    indegree[prerequisite[1]]++;
-  }
-
+  const result = [];
   const queue = [];
-  let count = 0;
 
   for (let i = 0; i < numCourses; i++) {
     if (indegree[i] === 0) {
@@ -29,9 +25,9 @@ var canFinish = function (numCourses, prerequisites) {
     }
   }
 
-  while (queue.length) {
+  while (queue.length > 0) {
     const node = queue.shift();
-    count++;
+    result.push(node);
 
     for (const neighbour of graph[node]) {
       indegree[neighbour]--;
@@ -41,5 +37,5 @@ var canFinish = function (numCourses, prerequisites) {
     }
   }
 
-  return count === numCourses;
+  return result.length === numCourses ? result : [];
 };
