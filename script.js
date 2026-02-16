@@ -1,41 +1,15 @@
-/**
- * @param {number} numCourses
- * @param {number[][]} prerequisites
- * @return {number[]}
- */
-var findOrder = function (numCourses, prerequisites) {
-  const graph = {};
-  const indegree = Array(numCourses).fill(0);
+// Climbing Stairs
 
-  for (let i = 0; i < numCourses; i++) {
-    graph[i] = [];
+function climbingStairs(n, dp) {
+  if (n <= 1) {
+    return 1;
   }
 
-  for (const prerequisite of prerequisites) {
-    graph[prerequisite[1]].push(prerequisite[0]);
-    indegree[prerequisite[0]]++;
+  if (dp[n] !== -1) {
+    return dp[n];
   }
 
-  const result = [];
-  const queue = [];
+  dp[n] = climbingStairs(n - 1, dp) + climbingStairs(n - 2, dp);
 
-  for (let i = 0; i < numCourses; i++) {
-    if (indegree[i] === 0) {
-      queue.push(i);
-    }
-  }
-
-  while (queue.length > 0) {
-    const node = queue.shift();
-    result.push(node);
-
-    for (const neighbour of graph[node]) {
-      indegree[neighbour]--;
-      if (indegree[neighbour] === 0) {
-        queue.push(neighbour);
-      }
-    }
-  }
-
-  return result.length === numCourses ? result : [];
-};
+  return dp[n];
+}
