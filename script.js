@@ -1,29 +1,37 @@
-// Kahn Algorithm -> topological ordering && cycle detection using bfs
+/**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish = function (numCourses, prerequisites) {
+  const graph = {};
 
-function cycleDetectionUsingBFS(graph, n) {
-  const indegree = Array(n).fill(0);
+  for (let i = 0; i < numCourses; i++) {
+    graph[i] = [];
+  }
 
-  for (let i = 0; i < n; i++) {
-    const neighbours = graph[i] || [];
+  for (const prerequisite of prerequisites) {
+    graph[prerequisite[0]].push(prerequisite[1]);
+  }
 
-    for (const neighbour of neighbours) {
-      indegree[neighbour]++;
-    }
+  const indegree = Array(numCourses).fill(0);
+
+  for (const prerequisite of prerequisites) {
+    indegree[prerequisite[1]]++;
   }
 
   const queue = [];
+  let count = 0;
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < numCourses; i++) {
     if (indegree[i] === 0) {
       queue.push(i);
     }
   }
 
-  let processedNodes = 0;
-
-  while (queue.length > 0) {
+  while (queue.length) {
     const node = queue.shift();
-    processedNodes++;
+    count++;
 
     for (const neighbour of graph[node]) {
       indegree[neighbour]--;
@@ -33,5 +41,5 @@ function cycleDetectionUsingBFS(graph, n) {
     }
   }
 
-  return processedNodes !== n;
-}
+  return count === numCourses;
+};
