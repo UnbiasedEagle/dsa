@@ -1,57 +1,58 @@
 /**
  * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
  * }
  */
+
 /**
- * @param {ListNode} head
- * @return {boolean}
+ * @param {ListNode} headA
+ * @param {ListNode} headBa
+ * @return {ListNode}
  */
-var isPalindrome = function (head) {
-  if (!head || !head.next) {
-    return true;
+var getIntersectionNode = function (headA, headB) {
+  if (!headA || !headB) {
+    return null;
   }
-  const middle = getMiddle(head);
-  let otherHead = middle.next;
+  let curr1 = headA;
+  let curr2 = headB;
 
-  middle.next = null;
-  otherHead = reverse(otherHead);
+  while (curr1 && curr2) {
+    curr1 = curr1.next;
+    curr2 = curr2.next;
+  }
 
-  while (head && otherHead) {
-    if (head.val !== otherHead.val) {
-      return false;
+  if (curr1 === null) {
+    curr1 = headB;
+    while (curr2) {
+      curr1 = curr1.next;
+      curr2 = curr2.next;
     }
-    head = head.next;
-    otherHead = otherHead.next;
+    curr2 = headA;
+
+    while (curr1 && curr2) {
+      if (curr1 === curr2) {
+        return curr1;
+      }
+      curr1 = curr1.next;
+      curr2 = curr2.next;
+    }
+    return null;
   }
 
-  return true;
+  curr2 = headA;
+  while (curr1) {
+    curr2 = curr2.next;
+    curr1 = curr1.next;
+  }
+  curr1 = headB;
+  while (curr1 && curr2) {
+    if (curr1 === curr2) {
+      return curr1;
+    }
+    curr1 = curr1.next;
+    curr2 = curr2.next;
+  }
+  return null;
 };
-
-function getMiddle(head) {
-  let slow = head;
-  let fast = head;
-
-  while (fast && fast.next && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-  }
-
-  return slow;
-}
-
-function reverse(head) {
-  let curr = head;
-  let prev = null;
-
-  while (curr) {
-    const next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-  }
-
-  return prev;
-}
