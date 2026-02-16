@@ -1,21 +1,26 @@
-// Find town judge -> indegree = n-1 and outdegree = 0
+// Detect cycle in a directed graph using dfs
 
-function findTownJudge(n, trust) {
-  const indegree = Array(n + 1).fill(0);
-  const outdegree = Array(n + 1).fill(0);
+function cycleDetectionUsingDFS(graph) {
+  const visited = new Set();
+  const recStack = new Set();
 
-  for (let i = 0; i < trust.length; i++) {
-    const [v1, v2] = trust[i];
-
-    indegree[v2]++;
-    outdegree[v1]++;
-  }
-
-  for (let i = 1; i <= n; i++) {
-    if (outdegree[i] === 0 && indegree[i] === n - 1) {
-      return i;
+  function dfs(node) {
+    if (recStack.has(node)) {
+      return true;
     }
-  }
+    if (visited.has(node)) {
+      return false;
+    }
+    visited.add(node);
+    recStack.add(node);
 
-  return -1;
+    for (const neighbour of graph[node]) {
+      if (dfs(neighbour)) {
+        return true;
+      }
+    }
+
+    recStack.delete(node);
+    return false;
+  }
 }
