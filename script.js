@@ -1,36 +1,42 @@
 /**
- * @param {number[][]} image
- * @param {number} sr
- * @param {number} sc
- * @param {number} color
- * @return {number[][]}
+ * @param {character[][]} grid
+ * @return {number}
  */
-var floodFill = function (image, sr, sc, color) {
-  const originalColor = image[sr][sc];
-  if (originalColor === color) {
-    return image;
+var numIslands = function (grid) {
+  let result = 0;
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      if (grid[i][j] === "1") {
+        result++;
+        dfs(grid, i, j);
+      }
+    }
   }
-  dfs(image, sr, sc, originalColor, color);
-  return image;
+
+  return result;
 };
 
-function dfs(image, r, c, originalColor, color) {
-  if (r < 0 || r >= image.length || c < 0 || c >= image[0].length) {
+function dfs(grid, i, j) {
+  if (
+    i < 0 ||
+    j < 0 ||
+    i >= grid.length ||
+    j >= grid[0].length ||
+    grid[i][j] === "0"
+  ) {
     return;
   }
-  if (image[r][c] !== originalColor) {
-    return;
-  }
-  image[r][c] = color;
+  grid[i][j] = "0";
 
-  const directions = [
+  const dirs = [
     [1, 0],
     [-1, 0],
     [0, 1],
     [0, -1],
   ];
 
-  for (const dir of directions) {
-    dfs(image, r + dir[0], c + dir[1], originalColor, color);
+  for (const dir of dirs) {
+    dfs(grid, i + dir[0], j + dir[1]);
   }
 }
