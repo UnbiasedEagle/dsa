@@ -1,28 +1,57 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
  */
-var rob = function (nums) {
-  if (nums.length === 1) {
-    return nums[0];
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var isPalindrome = function (head) {
+  if (!head || !head.next) {
+    return true;
   }
-  return Math.max(
-    helper(nums.slice(0, nums.length - 1)),
-    helper(nums.slice(1, nums.length)),
-  );
+  const middle = getMiddle(head);
+  let otherHead = middle.next;
+
+  middle.next = null;
+  otherHead = reverse(otherHead);
+
+  while (head && otherHead) {
+    if (head.val !== otherHead.val) {
+      return false;
+    }
+    head = head.next;
+    otherHead = otherHead.next;
+  }
+
+  return true;
 };
 
-function helper(nums) {
-  if (nums.length === 1) {
-    return nums[0];
-  }
-  const dp = Array(nums.length);
-  dp[0] = nums[0];
-  dp[1] = Math.max(nums[0], nums[1]);
+function getMiddle(head) {
+  let slow = head;
+  let fast = head;
 
-  for (let i = 2; i < nums.length; i++) {
-    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+  while (fast && fast.next && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
   }
 
-  return dp[nums.length - 1];
+  return slow;
+}
+
+function reverse(head) {
+  let curr = head;
+  let prev = null;
+
+  while (curr) {
+    const next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+
+  return prev;
 }
