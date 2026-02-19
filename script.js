@@ -7,32 +7,29 @@
  */
 /**
  * @param {ListNode} head
- * @param {number} val
+ * @param {number} n
  * @return {ListNode}
  */
-var removeElements = function (head, val) {
-  let curr = head;
+var removeNthFromEnd = function (head, n) {
+  let fast = head;
 
-  while (curr && curr.val === val) {
-    curr = curr.next;
+  while (n >= 0 && fast) {
+    fast = fast.next;
+    n--;
   }
 
-  if (!curr) {
-    return null;
+  if (n >= 0) {
+    return head.next;
   }
 
-  head = curr;
+  let slow = head;
 
-  while (curr) {
-    let nextNode = curr.next;
-
-    while (nextNode && nextNode.val === val) {
-      nextNode = nextNode.next;
-    }
-
-    curr.next = nextNode;
-    curr = nextNode;
+  while (fast) {
+    slow = slow.next;
+    fast = fast.next;
   }
+
+  slow.next = slow.next.next;
 
   return head;
 };
