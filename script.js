@@ -1,20 +1,16 @@
 /**
- * @param {string} s
- * @return {number}
+ * @param {string[]} words
+ * @param {character} x
+ * @return {number[]}
  */
-var lengthOfLastWord = function (s) {
-  let i = s.length - 1;
+var findWordsContaining = function (words, x) {
+  const result = [];
 
-  while (i >= 0 && s[i] === " ") {
-    i--;
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].includes(x)) {
+      result.push(i);
+    }
   }
 
-  let length = 0;
-
-  while (i >= 0 && s[i] !== " ") {
-    length++;
-    i--;
-  }
-
-  return length;
+  return result;
 };
