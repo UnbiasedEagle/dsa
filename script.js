@@ -1,38 +1,35 @@
 /**
- * Definition for singly-linked list.
- * class ListNode {
- *     constructor(val = 0, next = null) {
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     constructor(val = 0, left = null, right = null) {
  *         this.val = val;
- *         this.next = next;
+ *         this.left = left;
+ *         this.right = right;
  *     }
  * }
  */
-
 class Solution {
   /**
-   * @param {ListNode} head
-   * @param {number} n
-   * @return {ListNode}
+   * @param {TreeNode} root
+   * @return {number[]}
    */
-  removeNthFromEnd(head, n) {
-    let fast = head;
-    while (n > 0) {
-      fast = fast.next;
-      n--;
+  inorderTraversal(root) {
+    const result = [];
+
+    if (!root) return result;
+    const stack = [];
+    let current = root;
+
+    while (current || stack.length > 0) {
+      while (current) {
+        stack.push(current);
+        current = current.left;
+      }
+      current = stack.pop();
+      result.push(current.val);
+      current = current.right;
     }
 
-    if (!fast) {
-      return head.next;
-    }
-
-    let slow = head;
-
-    while (fast.next) {
-      fast = fast.next;
-      slow = slow.next;
-    }
-
-    slow.next = slow.next.next;
-    return head;
+    return result;
   }
 }
