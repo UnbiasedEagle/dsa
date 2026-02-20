@@ -1,35 +1,38 @@
 /**
- * Definition for a binary tree node.
- * class TreeNode {
- *     constructor(val = 0, left = null, right = null) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
  * }
  */
-class Solution {
-  /**
-   * @param {TreeNode} root
-   * @return {number[]}
-   */
-  inorderTraversal(root) {
-    const result = [];
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var oddEvenList = function (head) {
+  let current = head;
+  const dummyOdd = new ListNode(0);
+  const dummyEven = new ListNode(0);
 
-    if (!root) return result;
-    const stack = [];
-    let current = root;
+  let odd = dummyOdd;
+  let even = dummyEven;
 
-    while (current || stack.length > 0) {
-      while (current) {
-        stack.push(current);
-        current = current.left;
-      }
-      current = stack.pop();
-      result.push(current.val);
-      current = current.right;
+  let isOdd = true;
+
+  while (current) {
+    if (isOdd) {
+      odd.next = current;
+      odd = odd.next;
+    } else {
+      even.next = current;
+      even = even.next;
     }
-
-    return result;
+    isOdd = !isOdd;
+    current = current.next;
   }
-}
+
+  odd.next = dummyEven.next;
+  even.next = null;
+
+  return dummyOdd.next;
+};
