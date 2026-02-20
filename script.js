@@ -1,20 +1,18 @@
-Array.prototype.myReduce = function (callback, initialValue) {
-  if (
-    typeof callback !== "function" ||
-    (initialValue === undefined && this.length === 0)
-  ) {
-    throw new TypeError("callback must be a function");
+function findMaxNumber(arr) {
+  if (arr.length === 0) {
+    return null;
   }
 
-  let result = initialValue ? initialValue : this[0];
-  let startIndex = initialValue === undefined ? 1 : 0;
-
-  for (let i = startIndex; i < this.length; i++) {
-    if (isNaN(this[i])) {
-      continue;
+  let max = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
     }
-    result = callback(result, this[i], i, this);
   }
+  return max;
+}
 
-  return result;
-};
+//For the purpose of user debugging.
+findMaxNumber([1, 2, 3, 4, 5]);
+
+module.exports = findMaxNumber;
