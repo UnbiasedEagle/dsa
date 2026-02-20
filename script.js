@@ -1,18 +1,31 @@
-function findMaxNumber(arr) {
-  if (arr.length === 0) {
-    return null;
-  }
+class Solution {
+  /**
+   * @param {number[]} piles
+   * @param {number} h
+   * @return {number}
+   */
+  minEatingSpeed(piles, h) {
+    let start = 1;
+    let end = Math.max(...piles);
+    let result = end;
 
-  let max = arr[0];
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] > max) {
-      max = arr[i];
+    while (start <= end) {
+      const mid = Math.floor((start + end) / 2);
+      if (this.canFinish(piles, mid, h)) {
+        result = mid;
+        end = mid - 1;
+      } else {
+        start = mid + 1;
+      }
     }
+    return result;
   }
-  return max;
+
+  canFinish(piles, k, h) {
+    let hours = 0;
+    for (let pile of piles) {
+      hours += Math.ceil(pile / k);
+    }
+    return hours <= h;
+  }
 }
-
-//For the purpose of user debugging.
-findMaxNumber([1, 2, 3, 4, 5]);
-
-module.exports = findMaxNumber;
