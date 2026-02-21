@@ -9,30 +9,23 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-var oddEvenList = function (head) {
+var deleteDuplicates = function (head) {
+  if (!head || !head.next) {
+    return head;
+  }
+
   let current = head;
-  const dummyOdd = new ListNode(0);
-  const dummyEven = new ListNode(0);
-
-  let odd = dummyOdd;
-  let even = dummyEven;
-
-  let isOdd = true;
 
   while (current) {
-    if (isOdd) {
-      odd.next = current;
-      odd = odd.next;
-    } else {
-      even.next = current;
-      even = even.next;
+    let next = current.next;
+
+    while (next && next.val === current.val) {
+      next = next.next;
     }
-    isOdd = !isOdd;
+
+    current.next = next;
     current = current.next;
   }
 
-  odd.next = dummyEven.next;
-  even.next = null;
-
-  return dummyOdd.next;
+  return head;
 };
