@@ -7,25 +7,45 @@
  */
 /**
  * @param {ListNode} head
+ * @param {number} k
  * @return {ListNode}
  */
-var deleteDuplicates = function (head) {
-  if (!head || !head.next) {
+var rotateRight = function (head, k) {
+  if (!head) {
+    return head;
+  }
+  const length = getLength(head);
+  k = k % length;
+
+  if (k === 0) {
     return head;
   }
 
-  let current = head;
-
-  while (current) {
-    let next = current.next;
-
-    while (next && next.val === current.val) {
-      next = next.next;
-    }
-
-    current.next = next;
-    current = current.next;
+  let rem = length - k;
+  let curr = head;
+  while (rem > 1) {
+    curr = curr.next;
+    rem--;
   }
 
-  return head;
+  const newHead = curr.next;
+  let tail = newHead;
+  while (tail.next) {
+    tail = tail.next;
+  }
+
+  tail.next = head;
+  curr.next = null;
+
+  return newHead;
+};
+
+const getLength = (head) => {
+  let length = 0;
+  let current = head;
+  while (current) {
+    length++;
+    current = current.next;
+  }
+  return length;
 };
