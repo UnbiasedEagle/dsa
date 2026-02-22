@@ -7,45 +7,19 @@
  */
 /**
  * @param {ListNode} head
- * @param {number} k
  * @return {ListNode}
  */
-var rotateRight = function (head, k) {
-  if (!head) {
-    return head;
-  }
-  const length = getLength(head);
-  k = k % length;
-
-  if (k === 0) {
+var swapPairs = function (head) {
+  if (!head || !head.next) {
     return head;
   }
 
-  let rem = length - k;
-  let curr = head;
-  while (rem > 1) {
-    curr = curr.next;
-    rem--;
-  }
+  const nextPair = swapPairs(head.next.next);
 
-  const newHead = curr.next;
-  let tail = newHead;
-  while (tail.next) {
-    tail = tail.next;
-  }
-
-  tail.next = head;
-  curr.next = null;
+  const newHead = head.next;
+  const nextNode = head.next;
+  nextNode.next = head;
+  head.next = nextPair;
 
   return newHead;
-};
-
-const getLength = (head) => {
-  let length = 0;
-  let current = head;
-  while (current) {
-    length++;
-    current = current.next;
-  }
-  return length;
 };
