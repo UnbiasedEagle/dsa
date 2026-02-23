@@ -2,25 +2,27 @@
  * @param {string} s
  * @return {number}
  */
-var maxFreqSum = function (s) {
-  const vovels = ['a', 'e', 'i', 'o', 'u'];
+var balancedStringSplit = function (s) {
+  let count = 0;
 
-  let maxVovelCharCount = 0;
-  let maxConsonantCharCount = 0;
+  let lCount = 0;
+  let rCount = 0;
 
-  const map = new Map();
+  let i = 0;
 
-  for (const char of s) {
-    map.set(char, (map.get(char) || 0) + 1);
-  }
-
-  for (const [key, value] of map.entries()) {
-    if (vovels.includes(key)) {
-      maxVovelCharCount = Math.max(maxVovelCharCount, value);
+  while (i < s.length) {
+    if (s[i] === 'L') {
+      lCount++;
     } else {
-      maxConsonantCharCount = Math.max(maxConsonantCharCount, value);
+      rCount++;
     }
+    if (lCount === rCount) {
+      count++;
+      lCount = 0;
+      rCount = 0;
+    }
+    i++;
   }
 
-  return maxVovelCharCount + maxConsonantCharCount;
+  return count;
 };
