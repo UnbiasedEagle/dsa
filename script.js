@@ -1,16 +1,18 @@
 /**
- * @param {string} num
+ * @param {string[]} strs
  * @return {string}
  */
-var largestOddNumber = function (num) {
-  let end = num.length - 1;
-
-  while (end >= 0) {
-    if (num[end] % 2 !== 0) {
-      return num.substring(0, end + 1);
+var longestCommonPrefix = function (strs) {
+  if (strs.length === 0) return '';
+  let prefix = '';
+  let shortest = Math.min(...strs.map((str) => str.length));
+  for (let i = 0; i < shortest; i++) {
+    const char = strs[0][i];
+    if (strs.every((str) => str[i] === char)) {
+      prefix += char;
+    } else {
+      break;
     }
-    end--;
   }
-
-  return '';
+  return prefix;
 };
