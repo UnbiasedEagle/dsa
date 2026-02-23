@@ -1,25 +1,20 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
+ * @param {string} jewels
+ * @param {string} stones
+ * @return {number}
  */
-/**
- * @param {ListNode} head
- * @return {ListNode}
- */
-var swapPairs = function (head) {
-  if (!head || !head.next) {
-    return head;
+var numJewelsInStones = function (jewels, stones) {
+  const map = new Map();
+
+  for (const s of stones) {
+    map.set(s, (map.get(s) || 0) + 1);
   }
 
-  const nextPair = swapPairs(head.next.next);
+  let count = 0;
 
-  const newHead = head.next;
-  const nextNode = head.next;
-  nextNode.next = head;
-  head.next = nextPair;
+  for (const j of jewels) {
+    count += map.get(j) || 0;
+  }
 
-  return newHead;
+  return count;
 };
