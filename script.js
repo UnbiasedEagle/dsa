@@ -1,20 +1,26 @@
 /**
- * @param {string} jewels
- * @param {string} stones
+ * @param {string} s
  * @return {number}
  */
-var numJewelsInStones = function (jewels, stones) {
+var maxFreqSum = function (s) {
+  const vovels = ['a', 'e', 'i', 'o', 'u'];
+
+  let maxVovelCharCount = 0;
+  let maxConsonantCharCount = 0;
+
   const map = new Map();
 
-  for (const s of stones) {
-    map.set(s, (map.get(s) || 0) + 1);
+  for (const char of s) {
+    map.set(char, (map.get(char) || 0) + 1);
   }
 
-  let count = 0;
-
-  for (const j of jewels) {
-    count += map.get(j) || 0;
+  for (const [key, value] of map.entries()) {
+    if (vovels.includes(key)) {
+      maxVovelCharCount = Math.max(maxVovelCharCount, value);
+    } else {
+      maxConsonantCharCount = Math.max(maxConsonantCharCount, value);
+    }
   }
 
-  return count;
+  return maxVovelCharCount + maxConsonantCharCount;
 };
