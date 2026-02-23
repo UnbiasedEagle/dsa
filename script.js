@@ -1,37 +1,31 @@
 /**
  * @param {string} s
- * @param {number} k
- * @return {string}
+ * @return {boolean}
  */
-var reverseStr = function (s, k) {
-  let result = '';
+var isPalindrome = function (s) {
+  let start = 0;
+  let end = s.length - 1;
 
-  let i = 0;
-
-  while (i < s.length) {
-    if (i + 2 * k <= s.length) {
-      let start = i;
-      let end = i + k - 1;
-      result += s
-        .substring(start, end + 1)
-        .split('')
-        .reverse()
-        .join('');
-      result += s.substring(end + 1, start + 2 * k);
-      i += 2 * k;
-    } else if (i + k > s.length) {
-      result += s.substring(i, s.length).split('').reverse().join('');
-      i += k;
-    } else {
-      result += s
-        .substring(i, i + k)
-        .split('')
-        .reverse()
-        .join('');
-      result += s.substring(i + k, s.length);
-      i = s.length;
+  while (start < end) {
+    while (start < end && !isAlphaNumeric(s[start])) {
+      start++;
     }
+
+    while (start < end && !isAlphaNumeric(s[end])) {
+      end--;
+    }
+
+    if (s[start].toLowerCase() !== s[end].toLowerCase()) {
+      return false;
+    }
+
+    start++;
+    end--;
   }
 
-  return result;
+  return true;
 };
+
+function isAlphaNumeric(char) {
+  return /^[a-zA-Z0-9]+$/.test(char);
+}
