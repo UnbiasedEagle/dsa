@@ -1,18 +1,17 @@
 /**
- * @param {string[]} strs
- * @return {string}
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
  */
-var longestCommonPrefix = function (strs) {
-  if (strs.length === 0) return '';
-  let prefix = '';
-  let shortest = Math.min(...strs.map((str) => str.length));
-  for (let i = 0; i < shortest; i++) {
-    const char = strs[0][i];
-    if (strs.every((str) => str[i] === char)) {
-      prefix += char;
-    } else {
-      break;
-    }
+var isAnagram = function (s, t) {
+  if (s.length !== t.length) return false;
+
+  const count = new Array(26).fill(0);
+
+  for (let i = 0; i < s.length; i++) {
+    count[s.charCodeAt(i) - "a".charCodeAt(0)]++;
+    count[t.charCodeAt(i) - "a".charCodeAt(0)]--;
   }
-  return prefix;
+
+  return count.every((c) => c === 0);
 };
