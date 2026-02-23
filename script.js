@@ -1,23 +1,21 @@
 /**
- * @param {string} s
- * @param {string} t
- * @return {boolean}
+ * @param {string[]} strs
+ * @return {string[][]}
  */
-var isIsomorphic = function (s, t) {
-  if (s.length !== t.length) return false;
-
-  const set = new Set();
+var groupAnagrams = function (strs) {
   const map = new Map();
 
-  for (let i = 0; i < s.length; i++) {
-    if (map.has(s[i])) {
-      if (map.get(s[i]) !== t[i]) return false;
-    } else {
-      if (set.has(t[i])) return false;
-      map.set(s[i], t[i]);
-      set.add(t[i]);
+  for (const str of strs) {
+    const freq = Array(26).fill(0);
+    for (const char of str) {
+      freq[char.charCodeAt(0) - "a".charCodeAt(0)]++;
     }
+    const key = freq.join(",");
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    map.get(key).push(str);
   }
 
-  return true;
+  return Array.from(map.values());
 };
