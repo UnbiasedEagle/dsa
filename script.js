@@ -1,28 +1,37 @@
 /**
  * @param {string} s
- * @return {number}
+ * @param {number} k
+ * @return {string}
  */
-var balancedStringSplit = function (s) {
-  let count = 0;
-
-  let lCount = 0;
-  let rCount = 0;
+var reverseStr = function (s, k) {
+  let result = '';
 
   let i = 0;
 
   while (i < s.length) {
-    if (s[i] === 'L') {
-      lCount++;
+    if (i + 2 * k <= s.length) {
+      let start = i;
+      let end = i + k - 1;
+      result += s
+        .substring(start, end + 1)
+        .split('')
+        .reverse()
+        .join('');
+      result += s.substring(end + 1, start + 2 * k);
+      i += 2 * k;
+    } else if (i + k > s.length) {
+      result += s.substring(i, s.length).split('').reverse().join('');
+      i += k;
     } else {
-      rCount++;
+      result += s
+        .substring(i, i + k)
+        .split('')
+        .reverse()
+        .join('');
+      result += s.substring(i + k, s.length);
+      i = s.length;
     }
-    if (lCount === rCount) {
-      count++;
-      lCount = 0;
-      rCount = 0;
-    }
-    i++;
   }
 
-  return count;
+  return result;
 };
