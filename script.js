@@ -1,31 +1,16 @@
 /**
- * @param {string} s
- * @return {boolean}
+ * @param {string} num
+ * @return {string}
  */
-var isPalindrome = function (s) {
-  let start = 0;
-  let end = s.length - 1;
+var largestOddNumber = function (num) {
+  let end = num.length - 1;
 
-  while (start < end) {
-    while (start < end && !isAlphaNumeric(s[start])) {
-      start++;
+  while (end >= 0) {
+    if (num[end] % 2 !== 0) {
+      return num.substring(0, end + 1);
     }
-
-    while (start < end && !isAlphaNumeric(s[end])) {
-      end--;
-    }
-
-    if (s[start].toLowerCase() !== s[end].toLowerCase()) {
-      return false;
-    }
-
-    start++;
     end--;
   }
 
-  return true;
+  return '';
 };
-
-function isAlphaNumeric(char) {
-  return /^[a-zA-Z0-9]+$/.test(char);
-}
