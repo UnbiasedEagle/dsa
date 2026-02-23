@@ -3,15 +3,21 @@
  * @param {string} t
  * @return {boolean}
  */
-var isAnagram = function (s, t) {
+var isIsomorphic = function (s, t) {
   if (s.length !== t.length) return false;
 
-  const count = new Array(26).fill(0);
+  const set = new Set();
+  const map = new Map();
 
   for (let i = 0; i < s.length; i++) {
-    count[s.charCodeAt(i) - "a".charCodeAt(0)]++;
-    count[t.charCodeAt(i) - "a".charCodeAt(0)]--;
+    if (map.has(s[i])) {
+      if (map.get(s[i]) !== t[i]) return false;
+    } else {
+      if (set.has(t[i])) return false;
+      map.set(s[i], t[i]);
+      set.add(t[i]);
+    }
   }
 
-  return count.every((c) => c === 0);
+  return true;
 };
