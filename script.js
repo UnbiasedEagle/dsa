@@ -1,62 +1,48 @@
-var MyQueue = function () {
-  this.stackIn = [];
-  this.stackOut = [];
+var MinStack = function () {
+  this.stack = [];
 };
 
 /**
- * @param {number} x
+ * @param {number} val
  * @return {void}
  */
-MyQueue.prototype.push = function (x) {
-  this.stackIn.push(x);
+MinStack.prototype.push = function (val) {
+  if (this.stack.length === 0) {
+    this.stack.push({ val: val, min: val });
+  } else {
+    this.stack.push({
+      val: val,
+      min: Math.min(val, this.stack[this.stack.length - 1].min),
+    });
+  }
+};
+
+/**
+ * @return {void}
+ */
+MinStack.prototype.pop = function () {
+  this.stack.pop();
 };
 
 /**
  * @return {number}
  */
-MyQueue.prototype.pop = function () {
-  while (this.stackIn.length > 0) {
-    this.stackOut.push(this.stackIn.pop());
-  }
-
-  const result = this.stackOut.pop();
-
-  while (this.stackOut.length) {
-    this.stackIn.push(this.stackOut.pop());
-  }
-
-  return result;
+MinStack.prototype.top = function () {
+  return this.stack[this.stack.length - 1].val;
 };
 
 /**
  * @return {number}
  */
-MyQueue.prototype.peek = function () {
-  while (this.stackIn.length > 0) {
-    this.stackOut.push(this.stackIn.pop());
-  }
-
-  const result = this.stackOut[this.stackOut.length - 1];
-
-  while (this.stackOut.length) {
-    this.stackIn.push(this.stackOut.pop());
-  }
-
-  return result;
+MinStack.prototype.getMin = function () {
+  return this.stack[this.stack.length - 1].min;
 };
 
 /**
- * @return {boolean}
- */
-MyQueue.prototype.empty = function () {
-  return this.stackIn.length === 0 && this.stackOut.length === 0;
-};
-
-/**
- * Your MyQueue object will be instantiated and called as such:
- * var obj = new MyQueue()
- * obj.push(x)
- * var param_2 = obj.pop()
- * var param_3 = obj.peek()
- * var param_4 = obj.empty()
+ * Your MinStack object will be instantiated and called as such:
+ * var obj = new MinStack()
+ * obj.push(val)
+ * obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.getMin()
  */
