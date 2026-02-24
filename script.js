@@ -1,53 +1,18 @@
-var MyStack = function () {
-  this.queue1 = [];
-  this.queue2 = [];
-};
-
 /**
- * @param {number} x
- * @return {void}
- */
-MyStack.prototype.push = function (x) {
-  this.queue1.push(x);
-};
-
-/**
- * @return {number}
- */
-MyStack.prototype.pop = function () {
-  while (this.queue1.length > 1) {
-    this.queue2.push(this.queue1.shift());
-  }
-  const popped = this.queue1.shift();
-  [this.queue1, this.queue2] = [this.queue2, this.queue1];
-  return popped;
-};
-
-/**
- * @return {number}
- */
-MyStack.prototype.top = function () {
-  while (this.queue1.length > 1) {
-    this.queue2.push(this.queue1.shift());
-  }
-  const top = this.queue1[0];
-  this.queue2.push(this.queue1.shift());
-  [this.queue1, this.queue2] = [this.queue2, this.queue1];
-  return top;
-};
-
-/**
+ * @param {string} s
  * @return {boolean}
  */
-MyStack.prototype.empty = function () {
-  return this.queue1.length === 0;
-};
+var isValid = function (s) {
+  const stack = [];
+  const map = { "(": ")", "[": "]", "{": "}" };
 
-/**
- * Your MyStack object will be instantiated and called as such:
- * var obj = new MyStack()
- * obj.push(x)
- * var param_2 = obj.pop()
- * var param_3 = obj.top()
- * var param_4 = obj.empty()
- */
+  for (let char of s) {
+    if (char in map) {
+      stack.push(char);
+    } else if (stack.length === 0 || map[stack.pop()] !== char) {
+      return false;
+    }
+  }
+
+  return stack.length === 0;
+};
