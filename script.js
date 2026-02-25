@@ -1,38 +1,26 @@
 /**
- * @param {string} s
- * @return {string}
+ * @param {string[]} tokens
+ * @return {number}
  */
-var removeOuterParentheses = function (s) {
+var evalRPN = function (tokens) {
   const stack = [];
-  let result = "";
-  let openCount = 0;
-  let closeCount = 0;
 
-  let i = 0;
+  const operators = {
+    "+": (a, b) => a + b,
+    "-": (a, b) => a - b,
+    "*": (a, b) => a * b,
+    "/": (a, b) => Math.trunc(a / b),
+  };
 
-  while (i < s.length) {
-    if (s[i] === "(") {
-      stack.push(s[i]);
-      openCount++;
-    } else if (s[i] === ")") {
-      stack.push(s[i]);
-      closeCount++;
+  for (let token of tokens) {
+    if (operators[token]) {
+      const b = stack.pop();
+      const a = stack.pop();
+      stack.push(operators[token](a, b));
+    } else {
+      stack.push(Number(token));
     }
-
-    if (closeCount === openCount) {
-      let current = "";
-      stack.pop();
-      while (stack.length > 1) {
-        current = stack.pop() + current;
-      }
-      result += current;
-      stack.pop();
-      openCount = 0;
-      closeCount = 0;
-    }
-
-    i++;
   }
 
-  return result;
+  return stack.pop();
 };
