@@ -1,26 +1,28 @@
 /**
- * @param {string[]} tokens
- * @return {number}
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
  */
-var evalRPN = function (tokens) {
-  const stack = [];
+var nextGreaterElement = function (nums1, nums2) {
+  const result = Array(nums1.length).fill(-1);
+  const map = new Map();
 
-  const operators = {
-    "+": (a, b) => a + b,
-    "-": (a, b) => a - b,
-    "*": (a, b) => a * b,
-    "/": (a, b) => Math.trunc(a / b),
-  };
-
-  for (let token of tokens) {
-    if (operators[token]) {
-      const b = stack.pop();
-      const a = stack.pop();
-      stack.push(operators[token](a, b));
-    } else {
-      stack.push(Number(token));
-    }
+  for (let i = 0; i < nums1.length; i++) {
+    map.set(nums1[i], i);
   }
 
-  return stack.pop();
+  const stack = [];
+
+  for (let i = nums2.length - 1; i >= 0; i--) {
+    while (stack.length > 0 && nums2[i] > stack[stack.length - 1]) {
+      stack.pop();
+    }
+    if (stack.length > 0) {
+      const index = map.get(nums2[i]);
+      result[index] = stack[stack.length - 1];
+    }
+    stack.push(nums2[i]);
+  }
+
+  return result;
 };
