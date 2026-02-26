@@ -1,22 +1,62 @@
 /**
- * @param {number[]} nums
- * @return {number[]}
+ * @param {number[][]} grid
+ * @return {number}
  */
-var nextGreaterElements = function (nums) {
-  const copy = [...nums, ...nums];
-  const result = Array(nums.length).fill(-1);
-  const stack = [];
+var orangesRotting = function (grid) {
+  let rottenIndex = [];
 
-  for (let i = copy.length - 1; i >= 0; i--) {
-    while (stack.length > 0 && copy[i] >= copy[stack[stack.length - 1]]) {
-      stack.pop();
-    }
-    if (stack.length > 0) {
-      result[i % nums.length] = copy[stack[stack.length - 1]];
-    }
+  let freshOranges = 0;
 
-    stack.push(i);
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] === 1) {
+        freshOranges++;
+      }
+      if (grid[i][j] === 2) {
+        rottenIndex.push([i, j]);
+      }
+    }
   }
 
-  return result;
+  if (freshOranges === 0) return 0;
+
+  const queue = [];
+  let time = 0;
+
+  for (let i = 0; i < rottenIndex.length; i++) {
+    queue.push([rottenIndex[i][0], rottenIndex[i][1], 0]);
+  }
+
+  while (queue.length > 0) {
+    let [row, col, minutes] = queue.shift();
+    time = minutes;
+
+    const dirs = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1],
+    ];
+
+    for (let [dx, dy] of dirs) {
+      let newRow = row + dx;
+      let newCol = col + dy;
+
+      if (
+        newRow >= 0 &&
+        newRow < grid.length &&
+        newCol >= 0 &&
+        newCol < grid[0].length &&
+        grid[newRow][newCol] === 1
+      ) {
+        grid[newRow][newCol] = 2;
+        freshOranges--;
+        queue.push([newRow, newCol, minutes + 1]);
+      }
+    }
+  }
+
+  if (freshOranges === 0) return time;
+
+  return -1;
 };
