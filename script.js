@@ -1,25 +1,32 @@
 /**
- * @param {number} x
+ * Forward declaration of guess API.
+ * @param {number} num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * var guess = function(num) {}
+ */
+
+/**
+ * @param {number} n
  * @return {number}
  */
-var mySqrt = function (x) {
-  let left = 0;
-  let right = x;
-  let result = x;
+var guessNumber = function (n) {
+  let low = 1;
+  let high = n;
 
-  while (left <= right) {
-    let mid = Math.floor((left + right) / 2);
-    let square = mid * mid;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    let result = guess(mid);
 
-    if (square === x) {
+    if (result === 0) {
       return mid;
-    } else if (square < x) {
-      result = mid;
-      left = mid + 1;
+    } else if (result === -1) {
+      high = mid - 1;
     } else {
-      right = mid - 1;
+      low = mid + 1;
     }
   }
 
-  return result;
+  return -1;
 };
