@@ -1,30 +1,29 @@
 /**
- * Forward declaration of guess API.
- * @param {number} num   your guess
- * @return 	     -1 if num is higher than the picked number
- *			      1 if num is lower than the picked number
- *               otherwise return 0
- * var guess = function(num) {}
- */
-
-/**
- * @param {number} n
+ * @param {number[]} nums
+ * @param {number} target
  * @return {number}
  */
-var guessNumber = function (n) {
-  let low = 1;
-  let high = n;
+var search = function (nums, target) {
+  let left = 0;
+  let right = nums.length - 1;
 
-  while (low <= high) {
-    let mid = Math.floor((low + high) / 2);
-    let result = guess(mid);
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
 
-    if (result === 0) {
+    if (nums[mid] === target) {
       return mid;
-    } else if (result === -1) {
-      high = mid - 1;
+    } else if (nums[left] <= nums[mid]) {
+      if (nums[left] <= target && target < nums[mid]) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
     } else {
-      low = mid + 1;
+      if (nums[mid] < target && target <= nums[right]) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
     }
   }
 
