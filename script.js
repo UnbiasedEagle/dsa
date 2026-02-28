@@ -1,38 +1,40 @@
 /**
- * Definition for isBadVersion()
- *
- * @param {integer} version number
- * @return {boolean} whether the version is bad
- * isBadVersion = function(version) {
- *     ...
- * };
+ * @param {number[]} nums
+ * @return {number}
  */
+var findPeakElement = function (nums) {
+  if (nums.length === 1) {
+    return 0;
+  }
 
-/**
- * @param {function} isBadVersion()
- * @return {function}
- */
-var solution = function (isBadVersion) {
-  /**
-   * @param {integer} n Total versions
-   * @return {integer} The first bad version
-   */
-  return function (n) {
-    let start = 1;
-    let end = n;
-    let result = n;
+  let left = 0;
+  let right = nums.length - 1;
 
-    while (start <= end) {
-      let mid = Math.floor((start + end) / 2);
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
 
-      if (isBadVersion(mid)) {
-        result = mid;
-        end = mid - 1;
+    if (mid === 0) {
+      if (nums[mid] > nums[mid + 1]) {
+        return mid;
       } else {
-        start = mid + 1;
+        left = mid + 1;
+      }
+    } else if (mid === nums.length - 1) {
+      if (nums[mid] > nums[mid - 1]) {
+        return mid;
+      } else {
+        right = mid - 1;
+      }
+    } else {
+      if (nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]) {
+        return mid;
+      } else if (nums[mid] < nums[mid + 1]) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
       }
     }
+  }
 
-    return result;
-  };
+  return -1;
 };
