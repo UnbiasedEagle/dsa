@@ -1,31 +1,35 @@
 /**
  * @param {number[]} nums
- * @return {number}
+ * @param {number} target
+ * @return {number[]}
  */
-var findMin = function (nums) {
+var searchRange = function (nums, target) {
+  const first = findIndex(nums, target, true);
+  const last = findIndex(nums, target, false);
+  return [first, last];
+};
+
+function findIndex(nums, target, isFirst) {
+  let result = -1;
   let left = 0;
   let right = nums.length - 1;
-  let min = Infinity;
 
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
 
-    if (nums[mid] < min) {
-      min = nums[mid];
-    }
-    // left part is sorted
-    if (nums[left] <= nums[mid]) {
-      if (nums[mid] <= nums[right]) {
+    if (nums[mid] === target) {
+      result = mid;
+      if (isFirst) {
         right = mid - 1;
       } else {
         left = mid + 1;
       }
-    }
-    // right part is sorted
-    else {
+    } else if (nums[mid] < target) {
+      left = mid + 1;
+    } else {
       right = mid - 1;
     }
   }
 
-  return min;
-};
+  return result;
+}
