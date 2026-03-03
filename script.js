@@ -1,20 +1,20 @@
 /**
- * @param {number[]} nums
+ * @param {number[]} numbers
  * @param {number} target
  * @return {number[]}
  */
-var twoSum = function (nums, target) {
-  const map = new Map();
+var twoSum = function (numbers, target) {
+  let left = 0;
+  let right = numbers.length - 1;
 
-  for (let i = 0; i < nums.length; i++) {
-    const comp = target - nums[i];
-
-    if (map.has(comp)) {
-      return [map.get(comp), i];
+  while (left < right) {
+    const sum = numbers[left] + numbers[right];
+    if (sum === target) {
+      return [left + 1, right + 1];
+    } else if (sum > target) {
+      right--;
+    } else {
+      left++;
     }
-
-    map.set(nums[i], i);
   }
-
-  return [-1, -1];
 };
