@@ -1,20 +1,20 @@
 /**
- * @param {number[]} arr
- * @param {number} k
- * @param {number} x
+ * @param {number[]} nums
+ * @param {number} target
  * @return {number[]}
  */
-var findClosestElements = function (arr, k, x) {
-  let left = 0;
-  let right = arr.length - 1;
+var twoSum = function (nums, target) {
+  const map = new Map();
 
-  while (right - left >= k) {
-    if (Math.abs(arr[left] - x) > Math.abs(arr[right] - x)) {
-      left++;
-    } else {
-      right--;
+  for (let i = 0; i < nums.length; i++) {
+    const comp = target - nums[i];
+
+    if (map.has(comp)) {
+      return [map.get(comp), i];
     }
+
+    map.set(nums[i], i);
   }
 
-  return arr.slice(left, right + 1);
+  return [-1, -1];
 };
