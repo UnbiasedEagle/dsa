@@ -1,20 +1,18 @@
 /**
- * @param {number[]} numbers
- * @param {number} target
- * @return {number[]}
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
  */
-var twoSum = function (numbers, target) {
-  let left = 0;
-  let right = numbers.length - 1;
+var isSubsequence = function (s, t) {
+  let sIndex = 0;
+  let tIndex = 0;
 
-  while (left < right) {
-    const sum = numbers[left] + numbers[right];
-    if (sum === target) {
-      return [left + 1, right + 1];
-    } else if (sum > target) {
-      right--;
-    } else {
-      left++;
+  while (sIndex < s.length && tIndex < t.length) {
+    if (s[sIndex] === t[tIndex]) {
+      sIndex++;
     }
+    tIndex++;
   }
+
+  return sIndex === s.length;
 };
