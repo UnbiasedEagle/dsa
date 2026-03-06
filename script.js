@@ -1,21 +1,34 @@
 /**
- * @param {string} s
- * @return {number}
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
  */
-var lengthOfLongestSubstring = function (s) {
-  let left = 0;
-  const map = new Map();
-  let maxLength = 0;
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var swapPairs = function (head) {
+  if (!head || !head.next) return head;
+  const dummy = new ListNode(0);
+  let tail = dummy;
 
-  for (let right = 0; right < s.length; right++) {
-    if (!map.has(s[right]) || map.get(s[right]) < left) {
-      map.set(s[right], right);
-    } else {
-      left = map.get(s[right]) + 1;
-      map.set(s[right], right);
+  let curr = head;
+
+  while (curr) {
+    const nextNode = curr.next;
+    if (!nextNode) {
+      tail.next = curr;
+      break;
     }
-    maxLength = Math.max(right - left + 1, maxLength);
+    const nextNextNode = nextNode.next;
+    tail.next = nextNode;
+    tail = nextNode;
+    tail.next = curr;
+    curr = nextNextNode;
+    tail = curr;
   }
 
-  return maxLength;
+  return dummy.next;
 };
