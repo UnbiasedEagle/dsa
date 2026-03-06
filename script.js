@@ -1,30 +1,21 @@
 /**
- * @param {number[]} height
+ * @param {string} s
  * @return {number}
  */
-var trap = function (height) {
+var lengthOfLongestSubstring = function (s) {
   let left = 0;
-  let right = height.length - 1;
-  let leftMax = 0;
-  let rightMax = 0;
-  let water = 0;
+  const map = new Map();
+  let maxLength = 0;
 
-  while (left < right) {
-    if (height[left] < height[right]) {
-      if (height[left] >= leftMax) {
-        leftMax = height[left];
-      } else {
-        water += leftMax - height[left];
-      }
-      left++;
+  for (let right = 0; right < s.length; right++) {
+    if (!map.has(s[right]) || map.get(s[right]) < left) {
+      map.set(s[right], right);
     } else {
-      if (height[right] >= rightMax) {
-        rightMax = height[right];
-      } else {
-        water += rightMax - height[right];
-      }
-      right--;
+      left = map.get(s[right]) + 1;
+      map.set(s[right], right);
     }
+    maxLength = Math.max(right - left + 1, maxLength);
   }
-  return water;
+
+  return maxLength;
 };
