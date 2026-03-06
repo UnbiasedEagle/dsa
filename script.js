@@ -1,34 +1,23 @@
 /**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
  *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
- * @param {ListNode} head
- * @return {ListNode}
+ * @param {TreeNode} root
+ * @return {number[]}
  */
-var swapPairs = function (head) {
-  if (!head || !head.next) return head;
-  const dummy = new ListNode(0);
-  let tail = dummy;
-
-  let curr = head;
-
-  while (curr) {
-    const nextNode = curr.next;
-    if (!nextNode) {
-      tail.next = curr;
-      break;
-    }
-    const nextNextNode = nextNode.next;
-    tail.next = nextNode;
-    tail = nextNode;
-    tail.next = curr;
-    curr = nextNextNode;
-    tail = curr;
+var preorderTraversal = function (root) {
+  const result = [];
+  function dfs(root) {
+    if (!root) return;
+    result.push(root.val);
+    dfs(root.left);
+    dfs(root.right);
   }
-
-  return dummy.next;
+  dfs(root);
+  return result;
 };
