@@ -1,29 +1,41 @@
 /**
- * @param {string} s
- * @param {number} k
- * @return {number}
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
  */
-var characterReplacement = function (s, k) {
-  let left = 0;
-  let maxLength = 0;
+var checkInclusion = function (s1, s2) {
+  if (s1.length > s2.length) return false;
+
   const freqMap = Array(26).fill(0);
-  let maxFreq = 0;
+  for (let char of s1) {
+    freqMap[char.charCodeAt(0) - "A".charCodeAt(0)]++;
+  }
 
-  for (let right = 0; right < s.length; right++) {
-    const char = s[right];
-    const charCode = char.charCodeAt(0) - "A".charCodeAt(0);
-    freqMap[charCode]++;
-    maxFreq = Math.max(maxFreq, freqMap[charCode]);
+  let left = 0;
 
-    while (right - left + 1 - maxFreq > k) {
-      const leftChar = s[left];
+  for (let right = 0; right < s2.length; right++) {
+    while (right - left + 1 > s1.length) {
+      const leftChar = s2[left];
       const leftCharCode = leftChar.charCodeAt(0) - "A".charCodeAt(0);
-      freqMap[leftCharCode]--;
+      freqMap[leftCharCode]++;
       left++;
     }
 
-    maxLength = Math.max(maxLength, right - left + 1);
+    const char = s2[right];
+    const charCode = char.charCodeAt(0) - "A".charCodeAt(0);
+    freqMap[charCode]--;
+
+    if (right - left + 1 === s1.length) {
+      let allZero = true;
+      for (let i = 0; i < 26; i++) {
+        if (freqMap[i] !== 0) {
+          allZero = false;
+          break;
+        }
+      }
+      if (allZero) return true;
+    }
   }
 
-  return maxLength;
+  return false;
 };
