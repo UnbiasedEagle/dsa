@@ -1,41 +1,26 @@
 /**
- * @param {string} s1
- * @param {string} s2
- * @return {boolean}
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
  */
-var checkInclusion = function (s1, s2) {
-  if (s1.length > s2.length) return false;
+var maxSlidingWindow = function (nums, k) {
+  const result = [];
+  const queue = [];
 
-  const freqMap = Array(26).fill(0);
-  for (let char of s1) {
-    freqMap[char.charCodeAt(0) - "A".charCodeAt(0)]++;
-  }
+  for (let i = 0; i < nums.length; i++) {
+    while (queue.length && nums[queue[queue.length - 1]] <= nums[i]) {
+      queue.pop();
+    }
+    queue.push(i);
 
-  let left = 0;
-
-  for (let right = 0; right < s2.length; right++) {
-    while (right - left + 1 > s1.length) {
-      const leftChar = s2[left];
-      const leftCharCode = leftChar.charCodeAt(0) - "A".charCodeAt(0);
-      freqMap[leftCharCode]++;
-      left++;
+    while (queue.length > 0 && queue[0] <= i - k) {
+      queue.shift();
     }
 
-    const char = s2[right];
-    const charCode = char.charCodeAt(0) - "A".charCodeAt(0);
-    freqMap[charCode]--;
-
-    if (right - left + 1 === s1.length) {
-      let allZero = true;
-      for (let i = 0; i < 26; i++) {
-        if (freqMap[i] !== 0) {
-          allZero = false;
-          break;
-        }
-      }
-      if (allZero) return true;
+    if (i >= k - 1) {
+      result.push(nums[queue[0]]);
     }
   }
 
-  return false;
+  return result;
 };
