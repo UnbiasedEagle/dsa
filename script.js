@@ -7,16 +7,20 @@
  * }
  */
 /**
- * @param {TreeNode} root
- * @return {TreeNode}
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {boolean}
  */
-var invertTree = function (root) {
-  if (!root) {
-    return null;
+var isSameTree = function (p, q) {
+  if (!p && !q) {
+    return true;
   }
-  const left = invertTree(root.left);
-  const right = invertTree(root.right);
-  root.left = right;
-  root.right = left;
-  return root;
+  if (!p || !q) {
+    return false;
+  }
+  return (
+    p.val === q.val &&
+    isSameTree(p.left, q.left) &&
+    isSameTree(p.right, q.right)
+  );
 };
