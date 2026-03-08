@@ -10,14 +10,14 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
-var inorderTraversal = function (root) {
-  const result = [];
+var postorderTraversal = function (root) {
   function dfs(root) {
     if (!root) return;
     dfs(root.left);
-    result.push(root.val);
     dfs(root.right);
+    result.push(root.val);
   }
+  const result = [];
   dfs(root);
   return result;
 };
