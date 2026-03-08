@@ -8,26 +8,15 @@
  */
 /**
  * @param {TreeNode} root
- * @return {boolean}
+ * @return {TreeNode}
  */
-var isSymmetric = function (root) {
+var invertTree = function (root) {
   if (!root) {
-    return true;
+    return null;
   }
-  return dfs(root, root);
+  const left = invertTree(root.left);
+  const right = invertTree(root.right);
+  root.left = right;
+  root.right = left;
+  return root;
 };
-
-function dfs(left, right) {
-  if (!left && !right) {
-    return true;
-  }
-  if (!left || !right) {
-    return false;
-  }
-
-  return (
-    left.val === right.val &&
-    dfs(left.left, right.right) &&
-    dfs(left.right, right.left)
-  );
-}
