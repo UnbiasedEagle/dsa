@@ -8,13 +8,27 @@
  */
 /**
  * @param {TreeNode} root
- * @return {number}
+ * @param {number} targetSum
+ * @return {boolean}
  */
-var maxDepth = function (root) {
+var hasPathSum = function (root, targetSum) {
   if (!root) {
-    return 0;
+    return false;
   }
-  const left = maxDepth(root.left);
-  const right = maxDepth(root.right);
-  return Math.max(left, right) + 1;
+  return dfs(root, targetSum);
 };
+
+function dfs(root, targetSum) {
+  if (root.left === null && root.right === null) {
+    return targetSum === root.val;
+  }
+  let left = false;
+  let right = false;
+  if (root.left) {
+    left = dfs(root.left, targetSum - root.val);
+  }
+  if (root.right) {
+    right = dfs(root.right, targetSum - root.val);
+  }
+  return left || right;
+}
