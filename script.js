@@ -8,28 +8,39 @@
  */
 /**
  * @param {TreeNode} root
- * @return {number}
+ * @return {number[][]}
  */
-var diameterOfBinaryTree = function (root) {
-  return dfs(root).diameter;
-};
-
-function dfs(root) {
+var zigzagLevelOrder = function (root) {
   if (!root) {
-    return {
-      height: 0,
-      diameter: 0,
-    };
+    return [];
   }
-  const left = dfs(root.left);
-  const right = dfs(root.right);
-  const diameter = Math.max(
-    left.diameter,
-    right.diameter,
-    left.height + right.height,
-  );
-  return {
-    height: Math.max(left.height, right.height) + 1,
-    diameter: diameter,
-  };
-}
+  let leftToRight = true;
+  const result = [];
+  const queue = [root, null];
+  const level = [];
+
+  while (queue.length) {
+    const node = queue.shift();
+    if (node === null) {
+      if (leftToRight) {
+        result.push([...level]);
+      } else {
+        result.push([...level.reverse()]);
+      }
+      level.length = 0;
+      if (queue.length) {
+        queue.push(null);
+      }
+      leftToRight = !leftToRight;
+    } else {
+      level.push(node.val);
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+  }
+  return result;
+};
