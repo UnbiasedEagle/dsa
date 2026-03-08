@@ -8,24 +8,28 @@
  */
 /**
  * @param {TreeNode} root
- * @return {boolean}
+ * @return {number}
  */
-var isBalanced = function (root) {
-  return dfs(root).isBalanced;
+var diameterOfBinaryTree = function (root) {
+  return dfs(root).diameter;
 };
 
 function dfs(root) {
   if (!root) {
     return {
       height: 0,
-      isBalanced: true,
+      diameter: 0,
     };
   }
   const left = dfs(root.left);
   const right = dfs(root.right);
-  const isBalanced = Math.abs(left.height - right.height) <= 1;
+  const diameter = Math.max(
+    left.diameter,
+    right.diameter,
+    left.height + right.height,
+  );
   return {
     height: Math.max(left.height, right.height) + 1,
-    isBalanced: isBalanced && left.isBalanced && right.isBalanced,
+    diameter: diameter,
   };
 }
