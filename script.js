@@ -1,26 +1,23 @@
 /**
- * @param {number[]} nums
- * @param {number} k
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
  * @return {number[]}
  */
-var maxSlidingWindow = function (nums, k) {
+var inorderTraversal = function (root) {
   const result = [];
-  const queue = [];
-
-  for (let i = 0; i < nums.length; i++) {
-    while (queue.length && nums[queue[queue.length - 1]] <= nums[i]) {
-      queue.pop();
-    }
-    queue.push(i);
-
-    while (queue.length > 0 && queue[0] <= i - k) {
-      queue.shift();
-    }
-
-    if (i >= k - 1) {
-      result.push(nums[queue[0]]);
-    }
+  function dfs(root) {
+    if (!root) return;
+    dfs(root.left);
+    result.push(root.val);
+    dfs(root.right);
   }
-
+  dfs(root);
   return result;
 };
