@@ -7,20 +7,25 @@
  * }
  */
 /**
- * @param {TreeNode} p
- * @param {TreeNode} q
+ * @param {TreeNode} root
  * @return {boolean}
  */
-var isSameTree = function (p, q) {
-  if (!p && !q) {
-    return true;
-  }
-  if (!p || !q) {
-    return false;
-  }
-  return (
-    p.val === q.val &&
-    isSameTree(p.left, q.left) &&
-    isSameTree(p.right, q.right)
-  );
+var isBalanced = function (root) {
+  return dfs(root).isBalanced;
 };
+
+function dfs(root) {
+  if (!root) {
+    return {
+      height: 0,
+      isBalanced: true,
+    };
+  }
+  const left = dfs(root.left);
+  const right = dfs(root.right);
+  const isBalanced = Math.abs(left.height - right.height) <= 1;
+  return {
+    height: Math.max(left.height, right.height) + 1,
+    isBalanced: isBalanced && left.isBalanced && right.isBalanced,
+  };
+}
