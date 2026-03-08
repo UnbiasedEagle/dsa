@@ -8,27 +8,26 @@
  */
 /**
  * @param {TreeNode} root
- * @param {number} targetSum
  * @return {boolean}
  */
-var hasPathSum = function (root, targetSum) {
+var isSymmetric = function (root) {
   if (!root) {
-    return false;
+    return true;
   }
-  return dfs(root, targetSum);
+  return dfs(root, root);
 };
 
-function dfs(root, targetSum) {
-  if (root.left === null && root.right === null) {
-    return targetSum === root.val;
+function dfs(left, right) {
+  if (!left && !right) {
+    return true;
   }
-  let left = false;
-  let right = false;
-  if (root.left) {
-    left = dfs(root.left, targetSum - root.val);
+  if (!left || !right) {
+    return false;
   }
-  if (root.right) {
-    right = dfs(root.right, targetSum - root.val);
-  }
-  return left || right;
+
+  return (
+    left.val === right.val &&
+    dfs(left.left, right.right) &&
+    dfs(left.right, right.left)
+  );
 }
