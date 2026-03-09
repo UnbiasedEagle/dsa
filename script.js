@@ -8,34 +8,17 @@
  */
 /**
  * @param {TreeNode} root
- * @return {number[]}
+ * @return {number}
  */
-var rightSideView = function (root) {
-  if (!root) {
-    return [];
-  }
-  const result = [];
-  const queue = [root, null];
-  const level = [];
-
-  while (queue.length) {
-    const node = queue.shift();
-    if (node === null) {
-      result.push(level[level.length - 1]);
-      level.length = 0;
-      if (queue.length) {
-        queue.push(null);
-      }
-    } else {
-      level.push(node.val);
-      if (node.left) {
-        queue.push(node.left);
-      }
-      if (node.right) {
-        queue.push(node.right);
-      }
-    }
-  }
-
-  return result;
+var goodNodes = function (root) {
+  return dfs(root, root.val);
 };
+
+function dfs(root, maxi) {
+  if (!root) {
+    return 0;
+  }
+  const left = dfs(root.left, Math.max(maxi, root.val));
+  const right = dfs(root.right, Math.max(maxi, root.val));
+  return left + right + (root.val >= maxi ? 1 : 0);
+}
