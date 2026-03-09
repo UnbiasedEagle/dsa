@@ -8,39 +8,31 @@
  */
 /**
  * @param {TreeNode} root
- * @return {number[][]}
+ * @param {TreeNode} subRoot
+ * @return {boolean}
  */
-var zigzagLevelOrder = function (root) {
+var isSubtree = function (root, subRoot) {
   if (!root) {
-    return [];
+    return false;
   }
-  let leftToRight = true;
-  const result = [];
-  const queue = [root, null];
-  const level = [];
 
-  while (queue.length) {
-    const node = queue.shift();
-    if (node === null) {
-      if (leftToRight) {
-        result.push([...level]);
-      } else {
-        result.push([...level.reverse()]);
-      }
-      level.length = 0;
-      if (queue.length) {
-        queue.push(null);
-      }
-      leftToRight = !leftToRight;
-    } else {
-      level.push(node.val);
-      if (node.left) {
-        queue.push(node.left);
-      }
-      if (node.right) {
-        queue.push(node.right);
-      }
-    }
-  }
-  return result;
+  return (
+    isSame(root, subRoot) ||
+    isSubtree(root.left, subRoot) ||
+    isSubtree(root.right, subRoot)
+  );
 };
+
+function isSame(root1, root2) {
+  if (!root1 && !root2) {
+    return true;
+  }
+  if (!root1 || !root2) {
+    return false;
+  }
+  return (
+    root1.val === root2.val &&
+    isSame(root1.left, root2.left) &&
+    isSame(root1.right, root2.right)
+  );
+}
