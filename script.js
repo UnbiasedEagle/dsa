@@ -1,27 +1,41 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val) {
- *     this.val = val;
- *     this.left = this.right = null;
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
  * }
  */
 /**
  * @param {TreeNode} root
- * @param {TreeNode} p
- * @param {TreeNode} q
- * @return {TreeNode}
+ * @return {number[]}
  */
-var lowestCommonAncestor = function (root, p, q) {
+var rightSideView = function (root) {
   if (!root) {
-    return null;
+    return [];
   }
-  if (root === p || root === q) {
-    return root;
+  const result = [];
+  const queue = [root, null];
+  const level = [];
+
+  while (queue.length) {
+    const node = queue.shift();
+    if (node === null) {
+      result.push(level[level.length - 1]);
+      level.length = 0;
+      if (queue.length) {
+        queue.push(null);
+      }
+    } else {
+      level.push(node.val);
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
   }
-  const left = lowestCommonAncestor(root.left, p, q);
-  const right = lowestCommonAncestor(root.right, p, q);
-  if (left && right) {
-    return root;
-  }
-  return left || right;
+
+  return result;
 };
