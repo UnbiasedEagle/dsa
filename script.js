@@ -1,38 +1,27 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
  * }
  */
 /**
  * @param {TreeNode} root
- * @param {TreeNode} subRoot
- * @return {boolean}
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
  */
-var isSubtree = function (root, subRoot) {
+var lowestCommonAncestor = function (root, p, q) {
   if (!root) {
-    return false;
+    return null;
   }
-
-  return (
-    isSame(root, subRoot) ||
-    isSubtree(root.left, subRoot) ||
-    isSubtree(root.right, subRoot)
-  );
+  if (root === p || root === q) {
+    return root;
+  }
+  const left = lowestCommonAncestor(root.left, p, q);
+  const right = lowestCommonAncestor(root.right, p, q);
+  if (left && right) {
+    return root;
+  }
+  return left || right;
 };
-
-function isSame(root1, root2) {
-  if (!root1 && !root2) {
-    return true;
-  }
-  if (!root1 || !root2) {
-    return false;
-  }
-  return (
-    root1.val === root2.val &&
-    isSame(root1.left, root2.left) &&
-    isSame(root1.right, root2.right)
-  );
-}
