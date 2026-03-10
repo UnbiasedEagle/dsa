@@ -1,44 +1,41 @@
 /**
- * // Definition for a _Node.
- * function _Node(val, left, right, next) {
- *    this.val = val === undefined ? null : val;
- *    this.left = left === undefined ? null : left;
- *    this.right = right === undefined ? null : right;
- *    this.next = next === undefined ? null : next;
- * };
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
  */
-
 /**
- * @param {_Node} root
- * @return {_Node}
+ * @param {TreeNode} root
+ * @return {number}
  */
-var connect = function (root) {
-  if (!root) {
-    return null;
-  }
-  const queue = [root, null];
-  const levels = [];
-
-  while (queue.length) {
-    const node = queue.shift();
-    if (node === null) {
-      for (let i = 0; i < levels.length - 1; i++) {
-        levels[i].next = levels[i + 1];
-      }
-      levels.length = 0;
-      if (queue.length) {
-        queue.push(null);
-      }
-    } else {
-      levels.push(node);
-      if (node.left) {
-        queue.push(node.left);
-      }
-      if (node.right) {
-        queue.push(node.right);
-      }
-    }
-  }
-
-  return root;
+var maxPathSum = function (root) {
+  return dfs(root).maxSum;
 };
+
+function dfs(root) {
+  if (!root) {
+    return {
+      maxSum: -Infinity,
+      maxSumWithRoot: 0,
+    };
+  }
+
+  const left = dfs(root.left);
+  const right = dfs(root.right);
+
+  const leftGain = Math.max(left.maxSumWithRoot, 0);
+  const rightGain = Math.max(right.maxSumWithRoot, 0);
+
+  const maxSum = Math.max(
+    left.maxSum,
+    right.maxSum,
+    root.val + leftGain + rightGain,
+  );
+  const maxSumWithRoot = root.val + Math.max(leftGain, rightGain);
+  return {
+    maxSum,
+    maxSumWithRoot,
+  };
+}
