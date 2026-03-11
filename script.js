@@ -1,29 +1,25 @@
 /**
  * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
  * }
  */
+
 /**
  * @param {TreeNode} root
- * @param {number} k
- * @return {number}
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
  */
-var kthSmallest = function (root, k) {
-  const stack = [];
-
-  while (true) {
-    while (root) {
-      stack.push(root);
-      root = root.left;
-    }
-    k--;
-    root = stack.pop();
-    if (k === 0) {
-      return root.val;
-    }
-    root = root.right;
+var lowestCommonAncestor = function (root, p, q) {
+  if (!root) {
+    return null;
   }
+  if (root.val < p.val && root.val < q.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  } else if (root.val > p.val && root.val > q.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  }
+  return root;
 };
