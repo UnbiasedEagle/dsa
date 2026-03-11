@@ -8,18 +8,18 @@
  */
 /**
  * @param {TreeNode} root
- * @return {boolean}
+ * @param {number} val
+ * @return {TreeNode}
  */
-var isValidBST = function (root) {
-  return dfs(root, -Infinity, Infinity);
+var searchBST = function (root, val) {
+  if (!root) {
+    return null;
+  }
+  if (root.val === val) {
+    return root;
+  }
+  if (root.val < val) {
+    return searchBST(root.right, val);
+  }
+  return searchBST(root.left, val);
 };
-
-function dfs(root, min, max) {
-  if (root === null) {
-    return true;
-  }
-  if (root.val <= min || root.val >= max) {
-    return false;
-  }
-  return dfs(root.left, min, root.val) && dfs(root.right, root.val, max);
-}
