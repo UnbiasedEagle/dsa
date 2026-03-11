@@ -8,34 +8,18 @@
  */
 /**
  * @param {TreeNode} root
- * @return {number}
+ * @return {boolean}
  */
-var maxPathSum = function (root) {
-  return dfs(root).maxSum;
+var isValidBST = function (root) {
+  return dfs(root, -Infinity, Infinity);
 };
 
-function dfs(root) {
-  if (!root) {
-    return {
-      maxSum: -Infinity,
-      maxSumWithRoot: 0,
-    };
+function dfs(root, min, max) {
+  if (root === null) {
+    return true;
   }
-
-  const left = dfs(root.left);
-  const right = dfs(root.right);
-
-  const leftGain = Math.max(left.maxSumWithRoot, 0);
-  const rightGain = Math.max(right.maxSumWithRoot, 0);
-
-  const maxSum = Math.max(
-    left.maxSum,
-    right.maxSum,
-    root.val + leftGain + rightGain,
-  );
-  const maxSumWithRoot = root.val + Math.max(leftGain, rightGain);
-  return {
-    maxSum,
-    maxSumWithRoot,
-  };
+  if (root.val <= min || root.val >= max) {
+    return false;
+  }
+  return dfs(root.left, min, root.val) && dfs(root.right, root.val, max);
 }
