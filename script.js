@@ -8,17 +8,22 @@
  */
 /**
  * @param {TreeNode} root
- * @param {number} val
- * @return {TreeNode}
+ * @param {number} k
+ * @return {number}
  */
-var insertIntoBST = function (root, val) {
-  if (!root) {
-    return new TreeNode(val);
+var kthSmallest = function (root, k) {
+  const stack = [];
+
+  while (true) {
+    while (root) {
+      stack.push(root);
+      root = root.left;
+    }
+    k--;
+    root = stack.pop();
+    if (k === 0) {
+      return root.val;
+    }
+    root = root.right;
   }
-  if (root.val < val) {
-    root.right = insertIntoBST(root.right, val);
-  } else {
-    root.left = insertIntoBST(root.left, val);
-  }
-  return root;
 };
