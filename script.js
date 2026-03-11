@@ -11,15 +11,14 @@
  * @param {number} val
  * @return {TreeNode}
  */
-var searchBST = function (root, val) {
+var insertIntoBST = function (root, val) {
   if (!root) {
-    return null;
-  }
-  if (root.val === val) {
-    return root;
+    return new TreeNode(val);
   }
   if (root.val < val) {
-    return searchBST(root.right, val);
+    root.right = insertIntoBST(root.right, val);
+  } else {
+    root.left = insertIntoBST(root.left, val);
   }
-  return searchBST(root.left, val);
+  return root;
 };
