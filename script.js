@@ -1,36 +1,58 @@
 /**
- * @param {number[]} nums
- * @param {number} k
+ * @param {number[]} stones
  * @return {number}
  */
-var findKthLargest = function (nums, k) {
-  const heap = new CustomMinHeap(k);
-  for (const num of nums) {
-    heap.push(num);
+var lastStoneWeight = function (stones) {
+  const heap = new CustomMaxHeap();
+  for (const stone of stones) {
+    heap.push(stone);
   }
-  return heap.heap[0];
+
+  while (heap.heap.length > 1) {
+    const x = heap.pop();
+    const y = heap.pop();
+    if (x !== y) {
+      heap.push(Math.abs(x - y));
+    }
+  }
+
+  if (heap.heap.length === 0) {
+    return 0;
+  }
+
+  return heap.pop();
 };
 
-class CustomMinHeap {
-  constructor(k) {
-    this.k = k;
+class CustomMaxHeap {
+  constructor() {
     this.heap = [];
   }
 
   push(val) {
-    if (this.heap.length < this.k) {
-      this.heap.push(val);
-      this.heapifyUp();
-    } else if (val > this.heap[0]) {
-      this.heap[0] = val;
+    this.heap.push(val);
+    this.heapifyUp();
+  }
+
+  pop() {
+    if (this.heap.length === 0) {
+      return 0;
+    }
+
+    const root = this.heap[0];
+    const last = this.heap.pop();
+
+    if (this.heap.length > 0) {
+      this.heap[0] = last;
       this.heapifyDown(0);
     }
+
+    return root;
   }
 
   heapifyUp() {
     let i = this.heap.length - 1;
 
-    while (i > 0 && this.heap[i] < this.heap[Math.floor((i - 1) / 2)]) {
+    while (i > 0 && this.heap[i] > this.heap[Math.floor((i - 1) / 2)]) {
       [this.heap[i], this.heap[Math.floor((i - 1) / 2)]] = [
         this.heap[Math.floor((i - 1) / 2)],
         this.heap[i],
@@ -43,22 +65,19 @@ class CustomMinHeap {
     while (true) {
       const left = 2 * i + 1;
       const right = 2 * i + 2;
-      let smallest = i;
+      let largest = i;
 
-      if (left < this.heap.length && this.heap[left] < this.heap[smallest]) {
-        smallest = left;
+      if (left < this.heap.length && this.heap[left] > this.heap[largest]) {
+        largest = left;
       }
 
-      if (right < this.heap.length && this.heap[right] < this.heap[smallest]) {
-        smallest = right;
+      if (right < this.heap.length && this.heap[right] > this.heap[largest]) {
+        largest = right;
       }
 
-      if (smallest !== i) {
-        [this.heap[i], this.heap[smallest]] = [
-          this.heap[smallest],
-          this.heap[i],
-        ];
-        i = smallest;
+      if (largest !== i) {
+        [this.heap[i], this.heap[largest]] = [this.heap[largest], this.heap[i]];
+        i = largest;
       } else {
         break;
       }
