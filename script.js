@@ -1,86 +1,83 @@
 /**
- * @param {number[]} stones
- * @return {number}
+ * @param {number} k
+ * @param {number[]} nums
  */
-var lastStoneWeight = function (stones) {
-  const heap = new CustomMaxHeap();
-  for (const stone of stones) {
-    heap.push(stone);
+var KthLargest = function (k, nums) {
+  const minHeap = new CustomMinHeap(k);
+  for (const num of nums) {
+    minHeap.add(num);
   }
-
-  while (heap.heap.length > 1) {
-    const x = heap.pop();
-    const y = heap.pop();
-    if (x !== y) {
-      heap.push(Math.abs(x - y));
-    }
-  }
-
-  if (heap.heap.length === 0) {
-    return 0;
-  }
-
-  return heap.pop();
+  this.minHeap = minHeap;
 };
 
-class CustomMaxHeap {
-  constructor() {
+/**
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+  this.minHeap.add(val);
+  return this.minHeap.heap[0];
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * var obj = new KthLargest(k, nums)
+ * var param_1 = obj.add(val)
+ */
+
+class CustomMinHeap {
+  constructor(k) {
+    this.k = k;
     this.heap = [];
   }
 
-  push(val) {
-    this.heap.push(val);
-    this.heapifyUp();
-  }
-
-  pop() {
-    if (this.heap.length === 0) {
-      return 0;
+  add(val) {
+    if (this.heap.length < this.k) {
+      this.heap.push(val);
+      this.heapifyUp();
+    } else if (val > this.heap[0]) {
+      this.heap[0] = val;
+      this.heapifyDown();
     }
-
-    const root = this.heap[0];
-    const last = this.heap.pop();
-
-    if (this.heap.length > 0) {
-      this.heap[0] = last;
-      this.heapifyDown(0);
-    }
-
-    return root;
   }
 
   heapifyUp() {
-    let i = this.heap.length - 1;
-
-    while (i > 0 && this.heap[i] > this.heap[Math.floor((i - 1) / 2)]) {
-      [this.heap[i], this.heap[Math.floor((i - 1) / 2)]] = [
-        this.heap[Math.floor((i - 1) / 2)],
-        this.heap[i],
+    let index = this.heap.length - 1;
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      if (this.heap[parentIndex] <= this.heap[index]) break;
+      [this.heap[parentIndex], this.heap[index]] = [
+        this.heap[index],
+        this.heap[parentIndex],
       ];
-      i = Math.floor((i - 1) / 2);
+      index = parentIndex;
     }
   }
 
-  heapifyDown(i) {
-    while (true) {
-      const left = 2 * i + 1;
-      const right = 2 * i + 2;
-      let largest = i;
-
-      if (left < this.heap.length && this.heap[left] > this.heap[largest]) {
-        largest = left;
+  heapifyDown() {
+    let index = 0;
+    while (index < this.heap.length) {
+      const leftIndex = 2 * index + 1;
+      const rightIndex = 2 * index + 2;
+      let smallest = index;
+      if (
+        leftIndex < this.heap.length &&
+        this.heap[leftIndex] < this.heap[smallest]
+      ) {
+        smallest = leftIndex;
       }
-
-      if (right < this.heap.length && this.heap[right] > this.heap[largest]) {
-        largest = right;
+      if (
+        rightIndex < this.heap.length &&
+        this.heap[rightIndex] < this.heap[smallest]
+      ) {
+        smallest = rightIndex;
       }
-
-      if (largest !== i) {
-        [this.heap[i], this.heap[largest]] = [this.heap[largest], this.heap[i]];
-        i = largest;
-      } else {
-        break;
-      }
+      if (smallest === index) break;
+      [this.heap[smallest], this.heap[index]] = [
+        this.heap[index],
+        this.heap[smallest],
+      ];
+      index = smallest;
     }
   }
 }
