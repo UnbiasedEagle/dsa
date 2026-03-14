@@ -1,23 +1,25 @@
 /**
- * @param {number[]} nums
+ * @param {number[][]} matrix
  * @param {number} k
- * @return {number[]}
+ * @return {number}
  */
-var topKFrequent = function (nums, k) {
-  const freqMap = new Map();
-  for (const num of nums) {
-    freqMap.set(num, (freqMap.get(num) || 0) + 1);
+var kthSmallest = function (matrix, k) {
+  const maxHeap = new CustomMinHeap(k);
+  const rows = matrix.length;
+
+  for (let row = 0; row < rows; row++) {
+    maxHeap.add(matrix[row][0], 0, row);
   }
 
-  const minHeap = new CustomMinHeap(k);
-  for (const [num, freq] of freqMap) {
-    minHeap.add([freq, num]);
+  while (k > 1) {
+    const [val, index, row] = maxHeap.pop();
+    if (index + 1 < matrix[row].length) {
+      maxHeap.add(matrix[row][index + 1], index + 1, row);
+    }
+    k--;
   }
-  const result = [];
-  for (const [freq, num] of minHeap.heap) {
-    result.push(num);
-  }
-  return result;
+
+  return maxHeap.pop()[0];
 };
 
 class CustomMinHeap {
@@ -26,12 +28,22 @@ class CustomMinHeap {
     this.heap = [];
   }
 
-  add(val) {
+  pop() {
+    if (this.heap.length === 0) return null;
+    if (this.heap.length === 1) return this.heap.pop();
+    const [val, index, row] = this.heap[0];
+    this.heap[0] = this.heap[this.heap.length - 1];
+    this.heap.pop();
+    this.heapifyDown();
+    return [val, index, row];
+  }
+
+  add(val, index, row) {
     if (this.heap.length < this.k) {
-      this.heap.push(val);
+      this.heap.push([val, index, row]);
       this.heapifyUp();
-    } else if (val[0] > this.heap[0][0]) {
-      this.heap[0] = val;
+    } else if (val < this.heap[0][0]) {
+      this.heap[0] = [val, index, row];
       this.heapifyDown();
     }
   }
