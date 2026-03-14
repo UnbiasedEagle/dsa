@@ -1,29 +1,24 @@
 /**
- * @param {number} k
  * @param {number[]} nums
+ * @param {number} k
+ * @return {number[]}
  */
-var KthLargest = function (k, nums) {
-  const minHeap = new CustomMinHeap(k);
+var topKFrequent = function (nums, k) {
+  const freqMap = new Map();
   for (const num of nums) {
-    minHeap.add(num);
+    freqMap.set(num, (freqMap.get(num) || 0) + 1);
   }
-  this.minHeap = minHeap;
-};
 
-/**
- * @param {number} val
- * @return {number}
- */
-KthLargest.prototype.add = function (val) {
-  this.minHeap.add(val);
-  return this.minHeap.heap[0];
+  const minHeap = new CustomMinHeap(k);
+  for (const [num, freq] of freqMap) {
+    minHeap.add([freq, num]);
+  }
+  const result = [];
+  for (const [freq, num] of minHeap.heap) {
+    result.push(num);
+  }
+  return result;
 };
-
-/**
- * Your KthLargest object will be instantiated and called as such:
- * var obj = new KthLargest(k, nums)
- * var param_1 = obj.add(val)
- */
 
 class CustomMinHeap {
   constructor(k) {
@@ -35,7 +30,7 @@ class CustomMinHeap {
     if (this.heap.length < this.k) {
       this.heap.push(val);
       this.heapifyUp();
-    } else if (val > this.heap[0]) {
+    } else if (val[0] > this.heap[0][0]) {
       this.heap[0] = val;
       this.heapifyDown();
     }
@@ -45,7 +40,7 @@ class CustomMinHeap {
     let index = this.heap.length - 1;
     while (index > 0) {
       const parentIndex = Math.floor((index - 1) / 2);
-      if (this.heap[parentIndex] <= this.heap[index]) break;
+      if (this.heap[parentIndex][0] <= this.heap[index][0]) break;
       [this.heap[parentIndex], this.heap[index]] = [
         this.heap[index],
         this.heap[parentIndex],
@@ -62,13 +57,13 @@ class CustomMinHeap {
       let smallest = index;
       if (
         leftIndex < this.heap.length &&
-        this.heap[leftIndex] < this.heap[smallest]
+        this.heap[leftIndex][0] < this.heap[smallest][0]
       ) {
         smallest = leftIndex;
       }
       if (
         rightIndex < this.heap.length &&
-        this.heap[rightIndex] < this.heap[smallest]
+        this.heap[rightIndex][0] < this.heap[smallest][0]
       ) {
         smallest = rightIndex;
       }
