@@ -1,24 +1,22 @@
 /**
- * @param {number[]} nums
+ * @param {number} n
+ * @param {number} k
  * @return {number[][]}
  */
-var subsets = function (nums) {
+var combine = function (n, k) {
   const result = [];
-  backtrack(0, nums, result, []);
+  backtrack(0, 1, n, k, [], result);
   return result;
 };
 
-function backtrack(index, nums, result, current) {
-  if (index === nums.length) {
+function backtrack(index, starting, n, k, current, result) {
+  if (index === k) {
     result.push([...current]);
     return;
   }
 
-  current.push(nums[index]);
-  backtrack(index + 1, nums, result, current);
-  current.pop();
-  backtrack(index + 1, nums, result, current);
+  for (let i = starting; i <= n; i++) {
+    current[index] = i;
+    backtrack(index + 1, i + 1, n, k, current, result);
+  }
 }
-
-// Time Complexity: O(2^n)
-// Space Complexity: O(n)
