@@ -22,3 +22,6 @@ function backtrack(index, candidates, target, current, result) {
     current.pop();
   }
 }
+
+// Time Complexity: O(2^N), where N is the number of candidates.
+// Space Complexity: O(N), where N is the number of candidates.
