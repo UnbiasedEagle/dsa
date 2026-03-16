@@ -1,27 +1,24 @@
 /**
- * @param {number[]} nums
+ * @param {number[]} candidates
+ * @param {number} target
  * @return {number[][]}
  */
-var permute = function (nums) {
-  const visted = Array.from({ length: nums.length }, () => false);
+var combinationSum = function (candidates, target) {
   const result = [];
-  const current = Array.from({ length: nums.length });
-  backtrack(0, nums, current, visted, result);
+  candidates.sort((a, b) => a - b);
+  backtrack(0, candidates, target, [], result);
   return result;
 };
 
-function backtrack(count, nums, current, visted, result) {
-  if (count === nums.length) {
+function backtrack(index, candidates, target, current, result) {
+  if (target === 0) {
     result.push([...current]);
     return;
   }
-
-  for (let i = 0; i < nums.length; i++) {
-    if (!visted[i]) {
-      current[count] = nums[i];
-      visted[i] = true;
-      backtrack(count + 1, nums, current, visted, result);
-      visted[i] = false;
-    }
+  for (let i = index; i < candidates.length; i++) {
+    if (candidates[i] > target) break;
+    current.push(candidates[i]);
+    backtrack(i, candidates, target - candidates[i], current, result);
+    current.pop();
   }
 }
