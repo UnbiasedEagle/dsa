@@ -1,35 +1,28 @@
 /**
- * @param {string} digits
- * @return {string[]}
+ * @param {number[]} nums
+ * @return {number[][]}
  */
-
-const letterMap = {
-  2: "abc",
-  3: "def",
-  4: "ghi",
-  5: "jkl",
-  6: "mno",
-  7: "pqrs",
-  8: "tuv",
-  9: "wxyz",
-};
-
-var letterCombinations = function (digits) {
+var permuteUnique = function (nums) {
   const result = [];
-  if (digits.length === 0) return result;
-  backtrack(digits, 0, [], result);
+  nums.sort((a, b) => a - b);
+  const used = new Array(nums.length).fill(false);
+  backtrack(0, nums, [], result, used);
   return result;
 };
 
-function backtrack(digits, index, curr, result) {
-  if (index === digits.length) {
-    result.push(curr.join(""));
+function backtrack(index, nums, current, result, used) {
+  if (index === nums.length) {
+    result.push([...current]);
     return;
   }
-  const letters = letterMap[digits[index]];
-  for (let i = 0; i < letters.length; i++) {
-    curr.push(letters[i]);
-    backtrack(digits, index + 1, curr, result);
-    curr.pop();
+
+  for (let i = 0; i < nums.length; i++) {
+    if (used[i]) continue;
+    if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) continue;
+    used[i] = true;
+    current.push(nums[i]);
+    backtrack(index + 1, nums, current, result, used);
+    current.pop();
+    used[i] = false;
   }
 }
