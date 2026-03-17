@@ -1,25 +1,27 @@
 /**
- * @param {number[]} candidates
- * @param {number} target
+ * @param {number} k
+ * @param {number} n
  * @return {number[][]}
  */
-var combinationSum2 = function (candidates, target) {
-  candidates.sort((a, b) => a - b);
+var combinationSum3 = function (k, n) {
   const result = [];
-  backtrack(0, candidates, target, [], result);
+  backtrack(1, k, n, [], result);
   return result;
 };
 
-function backtrack(index, candidates, target, current, result) {
-  if (target === 0) {
+function backtrack(start, k, n, current, result) {
+  if (k === 0 && n === 0) {
     result.push([...current]);
     return;
   }
-  for (let i = index; i < candidates.length; i++) {
-    if (i > index && candidates[i] === candidates[i - 1]) continue;
-    if (candidates[i] > target) break;
-    current.push(candidates[i]);
-    backtrack(i + 1, candidates, target - candidates[i], current, result);
+  if (n === 0 || k === 0) {
+    return;
+  }
+
+  for (let i = start; i <= 9; i++) {
+    if (i > n) break;
+    current.push(i);
+    backtrack(i + 1, k - 1, n - i, current, result);
     current.pop();
   }
 }
