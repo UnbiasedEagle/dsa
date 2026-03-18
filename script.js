@@ -1,28 +1,35 @@
 /**
- * @param {number[]} nums
- * @return {number[][]}
+ * @param {string} s
+ * @return {string[][]}
  */
-var permuteUnique = function (nums) {
-  const result = [];
-  nums.sort((a, b) => a - b);
-  const used = new Array(nums.length).fill(false);
-  backtrack(0, nums, [], result, used);
+var partition = function (s) {
+  let result = [];
+  backtrack(0, [], result, s);
   return result;
 };
 
-function backtrack(index, nums, current, result, used) {
-  if (index === nums.length) {
+function backtrack(index, current, result, s) {
+  if (index === s.length) {
     result.push([...current]);
     return;
   }
-
-  for (let i = 0; i < nums.length; i++) {
-    if (used[i]) continue;
-    if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) continue;
-    used[i] = true;
-    current.push(nums[i]);
-    backtrack(index + 1, nums, current, result, used);
-    current.pop();
-    used[i] = false;
+  for (let i = index; i < s.length; i++) {
+    let sub = s.slice(index, i + 1);
+    if (isPalindrome(sub)) {
+      current.push(sub);
+      backtrack(i + 1, current, result, s);
+      current.pop();
+    }
   }
+}
+
+function isPalindrome(sub) {
+  let left = 0;
+  let right = sub.length - 1;
+  while (left < right) {
+    if (sub[left] !== sub[right]) return false;
+    left++;
+    right--;
+  }
+  return true;
 }
