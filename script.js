@@ -1,23 +1,36 @@
 /**
  * @param {number[][]} intervals
- * @return {number[][]}
+ * @return {number}
  */
-var merge = function (intervals) {
-  intervals.sort((a, b) => a[0] - b[0]);
-  let start = intervals[0][0];
-  let end = intervals[0][1];
-  const result = [];
+var eraseOverlapIntervals = function (intervals) {
+  intervals.sort((a, b) => a[1] - b[1]);
+  console.log(intervals);
+  const stack = [];
+  let count = 0;
 
-  for (let i = 1; i < intervals.length; i++) {
-    let [s, e] = intervals[i];
-    if (s > end) {
-      result.push([start, end]);
-      start = s;
-      end = e;
+  for (let i = 0; i < intervals.length; i++) {
+    if (
+      stack.length === 0 ||
+      !isOverlapping(stack[stack.length - 1], intervals[i])
+    ) {
+      stack.push(intervals[i]);
     } else {
-      end = Math.max(end, e);
+      count++;
     }
   }
-  result.push([start, end]);
-  return result;
+
+  return count;
 };
+
+function isOverlapping(a, b) {
+  return Math.max(a[0], b[0]) < Math.min(a[1], b[1]);
+}
+
+console.log(
+  eraseOverlapIntervals([
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [1, 3],
+  ]),
+);
