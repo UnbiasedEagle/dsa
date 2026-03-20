@@ -1,31 +1,15 @@
 /**
- * @param {number[]} bills
- * @return {boolean}
+ * @param {number[]} prices
+ * @return {number}
  */
-var lemonadeChange = function (bills) {
-  let dollar5 = 0;
-  let dollar10 = 0;
+var maxProfit = function (prices) {
+  let result = 0;
 
-  for (const bill of bills) {
-    if (bill === 5) {
-      dollar5++;
-    } else if (bill === 10) {
-      if (dollar5 === 0) {
-        return false;
-      }
-      dollar5--;
-      dollar10++;
-    } else {
-      if (dollar10 > 0 && dollar5 > 0) {
-        dollar10--;
-        dollar5--;
-      } else if (dollar5 >= 3) {
-        dollar5 -= 3;
-      } else {
-        return false;
-      }
+  for (let i = 1; i < prices.length; i++) {
+    if (prices[i] > prices[i - 1]) {
+      result += prices[i] - prices[i - 1];
     }
   }
 
-  return true;
+  return result;
 };
