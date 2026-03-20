@@ -1,23 +1,23 @@
 /**
  * @param {number[][]} intervals
- * @param {number[]} newInterval
  * @return {number[][]}
  */
-var insert = function (intervals, newInterval) {
+var merge = function (intervals) {
+  intervals.sort((a, b) => a[0] - b[0]);
+  let start = intervals[0][0];
+  let end = intervals[0][1];
   const result = [];
 
-  for (let i = 0; i < intervals.length; i++) {
-    let [start, end] = intervals[i];
-    if (end < newInterval[0]) {
-      result.push(intervals[i]);
-    } else if (start > newInterval[1]) {
-      result.push(newInterval);
-      newInterval = intervals[i];
+  for (let i = 1; i < intervals.length; i++) {
+    let [s, e] = intervals[i];
+    if (s > end) {
+      result.push([start, end]);
+      start = s;
+      end = e;
     } else {
-      newInterval[0] = Math.min(newInterval[0], start);
-      newInterval[1] = Math.max(newInterval[1], end);
+      end = Math.max(end, e);
     }
   }
-  result.push(newInterval);
+  result.push([start, end]);
   return result;
 };
