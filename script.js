@@ -1,18 +1,31 @@
 /**
- * @param {number[]} g
- * @param {number[]} s
- * @return {number}
+ * @param {number[]} bills
+ * @return {boolean}
  */
-var findContentChildren = function (g, s) {
-  g.sort((a, b) => a - b);
-  s.sort((a, b) => a - b);
-  let i = 0,
-    j = 0;
-  while (i < g.length && j < s.length) {
-    if (s[j] >= g[i]) {
-      i++;
+var lemonadeChange = function (bills) {
+  let dollar5 = 0;
+  let dollar10 = 0;
+
+  for (const bill of bills) {
+    if (bill === 5) {
+      dollar5++;
+    } else if (bill === 10) {
+      if (dollar5 === 0) {
+        return false;
+      }
+      dollar5--;
+      dollar10++;
+    } else {
+      if (dollar10 > 0 && dollar5 > 0) {
+        dollar10--;
+        dollar5--;
+      } else if (dollar5 >= 3) {
+        dollar5 -= 3;
+      } else {
+        return false;
+      }
     }
-    j++;
   }
-  return i;
+
+  return true;
 };
