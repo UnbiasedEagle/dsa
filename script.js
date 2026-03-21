@@ -1,36 +1,26 @@
 /**
- * @param {number[][]} intervals
- * @return {number}
+ * @param {string} s
+ * @return {number[]}
  */
-var eraseOverlapIntervals = function (intervals) {
-  intervals.sort((a, b) => a[1] - b[1]);
-  console.log(intervals);
-  const stack = [];
-  let count = 0;
-
-  for (let i = 0; i < intervals.length; i++) {
-    if (
-      stack.length === 0 ||
-      !isOverlapping(stack[stack.length - 1], intervals[i])
-    ) {
-      stack.push(intervals[i]);
-    } else {
-      count++;
+var partitionLabels = function (s) {
+  const endIndex = Array(26).fill(-1);
+  for (let i = s.length - 1; i >= 0; i--) {
+    const code = s.charCodeAt(i) - "a".charCodeAt(0);
+    if (endIndex[code] === -1) {
+      endIndex[code] = i;
     }
   }
 
-  return count;
+  const result = [];
+  let start = 0;
+  let end = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    end = Math.max(end, endIndex[s.charCodeAt(i) - "a".charCodeAt(0)]);
+    if (i === end) {
+      result.push(end - start + 1);
+      start = end + 1;
+    }
+  }
+  return result;
 };
-
-function isOverlapping(a, b) {
-  return Math.max(a[0], b[0]) < Math.min(a[1], b[1]);
-}
-
-console.log(
-  eraseOverlapIntervals([
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [1, 3],
-  ]),
-);
