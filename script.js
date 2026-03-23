@@ -1,18 +1,21 @@
 /**
- * @param {number[][]} trips
- * @param {number} capacity
- * @return {boolean}
+ * @param {number[]} ratings
+ * @return {number}
  */
-var carPooling = function (trips, capacity) {
-  const timeLine = Array(1001).fill(0);
-  for (const [num, start, end] of trips) {
-    timeLine[start] += num;
-    timeLine[end] -= num;
+var candy = function (ratings) {
+  const candies = Array(ratings.length).fill(1);
+
+  for (let i = 1; i < ratings.length; i++) {
+    if (ratings[i] > ratings[i - 1]) {
+      candies[i] = candies[i - 1] + 1;
+    }
   }
-  let current = 0;
-  for (const delta of timeLine) {
-    current += delta;
-    if (current > capacity) return false;
+
+  for (let i = ratings.length - 2; i >= 0; i--) {
+    if (ratings[i] > ratings[i + 1]) {
+      candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+    }
   }
-  return true;
+
+  return candies.reduce((acc, curr) => acc + curr, 0);
 };
