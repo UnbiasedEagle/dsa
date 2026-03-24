@@ -1,21 +1,15 @@
 /**
- * @param {number[]} ratings
+ * @param {number[]} nums
  * @return {number}
  */
-var candy = function (ratings) {
-  const candies = Array(ratings.length).fill(1);
+var maxSubArray = function (nums) {
+  let maxSum = nums[0];
+  let currentSum = nums[0];
 
-  for (let i = 1; i < ratings.length; i++) {
-    if (ratings[i] > ratings[i - 1]) {
-      candies[i] = candies[i - 1] + 1;
-    }
+  for (let i = 1; i < nums.length; i++) {
+    currentSum = Math.max(nums[i], currentSum + nums[i]);
+    maxSum = Math.max(maxSum, currentSum);
   }
 
-  for (let i = ratings.length - 2; i >= 0; i--) {
-    if (ratings[i] > ratings[i + 1]) {
-      candies[i] = Math.max(candies[i], candies[i + 1] + 1);
-    }
-  }
-
-  return candies.reduce((acc, curr) => acc + curr, 0);
+  return maxSum;
 };
