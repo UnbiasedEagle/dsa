@@ -1,11 +1,15 @@
 /**
- * @param {number[]} cost
+ * @param {number[]} nums
  * @return {number}
  */
-var minCostClimbingStairs = function (cost) {
-  const dp = [cost[0], cost[1]];
-  for (let i = 2; i < cost.length; i++) {
-    dp[i] = cost[i] + Math.min(dp[i - 1], dp[i - 2]);
+var rob = function (nums) {
+  if (nums.length === 1) {
+    return nums[0];
   }
-  return Math.min(dp[cost.length - 1], dp[cost.length - 2]);
+  
+  const dp = [nums[0], Math.max(nums[0], nums[1])];
+  for (let i = 2; i < nums.length; i++) {
+    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+  }
+  return dp[nums.length - 1];
 };
