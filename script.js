@@ -1,18 +1,19 @@
-/**
- * @param {number[]} coins
- * @param {number} amount
- * @return {number}
- */
-var coinChange = function (coins, amount) {
-  const dp = Array(amount + 1).fill(Infinity);
-  dp[0] = 0;
-
-  for (let i = 1; i <= amount; i++) {
-    for (const coin of coins) {
-      if (i - coin >= 0) {
-        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-      }
+class Solution {
+  /**
+   * @param {string} s
+   * @param {string} t
+   * @return {boolean}
+   */
+  isAnagram(s, t) {
+    if (s.length !== t.length) return false;
+    const map = new Map();
+    for (let i = 0; i < s.length; i++) {
+      map.set(s[i], (map.get(s[i]) || 0) + 1);
+      map.set(t[i], (map.get(t[i]) || 0) - 1);
     }
+    for (const [key, value] of map) {
+      if (value !== 0) return false;
+    }
+    return true;
   }
-  return dp[amount] === Infinity ? -1 : dp[amount];
-};
+}
