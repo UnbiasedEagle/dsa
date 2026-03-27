@@ -1,25 +1,18 @@
 /**
- * @param {number[]} nums
+ * @param {number[]} coins
+ * @param {number} amount
  * @return {number}
  */
-var rob = function (nums) {
-  if (nums.length === 0) return 0;
-  if (nums.length === 1) return nums[0];
-  return Math.max(
-    calculate(nums, 0, nums.length - 2),
-    calculate(nums, 1, nums.length - 1),
-  );
-};
+var coinChange = function (coins, amount) {
+  const dp = Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
 
-function calculate(nums, start, end) {
-  if (end - start === 0) {
-    return nums[start];
+  for (let i = 1; i <= amount; i++) {
+    for (const coin of coins) {
+      if (i - coin >= 0) {
+        dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+      }
+    }
   }
-  const dp = [];
-  dp[start] = nums[start];
-  dp[start + 1] = Math.max(nums[start], nums[start + 1]);
-  for (let i = start + 2; i <= end; i++) {
-    dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
-  }
-  return dp[end];
-}
+  return dp[amount] === Infinity ? -1 : dp[amount];
+};
