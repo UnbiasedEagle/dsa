@@ -1,15 +1,20 @@
 class Solution {
   /**
-   * @param {number[]} nums
-   * @param {number} target
-   * @return {number[]}
+   * @param {string[]} strs
+   * @return {string}
    */
-  twoSum(nums, target) {
-    const map = new Map();
-    for (let i = 0; i < nums.length; i++) {
-      const complement = target - nums[i];
-      if (map.has(complement)) return [map.get(complement), i];
-      map.set(nums[i], i);
+  longestCommonPrefix(strs) {
+    const firstStr = strs[0];
+    let result = '';
+
+    for (let i = 0; i < firstStr.length; i++) {
+      for (let j = 1; j < strs.length; j++) {
+        if (i >= strs[j].length || strs[j][i] !== firstStr[i]) {
+          return result;
+        }
+      }
+      result += firstStr[i];
     }
+    return result;
   }
 }
