@@ -1,19 +1,15 @@
 class Solution {
   /**
-   * @param {string} s
-   * @param {string} t
-   * @return {boolean}
+   * @param {number[]} nums
+   * @param {number} target
+   * @return {number[]}
    */
-  isAnagram(s, t) {
-    if (s.length !== t.length) return false;
+  twoSum(nums, target) {
     const map = new Map();
-    for (let i = 0; i < s.length; i++) {
-      map.set(s[i], (map.get(s[i]) || 0) + 1);
-      map.set(t[i], (map.get(t[i]) || 0) - 1);
+    for (let i = 0; i < nums.length; i++) {
+      const complement = target - nums[i];
+      if (map.has(complement)) return [map.get(complement), i];
+      map.set(nums[i], i);
     }
-    for (const [key, value] of map) {
-      if (value !== 0) return false;
-    }
-    return true;
   }
 }
