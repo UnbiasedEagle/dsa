@@ -1,20 +1,22 @@
 class Solution {
   /**
    * @param {string[]} strs
-   * @return {string}
+   * @return {string[][]}
    */
-  longestCommonPrefix(strs) {
-    const firstStr = strs[0];
-    let result = '';
+  groupAnagrams(strs) {
+    const map = new Map();
 
-    for (let i = 0; i < firstStr.length; i++) {
-      for (let j = 1; j < strs.length; j++) {
-        if (i >= strs[j].length || strs[j][i] !== firstStr[i]) {
-          return result;
-        }
+    for (const str of strs) {
+      const freqArr = new Array(26).fill(0);
+      for (const ch of str) {
+        freqArr[ch.charCodeAt(0) - 'a'.charCodeAt(0)]++;
       }
-      result += firstStr[i];
+      const key = freqArr.join('#');
+      if (!map.has(key)) {
+        map.set(key, []);
+      }
+      map.get(key).push(str);
     }
-    return result;
+    return Array.from(map.values());
   }
 }
