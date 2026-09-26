@@ -1,16 +1,21 @@
 /**
- * @param {character[]} s
- * @return {void} Do not return anything, modify s in-place instead.
+ * @param {number[]} prices
+ * @return {number}
  *
  * Time:  O(n)
  * Space: O(1)
  */
-var reverseString = function (s) {
-  let left = 0;
-  let right = s.length - 1;
-  while (left < right) {
-    [s[left], s[right]] = [s[right], s[left]];
-    left++;
-    right--;
+var maxProfit = function (prices) {
+  let maxProfit = 0;
+  let minPrice = prices[0];
+  let right = 1;
+  while (right < prices.length) {
+    if (minPrice < prices[right]) {
+      maxProfit = Math.max(maxProfit, prices[right] - minPrice);
+    } else {
+      minPrice = prices[right];
+    }
+    right++;
   }
+  return maxProfit;
 };
