@@ -1,6 +1,9 @@
 /**
  * @param {number[]} nums
  * @return {number}
+ *
+ * Time:  O(n)
+ * Space: O(1)
  */
 var removeDuplicates = function (nums) {
   if (nums.length === 0) return 0;
