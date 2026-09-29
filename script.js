@@ -5,9 +5,10 @@
  * Time Complexity:  O(n)
  * Space Complexity: O(1)
  */
-var missingNumber = function (nums) {
-  let n = nums.length;
-  let expectedSum = (n * (n + 1)) / 2;
-  let actualSum = nums.reduce((acc, curr) => acc + curr, 0);
-  return expectedSum - actualSum;
+var singleNumber = function (nums) {
+  let result = 0;
+  for (let num of nums) {
+    result ^= num;
+  }
+  return result;
 };
