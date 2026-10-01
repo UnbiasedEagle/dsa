@@ -1,14 +1,12 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {number} n
+ * @return {boolean}
  *
- * Time Complexity:  O(n)
- * Space Complexity: O(1)
+ * Time Complexity:  O(log n)
+ * Space Complexity: O(log n)  (recursion call stack)
  */
-var singleNumber = function (nums) {
-  let result = 0;
-  for (let num of nums) {
-    result ^= num;
-  }
-  return result;
+var isPowerOfTwo = function (n) {
+  if (n <= 0) return false;
+  if (n === 1) return true;
+  return isPowerOfTwo(n / 2);
 };
