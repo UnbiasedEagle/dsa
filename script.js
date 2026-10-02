@@ -1,11 +1,19 @@
 /**
- * @param {number} n
+ * @param {number[]} nums
+ * @param {number} target
  * @return {number}
  *
- * Time Complexity:  O(2^n)  (each call branches into two, tighter bound O(φ^n) ≈ O(1.618^n))
- * Space Complexity: O(n)    (max recursion depth)
+ * Time Complexity:  O(log n)  (search space halves each iteration)
+ * Space Complexity: O(1)      (only a few pointer variables)
  */
-var fib = function (n) {
-  if (n <= 1) return n;
-  return fib(n - 1) + fib(n - 2);
+var search = function (nums, target) {
+  let low = 0;
+  let high = nums.length - 1;
+  while (low <= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (nums[mid] === target) return mid;
+    if (nums[mid] < target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return -1;
 };
