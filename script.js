@@ -1,19 +1,45 @@
 /**
  * @param {number[]} nums
- * @param {number} target
- * @return {number}
+ * @return {number[]}
  *
- * Time Complexity:  O(log n)  (search space halves each iteration)
- * Space Complexity: O(1)      (only a few pointer variables)
+ * Time Complexity:  O(n log n)  (log n levels of splitting, O(n) merge work per level)
+ * Space Complexity: O(n)        (temp arrays during merge + O(log n) recursion stack)
  */
-var search = function (nums, target) {
-  let low = 0;
-  let high = nums.length - 1;
-  while (low <= high) {
-    let mid = Math.floor((low + high) / 2);
-    if (nums[mid] === target) return mid;
-    if (nums[mid] < target) low = mid + 1;
-    else high = mid - 1;
-  }
-  return -1;
+var sortArray = function (nums) {
+  mergeSort(nums, 0, nums.length - 1);
+  return nums;
 };
+
+function mergeSort(nums, left, right) {
+  if (left >= right) return;
+  const mid = Math.floor((left + right) / 2);
+  mergeSort(nums, left, mid);
+  mergeSort(nums, mid + 1, right);
+  merge(nums, left, mid, right);
+}
+
+function merge(nums, left, mid, right) {
+  const temp = [];
+  let i = left;
+  let j = mid + 1;
+  while (i <= mid && j <= right) {
+    if (nums[i] <= nums[j]) {
+      temp.push(nums[i]);
+      i++;
+    } else {
+      temp.push(nums[j]);
+      j++;
+    }
+  }
+  while (i <= mid) {
+    temp.push(nums[i]);
+    i++;
+  }
+  while (j <= right) {
+    temp.push(nums[j]);
+    j++;
+  }
+  for (let k = left; k <= right; k++) {
+    nums[k] = temp[k - left];
+  }
+}
