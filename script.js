@@ -12,12 +12,14 @@
  * Time Complexity:  O(n)
  * Space Complexity: O(1)
  */
-var middleNode = function (head) {
-  let slow = head;
-  let fast = head;
-  while (fast !== null && fast.next !== null) {
-    slow = slow.next;
-    fast = fast.next.next;
+var reverseList = function (head) {
+  let prev = null;
+  let current = head;
+  while (current !== null) {
+    let next = current.next;
+    current.next = prev;
+    prev = current;
+    current = next;
   }
-  return slow;
+  return prev;
 };
