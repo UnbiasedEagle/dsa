@@ -7,19 +7,43 @@
  */
 /**
  * @param {ListNode} head
- * @return {ListNode}
+ * @return {boolean}
  *
  * Time Complexity:  O(n)
  * Space Complexity: O(1)
  */
-var reverseList = function (head) {
+var isPalindrome = function (head) {
+  let slow = head;
+  let fast = head;
+  while (fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  if (fast !== null) {
+    slow = slow.next;
+  }
+
+  const reverseHead = reverseList(slow);
+  let left = head;
+  let right = reverseHead;
+  while (right !== null) {
+    if (left.val !== right.val) {
+      return false;
+    }
+    left = left.next;
+    right = right.next;
+  }
+  return true;
+};
+
+function reverseList(head) {
   let prev = null;
-  let current = head;
-  while (current !== null) {
-    let next = current.next;
-    current.next = prev;
-    prev = current;
-    current = next;
+  let curr = head;
+  while (curr !== null) {
+    let next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
   }
   return prev;
-};
+}
