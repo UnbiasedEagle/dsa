@@ -1,49 +1,64 @@
 /**
  * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
  * }
  */
+
 /**
- * @param {ListNode} head
- * @return {boolean}
+ * @param {ListNode} headA
+ * @param {ListNode} headB
+ * @return {ListNode}
  *
- * Time Complexity:  O(n)
+ * Time Complexity:  O(m + n)
  * Space Complexity: O(1)
  */
-var isPalindrome = function (head) {
-  let slow = head;
-  let fast = head;
-  while (fast !== null && fast.next !== null) {
-    slow = slow.next;
-    fast = fast.next.next;
-  }
-  if (fast !== null) {
-    slow = slow.next;
-  }
-
-  const reverseHead = reverseList(slow);
-  let left = head;
-  let right = reverseHead;
-  while (right !== null) {
-    if (left.val !== right.val) {
-      return false;
+var getIntersectionNode = function (headA, headB) {
+  let nodeA = headA;
+  let nodeB = headB;
+  while (nodeA && nodeB) {
+    if (nodeA === nodeB) {
+      return nodeA;
     }
-    left = left.next;
-    right = right.next;
+    nodeA = nodeA.next;
+    nodeB = nodeB.next;
   }
-  return true;
-};
 
-function reverseList(head) {
-  let prev = null;
-  let curr = head;
-  while (curr !== null) {
-    let next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
+  if (!nodeA && !nodeB) {
+    return null;
   }
-  return prev;
-}
+
+  if (!nodeA) {
+    nodeA = headB;
+    while (nodeB) {
+      nodeA = nodeA.next;
+      nodeB = nodeB.next;
+    }
+    nodeB = headA;
+    while (nodeA && nodeB) {
+      if (nodeA === nodeB) {
+        return nodeA;
+      }
+      nodeA = nodeA.next;
+      nodeB = nodeB.next;
+    }
+    return null;
+  }
+  if (!nodeB) {
+    nodeB = headA;
+    while (nodeA) {
+      nodeA = nodeA.next;
+      nodeB = nodeB.next;
+    }
+    nodeA = headB;
+    while (nodeA && nodeB) {
+      if (nodeA === nodeB) {
+        return nodeA;
+      }
+      nodeA = nodeA.next;
+      nodeB = nodeB.next;
+    }
+    return null;
+  }
+};
