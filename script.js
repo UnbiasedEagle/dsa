@@ -1,64 +1,27 @@
 /**
  * Definition for singly-linked list.
- * function ListNode(val) {
- *     this.val = val;
- *     this.next = null;
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
  * }
  */
-
 /**
- * @param {ListNode} headA
- * @param {ListNode} headB
+ * @param {ListNode} head
+ * @param {number} val
  * @return {ListNode}
  *
- * Time Complexity:  O(m + n)
+ * Time Complexity:  O(n)
  * Space Complexity: O(1)
  */
-var getIntersectionNode = function (headA, headB) {
-  let nodeA = headA;
-  let nodeB = headB;
-  while (nodeA && nodeB) {
-    if (nodeA === nodeB) {
-      return nodeA;
+var removeElements = function (head, val) {
+  let dummy = new ListNode(0, head);
+  let node = dummy;
+  while (node.next) {
+    if (node.next.val === val) {
+      node.next = node.next.next;
+    } else {
+      node = node.next;
     }
-    nodeA = nodeA.next;
-    nodeB = nodeB.next;
   }
-
-  if (!nodeA && !nodeB) {
-    return null;
-  }
-
-  if (!nodeA) {
-    nodeA = headB;
-    while (nodeB) {
-      nodeA = nodeA.next;
-      nodeB = nodeB.next;
-    }
-    nodeB = headA;
-    while (nodeA && nodeB) {
-      if (nodeA === nodeB) {
-        return nodeA;
-      }
-      nodeA = nodeA.next;
-      nodeB = nodeB.next;
-    }
-    return null;
-  }
-  if (!nodeB) {
-    nodeB = headA;
-    while (nodeA) {
-      nodeA = nodeA.next;
-      nodeB = nodeB.next;
-    }
-    nodeA = headB;
-    while (nodeA && nodeB) {
-      if (nodeA === nodeB) {
-        return nodeA;
-      }
-      nodeA = nodeA.next;
-      nodeB = nodeB.next;
-    }
-    return null;
-  }
+  return dummy.next;
 };
