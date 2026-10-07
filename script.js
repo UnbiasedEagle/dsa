@@ -1,3 +1,3 @@
-function sumValues(arr) {
-  return arr.reduce((acc, curr) => acc + curr, 0);
+function countPositives(arr) {
+  return arr.reduce((acc, curr) => acc + (curr > 0 ? 1 : 0), 0);
 }
