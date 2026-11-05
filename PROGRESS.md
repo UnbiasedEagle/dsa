@@ -33,3 +33,20 @@
 - [ ] Maximum Product Subarray
 - [ ] Maximum Sum Circular Subarray
 - [ ] Maximum Absolute Sum of Any Subarray
+
+## 02 Strings
+
+### Two-Pointer (Palindrome)
+- [ ] Reverse a String
+- [ ] Valid Palindrome
+- [ ] Valid Palindrome II
+- [ ] Longest Palindromic Substring
+- [ ] Palindromic Substrings
+
+### Sliding Window (String)
+- [ ] Find All Anagrams in a String
+- [ ] Longest Substring Without Repeating Characters
+- [ ] Longest Substring with K Uniques
+- [ ] Permutation in String
+- [ ] Minimum Window Substring
+- [ ] Substring with Concatenation of All Words
