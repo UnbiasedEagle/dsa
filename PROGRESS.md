@@ -50,3 +50,36 @@
 - [ ] Permutation in String
 - [ ] Minimum Window Substring
 - [ ] Substring with Concatenation of All Words
+
+## 03 Binary Search
+
+### Classic Binary Search
+- [ ] Binary Search
+- [ ] Sqrt(x)
+- [ ] Search Insert Position
+- [ ] Search in Rotated Sorted Array
+- [ ] Find Minimum in Rotated Sorted Array
+- [ ] Find Peak Element
+
+### Lower / Upper Bound
+- [ ] Find First and Last Position of Element
+- [ ] Find kth Rotation
+- [ ] Count Occurrences
+- [ ] Ceiling in a Sorted Array
+- [ ] Floor in a Sorted Array
+
+### Binary Search on Answers
+- [ ] Koko Eating Bananas
+- [ ] Capacity To Ship Packages Within D Days
+- [ ] Min Speed to Arrive on Time
+- [ ] Aggressive Cows
+- [ ] Min Number of Days to Make m Bouquets
+- [ ] Magnetic Force Between Two Balls
+- [ ] Allocate Minimum Number of Pages
+- [ ] Split Array Largest Sum
+
+### Search in 2D Matrix
+- [ ] Search a 2D Matrix
+- [ ] Search a 2D Matrix II
+- [ ] Kth Smallest Element in Sorted Matrix
+- [ ] Matrix Median
