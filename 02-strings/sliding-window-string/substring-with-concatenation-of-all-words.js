@@ -35,44 +35,60 @@ findSubstring("barfoothefoobarman", ["foo", "bar"]);              // [0, 9]
 findSubstring("wordgoodgoodgoodbestword", ["word", "good", "best", "word"]); // []
 findSubstring("barfoofoobarthefoobarman", ["bar", "foo", "the"]); // [6, 9, 12]
 
-Time: O(n * m * w), where m is words.length and w is the word length
-Space: O(m * w)
+Time: O(n * w), where w is the word length
+Space: O(m * w), where m is words.length
 */
 
 function findSubstring(s, words) {
   const result = [];
+
+  const wordLength = words[0].length;
+  const wordCount = words.length;
+
   const need = new Map();
 
   for (const word of words) {
     need.set(word, (need.get(word) || 0) + 1);
   }
 
-  let right = 0;
-  const offset = words[0].length;
-  while (right < s.length) {
+  for (let offset = 0; offset < wordLength; offset++) {
+    let left = offset;
     let matched = 0;
-    let curr = right;
-    let left = right;
     const seen = new Map();
-    while (curr + offset <= s.length) {
-      const word = s.slice(curr, curr + offset);
-      if (need.has(word)) {
-        seen.set(word, (seen.get(word) || 0) + 1);
-        if (seen.get(word) > need.get(word)) {
-          break;
-        }
-        matched++;
-      } else {
-        break;
+
+    for (
+      let right = offset;
+      right + wordLength <= s.length;
+      right += wordLength
+    ) {
+      const word = s.slice(right, right + wordLength);
+
+      if (!need.has(word)) {
+        seen.clear();
+        matched = 0;
+        left = right + wordLength;
+        continue;
       }
 
-      if (matched === words.length) {
-        result.push(left);
-        break;
+      seen.set(word, (seen.get(word) || 0) + 1);
+
+      matched += 1;
+
+      while (seen.get(word) > need.get(word)) {
+        const leftWord = s.slice(left, left + wordLength);
+        seen.set(leftWord, seen.get(leftWord) - 1);
+        left += wordLength;
+        matched--;
       }
-      curr += offset;
+
+      if (matched === wordCount) {
+        result.push(left);
+        const leftWord = s.slice(left, left + wordLength);
+        seen.set(leftWord, seen.get(leftWord) - 1);
+        left += wordLength;
+        matched--;
+      }
     }
-    right += 1;
   }
 
   return result;
